@@ -28,8 +28,8 @@
         .button-group { display: flex; flex-direction: column; gap: 15px; align-items: center; }
 
         .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 80%; padding: 12px 20px; background: transparent; color: #0f0;
+            display: inline-flex; align-items: center; justify-content: flex-start;
+            width: 85%; padding: 12px 20px; background: transparent; color: #0f0;
             text-decoration: none; border: 1px solid #0f0; border-radius: 50px; 
             font-weight: bold; transition: all 0.3s ease;
         }
@@ -37,8 +37,15 @@
             background: #0f0; color: #000;
             box-shadow: 0 0 20px #0f0; transform: translateY(-3px);
         }
-        .btn img { width: 20px; margin-right: 10px; filter: drop-shadow(0 0 2px #0f0); }
-        .btn-zalo:hover img { filter: invert(1); }
+        /* Style cho icon */
+        .btn img { 
+            width: 24px; height: 24px; margin-right: 15px; 
+            filter: drop-shadow(0 0 2px #0f0); 
+        }
+        /* Khi hover thì icon đổi màu đen để nổi trên nền xanh */
+        .btn:hover img { 
+            filter: brightness(0); 
+        }
     </style>
 </head>
 <body>
@@ -50,9 +57,11 @@
         
         <div class="button-group">
             <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">
-                KẾT NỐI FACEBOOK
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg" alt="Facebook">
+                FACEBOOK: HUYPK100
             </a>
-            <a href="https://zalo.me/0334258458" target="_blank" class="btn btn-zalo">
+
+            <a href="https://zalo.me/0334258458" target="_blank" class="btn">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo">
                 ZALO: 0334258458
             </a>
