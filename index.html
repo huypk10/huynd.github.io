@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NGUYỄN ĐỨC HUY</title>
     <link rel="icon" href="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" type="image/x-icon">
+    
     <style>
         body {
             margin: 0; padding: 0; background: #050505;
@@ -15,138 +16,113 @@
 
         .main-container {
             position: relative; z-index: 40;
-            display: flex; flex-direction: column; align-items: center; gap: 20px;
-            width: 95%; max-width: 420px;
-            max-height: 95vh; overflow-y: auto; scrollbar-width: none;
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+            width: 90%; max-width: 400px;
         }
-        .main-container::-webkit-scrollbar { display: none; }
 
         .profile-card {
-            background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(12px);
-            padding: 20px; border-radius: 20px; text-align: center;
+            background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(15px);
+            padding: 25px; border-radius: 20px; text-align: center;
             border: 1px solid rgba(0, 255, 0, 0.2); width: 100%;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-            box-sizing: border-box;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 1);
         }
 
         .terminal-box {
-            background: rgba(0, 0, 0, 0.9);
-            border: 1px solid rgba(0, 255, 0, 0.4); border-radius: 12px;
-            width: 100%; height: 260px; padding: 12px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px;
+            width: 100%; height: 200px; padding: 12px;
             box-sizing: border-box; display: flex; flex-direction: column;
             font-family: 'Consolas', monospace; font-size: 11px; color: #0f0;
-            cursor: text;
         }
 
         .terminal-header {
             border-bottom: 1px solid rgba(0, 255, 0, 0.1);
             margin-bottom: 8px; padding-bottom: 5px;
-            display: flex; justify-content: space-between; font-size: 10px; color: #555;
+            display: flex; justify-content: space-between; font-size: 10px; color: #444;
         }
-
-        .sticky-hint {
-            color: #fff; font-size: 11px; margin-bottom: 10px;
-            padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4);
-            text-align: center; border-radius: 4px; background: rgba(255, 255, 0, 0.05);
-            animation: hintBlink 2s infinite;
-        }
-        @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
         #terminal-history {
             flex-grow: 1; overflow-y: auto; scrollbar-width: none;
-            display: flex; flex-direction: column; gap: 3px;
+            display: flex; flex-direction: column; gap: 4px;
         }
         #terminal-history::-webkit-scrollbar { display: none; }
 
-        .input-line { display: flex; gap: 5px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 5px; }
-        #terminal-input {
-            background: transparent; border: none; color: #fff; outline: none;
-            font-family: inherit; font-size: inherit; flex-grow: 1;
-        }
-
-        .avatar { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 10px; }
-        .glitch { font-size: 20px; font-weight: bold; color: #fff; letter-spacing: 1px; }
-
-        /* Skills Section */
-        .skills { margin: 15px 0; text-align: left; font-size: 10px; color: #0f0; }
-        .skill-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 4px; overflow: hidden; }
-        .skill-per { height: 100%; background: #0f0; box-shadow: 0 0 10px #0f0; width: 0; transition: 2s ease-out; }
+        .avatar { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 15px; }
+        .glitch { font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 2px; margin-bottom: 5px; }
 
         .btn {
-            display: block; margin: 6px auto; padding: 10px;
-            background: rgba(0, 255, 0, 0.03); color: #0f0;
-            text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.3);
+            display: block; margin: 8px auto; padding: 12px;
+            background: rgba(0, 255, 0, 0.02); color: #0f0;
+            text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2);
             border-radius: 8px; font-size: 11px; transition: 0.3s;
+            text-transform: uppercase; cursor: pointer;
         }
-        .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
+        .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
 
-        .btn-copy { border: 1px solid #ff0; color: #ff0; cursor: pointer; background: rgba(255,255,0,0.05); }
-        .btn-copy:hover { background: #ff0; color: #000; }
+        .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.05); font-weight: bold; }
+        .btn-donate:hover { background: #ff0; color: #000; box-shadow: 0 0 20px #ff0; }
 
+        /* Modal Donate & Copy STK */
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center;
+            box-shadow: 0 0 50px rgba(0,0,0,1); width: 260px;
         }
-        #donate-modal img { width: 200px; border-radius: 10px; }
+        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        
+        .copy-area {
+            background: #111; border: 1px dashed #ff0; padding: 10px;
+            border-radius: 8px; color: #fff; font-size: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; transition: 0.3s;
+        }
+        .copy-area:hover { background: #222; }
 
         #audio-ctrl {
             position: absolute; bottom: 20px; right: 20px; z-index: 50;
-            background: rgba(0,0,0,0.8); border: 1px solid #333; color: #666; padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px;
-        }
-        
-        .toast {
-            position: fixed; top: 20px; background: #ff0; color: #000; padding: 8px 16px; 
-            border-radius: 4px; font-weight: bold; z-index: 200; display: none;
+            background: rgba(0,0,0,0.8); border: 1px solid #333; color: #555; padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px;
         }
     </style>
 </head>
 <body>
     <canvas id="matrix"></canvas>
-    <div id="toast" class="toast">Đã sao chép STK!</div>
 
     <div class="main-container">
         <div class="profile-card">
             <img src="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" class="avatar">
             <div class="glitch">NGUYỄN ĐỨC HUY</div>
-            <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; height: 20px;"></div>
+            <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; height: 20px; margin-bottom: 10px;"></div>
             
-            <div class="skills">
-                Linux Server <div class="skill-bar"><div class="skill-per" style="width: 85%;"></div></div>
-                Cyber Security <div class="skill-bar"><div class="skill-per" style="width: 75%;"></div></div>
-                Networking <div class="skill-bar"><div class="skill-per" style="width: 90%;"></div></div>
-            </div>
-
-            <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">FACEBOOK</a>
-            <div class="btn btn-copy" onclick="copySTK()">📋 COPY STK: 0334258458</div>
-            <div class="btn" onclick="openDonate()" style="border-style: dashed; color: #ff0; border-color: #ff0;">☕ DONATE QR (HOT)</div>
+            <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">Connect Facebook</a>
+            <a href="https://zalo.me/0334258458" target="_blank" class="btn">Contact Zalo</a>
+            <div class="btn btn-donate" onclick="openDonate()">☕ Donate Coffee</div>
         </div>
 
-        <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
+        <div class="terminal-box">
             <div class="terminal-header">
-                <span>HUY_CORE_SYSTEM</span>
+                <span>HUY_CORE_INTERFACE</span>
                 <span id="term-time"></span>
             </div>
-            <div class="sticky-hint">💡 Type <b>'help'</b> or <b>'info'</b> to start</div>
             <div id="terminal-history"></div>
-            <div class="input-line">
-                <span style="color: #0f0;">$</span>
-                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="...">
-            </div>
         </div>
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer;">[X]</span>
-        <h4 style="color:#ff0">QUÉT MÃ ỦNG HỘ</h4>
+        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[X]</span>
+        <h4 style="color:#ff0; margin: 10px 0;">ỦNG HỘ HUY ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
+        
+        <div class="copy-area" onclick="copySTK()">
+            <span>STK: 0334258458</span>
+            <span style="color:#ff0; font-size:10px;">[COPY]</span>
+        </div>
+        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:5px; display:none;">Đã sao chép vào bộ nhớ tạm!</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
-    <audio id="type-sound" src="https://www.soundjay.com/communication/typewriter-key-1.mp3"></audio>
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
-        // Matrix Effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -162,75 +138,37 @@
         }
         setInterval(draw, 50);
 
-        // Terminal & Visitor Detection
         const history = document.getElementById('terminal-history');
-        const input = document.getElementById('terminal-input');
-
-        async function initTerminal() {
-            addLog("[SYSTEM] Initializing core modules...", "#0af");
-            await new Promise(r => setTimeout(r, 800));
-            
-            // Lấy thông tin người dùng (giả lập hoặc qua API công cộng)
-            const os = navigator.platform;
-            const browser = navigator.userAgent.split(' ').pop();
-            
-            addLog(`[DETECTED] OS: ${os}`, "#ff0");
-            addLog(`[DETECTED] Browser: ${browser}`, "#ff0");
-            addLog("[OK] Security shield: ACTIVE", "#0f0");
-        }
-
-        function addLog(text, color = "#0f0") {
-            const div = document.createElement('div');
-            div.style.color = color;
-            div.textContent = `> ${text}`;
-            history.appendChild(div);
-            history.scrollTop = history.scrollHeight;
-        }
-
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const val = input.value.toLowerCase().trim();
-                addLog(`$ ${val}`, "#666");
-                if (val === 'help') addLog("Commands: about, skills, donate, clear, ping");
-                else if (val === 'about') addLog("Admin: Nguyễn Đức Huy - SysAdmin.");
-                else if (val === 'ping') addLog("Pong! Latency: 12ms");
-                else if (val === 'clear') history.innerHTML = '';
-                else if (val === 'donate') openDonate();
-                else if (val === 'info') initTerminal();
-                else addLog("Unknown command. Type 'help'.", "#f44");
-                input.value = '';
+        async function runInit() {
+            const logs = [
+                {t: "[INFO] Initializing Huy_Core...", c: "#0f0"},
+                {t: `[DETECT] OS: ${navigator.platform}`, c: "#ff0"},
+                {t: `[DETECT] Device: ${/Android|iPhone/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'}`, c: "#ff0"},
+                {t: "[OK] Security Active", c: "#0af"}
+            ];
+            for(let log of logs) {
+                await new Promise(r => setTimeout(r, 600));
+                const div = document.createElement('div');
+                div.style.color = log.c;
+                div.textContent = `> ${log.t}`;
+                history.appendChild(div);
+                history.scrollTop = history.scrollHeight;
             }
-        });
-
-        // Auto logs
-        const autoLogs = [
-            "[OK] Database sync complete",
-            "[INFO] Monitoring traffic...",
-            "[CRIT] Blocked attack from 103.x.x.x",
-            "[SYSTEM] Health: 100%",
-            "--- Type 'donate' to support ---"
-        ];
-        setInterval(() => {
-            const content = autoLogs[Math.floor(Math.random()*autoLogs.length)];
-            const log = document.createElement('div');
-            log.style.fontSize = '10px';
-            log.style.opacity = '0.5';
-            log.style.color = content.includes("---") ? "#ff0" : "#0f0";
-            log.textContent = content;
-            history.appendChild(log);
-            if(history.childNodes.length > 30) history.removeChild(history.firstChild);
-        }, 3000);
-
-        // Utilities
-        function copySTK() {
-            navigator.clipboard.writeText("0334258458");
-            const toast = document.getElementById('toast');
-            toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 2000);
         }
+        runInit();
 
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
-        function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
+        function closeDonate() { 
+            document.getElementById('donate-modal').style.display = 'none'; 
+            document.getElementById('copy-msg').style.display = 'none';
+        }
+
+        function copySTK() {
+            navigator.clipboard.writeText("0334258458");
+            const msg = document.getElementById('copy-msg');
+            msg.style.display = 'block';
+            setTimeout(() => { msg.style.display = 'none'; }, 2000);
+        }
         
         function toggleAudio() {
             const bgm = document.getElementById('bgm');
@@ -239,7 +177,6 @@
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
-        // Typewriter
         const words = ['> Systems Administrator', '> Cyber Security', '> Infrastructure'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
@@ -250,7 +187,6 @@
             else setTimeout(type, isDel ? 60 : 100);
         }
         type();
-        initTerminal();
         setInterval(() => { document.getElementById('term-time').textContent = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
