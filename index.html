@@ -42,7 +42,6 @@
             display: flex; justify-content: space-between; font-size: 10px; color: #444;
         }
 
-        /* Ô HƯỚNG DẪN ĐÂY RỒI HUY ƠI */
         .sticky-hint {
             color: #fff; font-size: 10px; margin-bottom: 10px;
             padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4);
@@ -50,8 +49,6 @@
             animation: hintBlink 2s infinite;
         }
         @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-        .sticky-hint b { color: #0f0; }
-        .sticky-hint span b { color: #ff0; }
 
         #terminal-history {
             flex-grow: 1; overflow-y: auto; scrollbar-width: none;
@@ -81,12 +78,18 @@
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center;
-            width: 280px; box-shadow: 0 0 50px #000;
+            box-shadow: 0 0 50px rgba(0,0,0,1); width: 280px;
         }
-        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
-        .bank-info { background: #111; padding: 12px; border-radius: 10px; text-align: left; border: 1px solid #333; cursor: pointer; }
-        .bank-label { color: #ff0; font-size: 9px; display: block; }
-        .bank-value { color: #fff; font-family: monospace; font-size: 13px; }
+        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
+        
+        .bank-info {
+            background: #111; border: 1px solid #333; padding: 12px;
+            border-radius: 10px; color: #fff; font-size: 11px;
+            text-align: left; position: relative; cursor: pointer;
+        }
+        .bank-label { color: #ff0; font-size: 9px; text-transform: uppercase; margin-bottom: 4px; display: block; }
+        .bank-value { font-family: 'Consolas', monospace; font-size: 13px; display: block; margin-bottom: 2px; }
+        .copy-hint { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #ff0; font-size: 9px; border: 1px solid #ff0; padding: 2px 5px; border-radius: 4px; }
 
         #audio-ctrl {
             position: absolute; bottom: 20px; right: 20px; z-index: 50;
@@ -128,13 +131,19 @@
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer;">[X]</span>
-        <h4 style="color:#ff0; margin: 10px 0;">ỦNG HỘ HUY ☕</h4>
+        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[CLOSE]</span>
+        <h4 style="color:#ff0; margin: 10px 0;">MỜI HUY CAFE ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
-        <div class="bank-info" onclick="navigator.clipboard.writeText('0334258458'); alert('Copied!')">
-            <span class="bank-label">VPBANK - NGUYEN DUC HUY</span>
+        
+        <div class="bank-info" onclick="copySTK()">
+            <span class="bank-label">Ngân hàng & Chủ tài khoản</span>
+            <span class="bank-value">VPBANK</span>
+            <span class="bank-value" style="color: #0f0;">NGUYEN DUC HUY</span>
+            <span class="bank-label" style="margin-top: 8px;">Số tài khoản</span>
             <span class="bank-value">0334258458</span>
+            <span class="copy-hint">COPY</span>
         </div>
+        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none; font-family: monospace;">> STK COPIED!</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
@@ -166,29 +175,32 @@
             history.scrollTop = history.scrollHeight;
         }
 
-        // Tự động log có màu đỏ/xanh/vàng
+        async function fetchVisitorData() {
+            addLog("Scanning metadata...", "#0af");
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                addLog(`[IP] ${data.ip}`, "#ff0");
+                addLog(`[LOC] ${data.city}, ${data.country_name}`, "#ff0");
+            } catch (err) { addLog("[ERR] Failed to track.", "#f44"); }
+        }
+
         const systemLogs = [
             { t: "[OK] Firewall active", c: "#0f0" },
-            { t: "[CRIT] Attack blocked from 1.1.1.1", c: "#f44" },
+            { t: "[CRIT] Attack blocked from 104.21.x.x", c: "#f44" },
             { t: "[INFO] Traffic stable", c: "#0af" },
-            { t: "[WARN] System breach attempt!", c: "#f44" },
-            { t: "[SYSTEM] RAM: 4.2GB/16GB", c: "#0af" }
+            { t: "[WARN] System breach detected!", c: "#f44" }
         ];
         
         function addAutoLog() {
-            let log;
-            if (Math.random() < 0.15) {
-                log = { t: "--- Type 'donate' to support Huy ---", c: "#ff0" };
-            } else {
-                log = systemLogs[Math.floor(Math.random() * systemLogs.length)];
-            }
+            let log = systemLogs[Math.floor(Math.random() * systemLogs.length)];
             const div = document.createElement('div');
-            div.style.color = log.c; div.style.opacity = "0.5"; div.style.fontSize = "10px";
+            div.style.color = log.c; div.style.opacity = "0.4"; div.style.fontSize = "10px";
             div.textContent = `[LOG] ${log.t}`;
             history.appendChild(div);
             if(history.childNodes.length > 20) history.removeChild(history.firstChild);
             history.scrollTop = history.scrollHeight;
-            setTimeout(addAutoLog, Math.random() * 4000 + 3000);
+            setTimeout(addAutoLog, 6000);
         }
         addAutoLog();
 
@@ -198,12 +210,36 @@
                 const log = document.createElement('div');
                 log.innerHTML = `<span style="color: #666;">$ ${input.value}</span>`;
                 history.appendChild(log);
-                if (val === 'help') addLog("Commands: about, clear, donate, ping, social");
-                else if (val === 'social') addLog("FB: fb.com/huypk100 | Zalo: 0334258458", "#ff0");
-                else if (val === 'clear') history.innerHTML = '';
-                else if (val === 'donate') openDonate();
-                else if (val === 'ping') addLog("Pong! 14ms");
-                else if (val !== '') addLog(`Error: ${val} not found`, "#f44");
+
+                if (val === 'help') {
+                    addLog("Available: about, social, track, clear, donate, ping");
+                } 
+                // FIX LỆNH ABOUT ĐÂY HUY ƠI
+                else if (val === 'about') {
+                    addLog("--- OWNER PROFILE ---", "#ff0");
+                    addLog("Name: Nguyễn Đức Huy", "#fff");
+                    addLog("Role: Systems Administrator", "#fff");
+                    addLog("Expertise: Cyber Security, Infrastructure", "#fff");
+                    addLog("Status: Online & Ready for work", "#0f0");
+                } 
+                else if (val === 'social') {
+                    addLog("--- SOCIAL LINKS ---", "#ff0");
+                    addLog("Facebook: fb.com/huypk100", "#0af");
+                    addLog("Zalo: 0334258458", "#0af");
+                    addLog("Discord: Join my server!", "#0af");
+                } 
+                else if (val === 'track') {
+                    fetchVisitorData();
+                } else if (val === 'clear') {
+                    history.innerHTML = '';
+                } else if (val === 'donate') {
+                    openDonate();
+                } else if (val === 'ping') {
+                    addLog("Pong! Latency: 14ms");
+                } else if (val !== '') {
+                    addLog(`Error: ${val} not found`, "#f44");
+                }
+                
                 input.value = '';
                 history.scrollTop = history.scrollHeight;
             }
@@ -211,6 +247,11 @@
 
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
+        function copySTK() {
+            navigator.clipboard.writeText("0334258458");
+            document.getElementById('copy-msg').style.display = 'block';
+            setTimeout(() => { document.getElementById('copy-msg').style.display = 'none'; }, 2000);
+        }
         
         function toggleAudio() {
             const bgm = document.getElementById('bgm');
