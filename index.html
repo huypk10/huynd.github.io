@@ -170,7 +170,6 @@
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
 
-        // ĐÃ ĐỔI THÀNH _>
         function addLog(text, color = "#0af") {
             const div = document.createElement('div');
             div.style.color = color; div.textContent = `_> ${text}`;
@@ -199,7 +198,8 @@
             let log = systemLogs[Math.floor(Math.random() * systemLogs.length)];
             const div = document.createElement('div');
             div.style.color = log.c; div.style.opacity = "0.4"; div.style.fontSize = "10px";
-            div.textContent = `[LOG] ${log.t}`;
+            // Đã đổi log tự động thành _>
+            div.textContent = `_> ${log.t}`;
             history.appendChild(div);
             if(history.childNodes.length > 20) history.removeChild(history.firstChild);
             history.scrollTop = history.scrollHeight;
@@ -211,7 +211,6 @@
             if (e.key === 'Enter') {
                 const val = input.value.toLowerCase().trim();
                 const log = document.createElement('div');
-                // CHỖ NÀY CŨNG ĐỔI THÀNH _> CHO ĐỒNG BỘ
                 log.innerHTML = `<span style="color: #666;">_> ${input.value}</span>`;
                 history.appendChild(log);
 
@@ -259,7 +258,8 @@
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
-        const words = ['> Systems Administrator', '> Cyber Security', '> Infrastructure'];
+        // ĐÃ ĐỔI PHẦN GIỚI THIỆU CHỮ CHẠY THÀNH _>
+        const words = ['_> Systems Administrator', '_> Cyber Security', '_> Infrastructure'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
             const cur = words[wIdx];
