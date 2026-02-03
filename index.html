@@ -16,14 +16,17 @@
         .main-container {
             position: relative; z-index: 40;
             display: flex; flex-direction: column; align-items: center; gap: 20px;
-            width: 90%; max-width: 420px;
+            width: 95%; max-width: 420px;
+            max-height: 95vh; overflow-y: auto; scrollbar-width: none;
         }
+        .main-container::-webkit-scrollbar { display: none; }
 
         .profile-card {
             background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(12px);
-            padding: 25px; border-radius: 20px; text-align: center;
+            padding: 20px; border-radius: 20px; text-align: center;
             border: 1px solid rgba(0, 255, 0, 0.2); width: 100%;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            box-sizing: border-box;
         }
 
         .terminal-box {
@@ -31,7 +34,7 @@
             border: 1px solid rgba(0, 255, 0, 0.4); border-radius: 12px;
             width: 100%; height: 260px; padding: 12px;
             box-sizing: border-box; display: flex; flex-direction: column;
-            font-family: 'Consolas', monospace; font-size: 12px; color: #0f0;
+            font-family: 'Consolas', monospace; font-size: 11px; color: #0f0;
             cursor: text;
         }
 
@@ -41,16 +44,13 @@
             display: flex; justify-content: space-between; font-size: 10px; color: #555;
         }
 
-        /* Hướng dẫn nhấp nháy thu hút chú ý */
-        @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .sticky-hint {
             color: #fff; font-size: 11px; margin-bottom: 10px;
             padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4);
             text-align: center; border-radius: 4px; background: rgba(255, 255, 0, 0.05);
             animation: hintBlink 2s infinite;
         }
-        .sticky-hint b { color: #0f0; }
-        .sticky-hint span b { color: #ff0; text-shadow: 0 0 8px rgba(255,255,0,0.6); }
+        @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
         #terminal-history {
             flex-grow: 1; overflow-y: auto; scrollbar-width: none;
@@ -64,8 +64,13 @@
             font-family: inherit; font-size: inherit; flex-grow: 1;
         }
 
-        .avatar { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 10px; }
-        .glitch { font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 1px; }
+        .avatar { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 10px; }
+        .glitch { font-size: 20px; font-weight: bold; color: #fff; letter-spacing: 1px; }
+
+        /* Skills Section */
+        .skills { margin: 15px 0; text-align: left; font-size: 10px; color: #0f0; }
+        .skill-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+        .skill-per { height: 100%; background: #0f0; box-shadow: 0 0 10px #0f0; width: 0; transition: 2s ease-out; }
 
         .btn {
             display: block; margin: 6px auto; padding: 10px;
@@ -75,33 +80,29 @@
         }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
 
-        /* Nút Donate Nổi Bật Siêu Cấp */
-        .btn-donate {
-            color: #ff0 !important; border-color: #ff0 !important;
-            background: rgba(255, 255, 0, 0.1) !important;
-            font-weight: bold; text-transform: uppercase;
-            box-shadow: 0 0 5px rgba(255, 255, 0, 0.2);
-        }
-        .btn-donate:hover {
-            background: #ff0 !important; color: #000 !important;
-            box-shadow: 0 0 25px #ff0 !important;
-        }
+        .btn-copy { border: 1px solid #ff0; color: #ff0; cursor: pointer; background: rgba(255,255,0,0.05); }
+        .btn-copy:hover { background: #ff0; color: #000; }
 
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 1);
         }
-        #donate-modal img { width: 220px; border-radius: 10px; border: 1px solid #333; }
+        #donate-modal img { width: 200px; border-radius: 10px; }
 
         #audio-ctrl {
             position: absolute; bottom: 20px; right: 20px; z-index: 50;
             background: rgba(0,0,0,0.8); border: 1px solid #333; color: #666; padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px;
         }
+        
+        .toast {
+            position: fixed; top: 20px; background: #ff0; color: #000; padding: 8px 16px; 
+            border-radius: 4px; font-weight: bold; z-index: 200; display: none;
+        }
     </style>
 </head>
 <body>
     <canvas id="matrix"></canvas>
+    <div id="toast" class="toast">Đã sao chép STK!</div>
 
     <div class="main-container">
         <div class="profile-card">
@@ -109,36 +110,35 @@
             <div class="glitch">NGUYỄN ĐỨC HUY</div>
             <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; height: 20px;"></div>
             
+            <div class="skills">
+                Linux Server <div class="skill-bar"><div class="skill-per" style="width: 85%;"></div></div>
+                Cyber Security <div class="skill-bar"><div class="skill-per" style="width: 75%;"></div></div>
+                Networking <div class="skill-bar"><div class="skill-per" style="width: 90%;"></div></div>
+            </div>
+
             <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">FACEBOOK</a>
-            <a href="https://zalo.me/0334258458" target="_blank" class="btn">ZALO</a>
-            <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn">DISCORD</a>
-            <div class="btn btn-donate" onclick="openDonate()" style="border-style: dashed; cursor:pointer">☕ DONATE CAFE (SUPPORT)</div>
+            <div class="btn btn-copy" onclick="copySTK()">📋 COPY STK: 0334258458</div>
+            <div class="btn" onclick="openDonate()" style="border-style: dashed; color: #ff0; border-color: #ff0;">☕ DONATE QR (HOT)</div>
         </div>
 
         <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
             <div class="terminal-header">
-                <span>HUY_CORE_INTERFACE</span>
+                <span>HUY_CORE_SYSTEM</span>
                 <span id="term-time"></span>
             </div>
-            
-            <div class="sticky-hint">
-                💡 Type <b>'help'</b> or <span><b>'donate'</b></span> to support
-            </div>
-
+            <div class="sticky-hint">💡 Type <b>'help'</b> or <b>'info'</b> to start</div>
             <div id="terminal-history"></div>
-
             <div class="input-line">
                 <span style="color: #0f0;">$</span>
-                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="Nhập lệnh tại đây...">
+                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="...">
             </div>
         </div>
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-family:monospace; padding: 5px;">[X]</span>
-        <h4 style="color:#ff0; margin-top:10px;">MỜI HUY CAFE ☕</h4>
+        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer;">[X]</span>
+        <h4 style="color:#ff0">QUÉT MÃ ỦNG HỘ</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
-        <p style="color:#888; font-size:10px; margin-top:10px;">STK: 0334258458 - VPBank</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
@@ -146,7 +146,7 @@
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
-        // Hiệu ứng Matrix
+        // Matrix Effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -162,94 +162,72 @@
         }
         setInterval(draw, 50);
 
-        // Xử lý Terminal
-        const input = document.getElementById('terminal-input');
+        // Terminal & Visitor Detection
         const history = document.getElementById('terminal-history');
-        const typeSound = document.getElementById('type-sound');
+        const input = document.getElementById('terminal-input');
 
-        input.addEventListener('input', () => { typeSound.currentTime = 0; typeSound.play().catch(()=>{}); });
+        async function initTerminal() {
+            addLog("[SYSTEM] Initializing core modules...", "#0af");
+            await new Promise(r => setTimeout(r, 800));
+            
+            // Lấy thông tin người dùng (giả lập hoặc qua API công cộng)
+            const os = navigator.platform;
+            const browser = navigator.userAgent.split(' ').pop();
+            
+            addLog(`[DETECTED] OS: ${os}`, "#ff0");
+            addLog(`[DETECTED] Browser: ${browser}`, "#ff0");
+            addLog("[OK] Security shield: ACTIVE", "#0f0");
+        }
 
-        const commands = {
-            'help': 'Commands: about, social, clear, ping, exit | Special: donate',
-            'about': 'Admin: NGUYEN DUC HUY | Field: Systems Administration & Security.',
-            'social': 'FB: huypk100 | Zalo: 0334258458',
-            'donate': 'Redirecting to donation portal... Thank you for your support!',
-            'ping': 'Pong! Latency: 14ms',
-            'clear': 'clear'
-        };
+        function addLog(text, color = "#0f0") {
+            const div = document.createElement('div');
+            div.style.color = color;
+            div.textContent = `> ${text}`;
+            history.appendChild(div);
+            history.scrollTop = history.scrollHeight;
+        }
 
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 const val = input.value.toLowerCase().trim();
-                if (val === '') return;
-                const userLine = document.createElement('div');
-                userLine.innerHTML = `<span style="color: #666;">$ ${input.value}</span>`;
-                history.appendChild(userLine);
-
-                if (commands[val]) {
-                    if (val === 'clear') { history.innerHTML = ''; }
-                    else {
-                        const res = document.createElement('div');
-                        res.style.color = (val === 'donate') ? '#ff0' : '#0af';
-                        res.style.fontWeight = (val === 'donate') ? 'bold' : 'normal';
-                        res.textContent = `> ${commands[val]}`;
-                        history.appendChild(res);
-                        if (val === 'donate') openDonate();
-                    }
-                } else {
-                    const err = document.createElement('div');
-                    err.style.color = '#f44';
-                    err.textContent = `> Unknown command: ${val}`;
-                    history.appendChild(err);
-                }
+                addLog(`$ ${val}`, "#666");
+                if (val === 'help') addLog("Commands: about, skills, donate, clear, ping");
+                else if (val === 'about') addLog("Admin: Nguyễn Đức Huy - SysAdmin.");
+                else if (val === 'ping') addLog("Pong! Latency: 12ms");
+                else if (val === 'clear') history.innerHTML = '';
+                else if (val === 'donate') openDonate();
+                else if (val === 'info') initTerminal();
+                else addLog("Unknown command. Type 'help'.", "#f44");
                 input.value = '';
-                history.scrollTop = history.scrollHeight;
             }
         });
 
-        // Danh sách logs tự chạy ngẫu nhiên
+        // Auto logs
         const autoLogs = [
-            "[OK] Connection established via Proxy",
-            "[INFO] Checking system integrity...",
-            "[OK] Firewall: Active & Stealth Mode",
-            "[SYSTEM] CPU: 32% | RAM: 1.2GB/16GB",
-            "[CRIT] Blocked suspicious IP: 45.12.8.22",
-            "[OK] VPBank API: Connected",
-            "[INFO] Syncing cloud data...",
-            "[OK] SSL Certificate: Secure",
-            "[WARN] Node-7 response delayed (120ms)",
-            "[OK] Kernel: v6.5.0 Optimized",
-            "[INFO] Scanning for malware... 0 found",
-            "[SYSTEM] Backup: Successful (daily_sync.db)",
-            "[OK] Root access: HUY_ADMIN verified",
-            "[INFO] Cleaning cache...",
-            "--- [SYSTEM] Type 'donate' to support Huy ---",
-            "--- [ADS] Coffee fuel required for coding! ---",
-            "--- [HUY] Welcome to my private space! ---"
+            "[OK] Database sync complete",
+            "[INFO] Monitoring traffic...",
+            "[CRIT] Blocked attack from 103.x.x.x",
+            "[SYSTEM] Health: 100%",
+            "--- Type 'donate' to support ---"
         ];
-
-        function addAutoLog() {
+        setInterval(() => {
+            const content = autoLogs[Math.floor(Math.random()*autoLogs.length)];
             const log = document.createElement('div');
-            const content = autoLogs[Math.floor(Math.random() * autoLogs.length)];
-            log.style.opacity = '0.6';
             log.style.fontSize = '10px';
-            
-            if (content.includes("---")) {
-                log.innerHTML = `<span style="color:#ff0; font-weight:bold">${content}</span>`;
-            } else if (content.includes("[CRIT]")) {
-                log.innerHTML = `<span style="color:#f44">${content}</span>`;
-            } else if (content.includes("[SYSTEM]")) {
-                log.innerHTML = `<span style="color:#0af">${content}</span>`;
-            } else {
-                log.innerHTML = `<span style="color:#0f0">${content}</span>`;
-            }
-            
+            log.style.opacity = '0.5';
+            log.style.color = content.includes("---") ? "#ff0" : "#0f0";
+            log.textContent = content;
             history.appendChild(log);
-            if(history.childNodes.length > 35) history.removeChild(history.firstChild);
-            history.scrollTop = history.scrollHeight;
-            setTimeout(addAutoLog, Math.random() * 2500 + 1000);
+            if(history.childNodes.length > 30) history.removeChild(history.firstChild);
+        }, 3000);
+
+        // Utilities
+        function copySTK() {
+            navigator.clipboard.writeText("0334258458");
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 2000);
         }
-        addAutoLog();
 
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
@@ -261,7 +239,7 @@
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
-        // Typewriter Effect
+        // Typewriter
         const words = ['> Systems Administrator', '> Cyber Security', '> Infrastructure'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
@@ -272,7 +250,7 @@
             else setTimeout(type, isDel ? 60 : 100);
         }
         type();
-
+        initTerminal();
         setInterval(() => { document.getElementById('term-time').textContent = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
