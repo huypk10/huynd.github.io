@@ -66,7 +66,7 @@
         }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
 
-        .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.05); font-weight: bold; }
+        .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
 
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -119,8 +119,8 @@
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[X]</span>
-        <h4 style="color:#ff0; margin: 10px 0;">ỦNG HỘ HUY ☕</h4>
+        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[CLOSE]</span>
+        <h4 style="color:#ff0; margin: 10px 0;">MỜI HUY CAFE ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
         
         <div class="bank-info" onclick="copySTK()">
@@ -138,6 +138,7 @@
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
+        // Matrix & Time logic
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -156,15 +157,31 @@
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
 
-        // Phản hồi lệnh từ người dùng
+        // MỚI: Hàm lấy IP và Vị trí thật
+        async function fetchVisitorData() {
+            addLog("Initializing security scan...", "#0af");
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                addLog(`[TRACKING] IP: ${data.ip}`, "#ff0");
+                addLog(`[TRACKING] City: ${data.city}, ${data.country_name}`, "#ff0");
+                addLog(`[TRACKING] ISP: ${data.org}`, "#ff0");
+                addLog("[OK] Metadata captured successfully.", "#0f0");
+            } catch (err) {
+                addLog("[ERROR] Failed to bypass visitor firewall.", "#f44");
+            }
+        }
+        fetchVisitorData();
+
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 const val = input.value.toLowerCase().trim();
                 const log = document.createElement('div');
                 log.innerHTML = `<span style="color: #666;">$ ${input.value}</span>`;
                 history.appendChild(log);
-                if (val === 'help') addLog("Commands: about, social, clear, ping, donate");
+                if (val === 'help') addLog("Commands: about, social, clear, ping, donate, track");
                 else if (val === 'about') addLog("Admin: Nguyễn Đức Huy - SysAdmin.");
+                else if (val === 'track') fetchVisitorData();
                 else if (val === 'clear') history.innerHTML = '';
                 else if (val === 'donate') openDonate();
                 else if (val === 'ping') addLog("Pong! Latency: 12ms");
@@ -181,25 +198,26 @@
             history.scrollTop = history.scrollHeight;
         }
 
-        // KHÔI PHỤC: Các dòng chạy tự động (Auto Logs)
         const autoLogs = [
             "[OK] Security shield: ACTIVE",
-            "[INFO] Scanning visitor metadata...",
-            "[OK] Connection via Proxy: SECURE",
             "[SYSTEM] CPU: 12% | RAM: 1.5GB",
             "[CRIT] Blocked attack from 104.21.x.x",
-            "--- Welcome to HUY_CORE ---"
+            "--- [SYSTEM] Type 'donate' to support Huy ---",
+            "--- [ADS] Coffee fuel required for coding! ---",
+            "--- [HUY] Welcome to my private space! ---"
         ];
+
         function startAutoLogs() {
             const content = autoLogs[Math.floor(Math.random() * autoLogs.length)];
             const log = document.createElement('div');
             log.style.opacity = '0.5'; log.style.fontSize = '10px';
-            log.style.color = content.includes("[CRIT]") ? "#f44" : "#0f0";
-            log.textContent = `[LOG] ${content}`;
+            if (content.includes("---")) log.innerHTML = `<span style="color:#ff0; font-weight:bold">${content}</span>`;
+            else if (content.includes("[CRIT]")) log.innerHTML = `<span style="color:#f44">${content}</span>`;
+            else log.innerHTML = `<span style="color:#0f0">${content}</span>`;
             history.appendChild(log);
             if(history.childNodes.length > 25) history.removeChild(history.firstChild);
             history.scrollTop = history.scrollHeight;
-            setTimeout(startAutoLogs, Math.random() * 3000 + 2000);
+            setTimeout(startAutoLogs, Math.random() * 3000 + 3000);
         }
         startAutoLogs();
 
