@@ -20,73 +20,66 @@
 
         .profile-card {
             background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(12px);
-            padding: 30px 25px; border-radius: 20px; text-align: center;
+            padding: 25px; border-radius: 20px; text-align: center;
             border: 1px solid rgba(0, 255, 0, 0.2); width: 100%;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
 
-        /* Terminal Pro */
+        /* Terminal Box Nâng Cấp */
         .terminal-box {
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             border: 1px solid rgba(0, 255, 0, 0.4); border-radius: 12px;
-            width: 100%; height: 200px; padding: 15px;
+            width: 100%; height: 250px; padding: 12px;
             box-sizing: border-box; display: flex; flex-direction: column;
-            font-family: 'Consolas', 'Courier New', monospace; font-size: 13px; color: #0f0;
-            cursor: text; transition: 0.3s;
+            font-family: 'Consolas', monospace; font-size: 12px; color: #0f0;
+            cursor: text;
         }
-        .terminal-box:hover { border-color: #0f0; box-shadow: 0 0 15px rgba(0, 255, 0, 0.1); }
 
         .terminal-header {
             border-bottom: 1px solid rgba(0, 255, 0, 0.1);
-            margin-bottom: 10px; padding-bottom: 5px;
-            display: flex; justify-content: space-between; font-size: 10px; color: #666;
+            margin-bottom: 8px; padding-bottom: 5px;
+            display: flex; justify-content: space-between; font-size: 10px; color: #555;
+        }
+
+        /* Khu vực hướng dẫn cố định */
+        .sticky-hint {
+            color: #ff0; font-size: 11px; margin-bottom: 10px;
+            padding: 4px; border: 1px dashed rgba(255, 255, 0, 0.3);
+            text-align: center; border-radius: 4px;
         }
 
         #terminal-history {
             flex-grow: 1; overflow-y: auto; scrollbar-width: none;
-            display: flex; flex-direction: column; gap: 4px;
+            display: flex; flex-direction: column; gap: 3px;
         }
         #terminal-history::-webkit-scrollbar { display: none; }
 
-        .input-line { display: flex; gap: 8px; align-items: center; }
+        .input-line { display: flex; gap: 5px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 5px; }
         #terminal-input {
-            background: transparent; border: none; color: #0f0; outline: none;
+            background: transparent; border: none; color: #fff; outline: none;
             font-family: inherit; font-size: inherit; flex-grow: 1;
         }
-        #terminal-input::placeholder { color: rgba(0, 255, 0, 0.2); }
 
-        .avatar {
-            width: 90px; height: 90px; border-radius: 50%;
-            border: 2px solid #0f0; object-fit: cover; margin-bottom: 15px;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
-        }
+        .avatar { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 10px; }
+        .glitch { font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 1px; }
 
-        .glitch { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 1px; }
-
-        /* Nút bấm giữ nguyên */
         .btn {
-            display: block; margin: 8px auto; padding: 10px;
+            display: block; margin: 6px auto; padding: 10px;
             background: rgba(0, 255, 0, 0.03); color: #0f0;
             text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.3);
-            border-radius: 8px; font-family: monospace; font-size: 11px; transition: 0.3s;
+            border-radius: 8px; font-size: 11px; transition: 0.3s;
         }
-        .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; transform: translateY(-2px); }
+        .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
 
-        /* Modal Donate */
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 100; background: #000; border: 1px solid #0f0;
-            padding: 25px; text-align: center; width: 280px; border-radius: 15px;
+            z-index: 100; background: #000; border: 1px solid #0f0; padding: 20px; border-radius: 15px; text-align: center;
         }
-        #donate-modal img { width: 100%; border-radius: 10px; margin: 15px 0; }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
-        .hint-line { color: #ff0; animation: blink 2s infinite; font-size: 11px; }
+        #donate-modal img { width: 220px; border-radius: 10px; }
 
         #audio-ctrl {
             position: absolute; bottom: 20px; right: 20px; z-index: 50;
-            background: rgba(0,0,0,0.8); border: 1px solid #333; color: #666;
-            padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px;
+            background: rgba(0,0,0,0.8); border: 1px solid #333; color: #666; padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px;
         }
     </style>
 </head>
@@ -97,39 +90,40 @@
         <div class="profile-card">
             <img src="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" class="avatar">
             <div class="glitch">NGUYỄN ĐỨC HUY</div>
-            <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; margin: 10px 0;"></div>
+            <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; height: 20px;"></div>
             
-            <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">OPEN FACEBOOK</a>
-            <a href="https://zalo.me/0334258458" target="_blank" class="btn">OPEN ZALO CHAT</a>
-            <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn">JOIN DISCORD SERVER</a>
+            <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">FACEBOOK</a>
+            <a href="https://zalo.me/0334258458" target="_blank" class="btn">ZALO</a>
+            <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn">DISCORD</a>
             <div class="btn" onclick="openDonate()" style="border-style: dashed; cursor:pointer">DONATE BANK</div>
         </div>
 
-        <div class="terminal-box" onclick="focusTerminal()">
+        <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
             <div class="terminal-header">
-                <span>HUY_SYSTEM_INTERFACE</span>
+                <span>HUY_CORE_INTERFACE</span>
                 <span id="term-time"></span>
             </div>
-            <div id="terminal-history">
-                <div style="color: #666;">[SYS] Connection established.</div>
-                <div class="hint-line">> Type 'help' to start interaction.</div>
+            
+            <div class="sticky-hint">
+                💡 Type <b>'help'</b> to see commands
             </div>
+
+            <div id="terminal-history"></div>
+
             <div class="input-line">
                 <span style="color: #0f0;">$</span>
-                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="Gõ lệnh tại đây...">
+                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="Gõ lệnh...">
             </div>
         </div>
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold">[X]</span>
-        <h4 style="color:#0f0; margin:0">DONATE CAFE</h4>
+        <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer;">[Đóng]</span>
+        <h4 style="color:#0f0">Mời Huy Cafe</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
-        <p style="color:#fff; font-size:12px; margin:0">VPBank: 0334258458</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
-    
     <audio id="type-sound" src="https://www.soundjay.com/communication/typewriter-key-1.mp3"></audio>
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
@@ -155,19 +149,14 @@
         const history = document.getElementById('terminal-history');
         const typeSound = document.getElementById('type-sound');
 
-        function focusTerminal() { input.focus(); }
-
-        input.addEventListener('input', () => {
-            typeSound.currentTime = 0;
-            typeSound.play().catch(()=>{});
-        });
+        input.addEventListener('input', () => { typeSound.currentTime = 0; typeSound.play().catch(()=>{}); });
 
         const commands = {
-            'help': 'Commands: about, social, donate, clear, ping',
-            'about': 'Admin: NGUYEN DUC HUY | Field: Systems & Security.',
+            'help': 'Commands: about, social, donate, clear, ping, exit',
+            'about': 'Admin: NGUYEN DUC HUY | Expert in SysAdmin & Security.',
             'social': 'FB: huypk100 | Zalo: 0334258458',
-            'donate': 'Opening Donate Window...',
-            'ping': 'Pong! Latency: 22ms',
+            'donate': 'Opening Secure Donation Portal...',
+            'ping': 'Pong! System response: 12ms',
             'clear': 'clear'
         };
 
@@ -175,15 +164,13 @@
             if (e.key === 'Enter') {
                 const val = input.value.toLowerCase().trim();
                 if (val === '') return;
-
                 const userLine = document.createElement('div');
                 userLine.innerHTML = `<span style="color: #666;">$ ${input.value}</span>`;
                 history.appendChild(userLine);
 
                 if (commands[val]) {
-                    if (val === 'clear') {
-                        history.innerHTML = '<div style="color: #666;">[SYS] History cleared.</div>';
-                    } else {
+                    if (val === 'clear') { history.innerHTML = ''; }
+                    else {
                         const res = document.createElement('div');
                         res.style.color = '#0af';
                         res.textContent = `> ${commands[val]}`;
@@ -193,7 +180,7 @@
                 } else {
                     const err = document.createElement('div');
                     err.style.color = '#f44';
-                    err.textContent = `> Error: '${val}' is not a valid command.`;
+                    err.textContent = `> Unknown command: ${val}`;
                     history.appendChild(err);
                 }
                 input.value = '';
@@ -201,15 +188,31 @@
             }
         });
 
-        // Tự động nhắc sau 12 giây
-        setTimeout(() => {
-            const suggest = document.createElement('div');
-            suggest.style.color = '#0f0';
-            suggest.style.fontSize = '11px';
-            suggest.innerHTML = '[AUTO] Hint: Type <span style="color:#ff0">"donate"</span> to see QR code.';
-            history.appendChild(suggest);
+        // Dòng tự chạy (Auto-logs) thú vị
+        const autoLogs = [
+            "[OK] Database connection verified",
+            "[INFO] Scanning for intruders...",
+            "[OK] Firewall Stealth: Active",
+            "[INFO] Proxy rotation successful",
+            "[OK] Encryption: AES-256 Enabled",
+            "[SYSTEM] Memory clean-up: Completed",
+            "[CRIT] Breach neutralized: IP 192.168.x.x",
+            "[OK] VPBank API: Link Stable",
+            "[INFO] Optimizing system cache..."
+        ];
+
+        function addAutoLog() {
+            const log = document.createElement('div');
+            const content = autoLogs[Math.floor(Math.random() * autoLogs.length)];
+            log.style.opacity = '0.7';
+            log.style.fontSize = '10px';
+            log.innerHTML = content.includes("[CRIT]") ? `<span style="color:red">${content}</span>` : `<span style="color:#0f0">${content}</span>`;
+            history.appendChild(log);
+            if(history.childNodes.length > 30) history.removeChild(history.firstChild);
             history.scrollTop = history.scrollHeight;
-        }, 12000);
+            setTimeout(addAutoLog, Math.random() * 3000 + 2000);
+        }
+        addAutoLog();
 
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
