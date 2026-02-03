@@ -25,7 +25,6 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
 
-        /* Terminal Box Nâng Cấp */
         .terminal-box {
             background: rgba(0, 0, 0, 0.9);
             border: 1px solid rgba(0, 255, 0, 0.4); border-radius: 12px;
@@ -41,12 +40,13 @@
             display: flex; justify-content: space-between; font-size: 10px; color: #555;
         }
 
-        /* Khu vực hướng dẫn cố định */
         .sticky-hint {
-            color: #ff0; font-size: 11px; margin-bottom: 10px;
-            padding: 4px; border: 1px dashed rgba(255, 255, 0, 0.3);
-            text-align: center; border-radius: 4px;
+            color: #fff; font-size: 11px; margin-bottom: 10px;
+            padding: 6px; border: 1px dashed rgba(255, 255, 255, 0.2);
+            text-align: center; border-radius: 4px; background: rgba(255, 255, 255, 0.05);
         }
+        .sticky-hint b { color: #0f0; }
+        .sticky-hint span { color: #ff0; text-shadow: 0 0 5px rgba(255,255,0,0.5); }
 
         #terminal-history {
             flex-grow: 1; overflow-y: auto; scrollbar-width: none;
@@ -71,9 +71,21 @@
         }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
 
+        /* Nút Donate Nổi Bật */
+        .btn-donate {
+            color: #ff0 !important; border-color: #ff0 !important;
+            background: rgba(255, 255, 0, 0.05) !important;
+            font-weight: bold; text-transform: uppercase;
+        }
+        .btn-donate:hover {
+            background: #ff0 !important; color: #000 !important;
+            box-shadow: 0 0 25px #ff0 !important;
+        }
+
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 100; background: #000; border: 1px solid #0f0; padding: 20px; border-radius: 15px; text-align: center;
+            z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center;
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.2);
         }
         #donate-modal img { width: 220px; border-radius: 10px; }
 
@@ -95,7 +107,7 @@
             <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">FACEBOOK</a>
             <a href="https://zalo.me/0334258458" target="_blank" class="btn">ZALO</a>
             <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn">DISCORD</a>
-            <div class="btn" onclick="openDonate()" style="border-style: dashed; cursor:pointer">DONATE BANK</div>
+            <div class="btn btn-donate" onclick="openDonate()" style="border-style: dashed; cursor:pointer">☕ DONATE BANK (HOT)</div>
         </div>
 
         <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
@@ -105,7 +117,7 @@
             </div>
             
             <div class="sticky-hint">
-                💡 Type <b>'help'</b> to see commands
+                💡 Type <b>'help'</b> or <span><b>'donate'</b></span> to support
             </div>
 
             <div id="terminal-history"></div>
@@ -118,9 +130,10 @@
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer;">[Đóng]</span>
-        <h4 style="color:#0f0">Mời Huy Cafe</h4>
+        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-family:monospace;">[CLOSE]</span>
+        <h4 style="color:#ff0; margin-top:0;">MỜI HUY CAFE ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
+        <p style="color:#fff; font-size:11px; margin-bottom:0;">Cảm ơn bạn đã ủng hộ!</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
@@ -128,7 +141,6 @@
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
-        // Matrix Effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -144,7 +156,6 @@
         }
         setInterval(draw, 50);
 
-        // Terminal Interaction
         const input = document.getElementById('terminal-input');
         const history = document.getElementById('terminal-history');
         const typeSound = document.getElementById('type-sound');
@@ -152,10 +163,10 @@
         input.addEventListener('input', () => { typeSound.currentTime = 0; typeSound.play().catch(()=>{}); });
 
         const commands = {
-            'help': 'Commands: about, social, donate, clear, ping, exit',
+            'help': 'Commands: about, social, clear, ping, exit | Special: donate',
             'about': 'Admin: NGUYEN DUC HUY | Expert in SysAdmin & Security.',
             'social': 'FB: huypk100 | Zalo: 0334258458',
-            'donate': 'Opening Secure Donation Portal...',
+            'donate': 'Opening Donate Window... Thank you!',
             'ping': 'Pong! System response: 12ms',
             'clear': 'clear'
         };
@@ -172,7 +183,8 @@
                     if (val === 'clear') { history.innerHTML = ''; }
                     else {
                         const res = document.createElement('div');
-                        res.style.color = '#0af';
+                        res.style.color = (val === 'donate') ? '#ff0' : '#0af';
+                        res.style.fontWeight = (val === 'donate') ? 'bold' : 'normal';
                         res.textContent = `> ${commands[val]}`;
                         history.appendChild(res);
                         if (val === 'donate') openDonate();
@@ -188,8 +200,22 @@
             }
         });
 
-        // Dòng tự chạy (Auto-logs) thú vị
         const autoLogs = [
+            "[OK] Database connection verified",
+            "[INFO] Scanning for intruders...",
+            "[OK] Firewall Stealth: Active",
+            "[INFO] Proxy rotation successful",
+            "[SYSTEM] Memory clean-up: Completed",
+            "[CRIT] Breach neutralized: IP 192.168.1.105",
+            "[OK] VPBank API: Link Stable",
+            "[OK] SSL Certificate: Valid (Expires in 294 days)",
+            "[OK] Backup created: /backup/sys_v3.tar.gz",
+            "[OK] Kernel 6.5.0-generic: Up to date",
+            "[SYSTEM] CPU Temp: 42°C | RAM: 14% used",
+            "[CRIT] Brute force attack blocked: Admin login",
+            "[OK] API Endpoint: https://api.huy.pro/v1 (200 OK)",
+            "[SYSTEM] Disk health: 98% (Optimal)",
+            "[OK] Root access granted to HUY_ADMIN",
             "[OK] Database connection verified",
             "[INFO] Scanning for intruders...",
             "[OK] Firewall Stealth: Active",
@@ -221,6 +247,10 @@
             "[OK] Load Balancer: Balanced",
             "[INFO] Verifying user permissions...",
             "[OK] Root access granted to HUY_ADMIN"
+            // Thêm các dòng quảng cáo donate rải rác
+            "--- [ADS] Type 'donate' to buy Huy a coffee! ☕ ---",
+            "--- [ADS] Support this project by gõ 'donate' ---",
+            "--- [SYSTEM] Donators get 100% respect! ---"
         ];
 
         function addAutoLog() {
@@ -228,11 +258,19 @@
             const content = autoLogs[Math.floor(Math.random() * autoLogs.length)];
             log.style.opacity = '0.7';
             log.style.fontSize = '10px';
-            log.innerHTML = content.includes("[CRIT]") ? `<span style="color:red">${content}</span>` : `<span style="color:#0f0">${content}</span>`;
+            
+            if (content.includes("---")) {
+                log.innerHTML = `<span style="color:#ff0; font-weight:bold">${content}</span>`;
+            } else if (content.includes("[CRIT]")) {
+                log.innerHTML = `<span style="color:#f44">${content}</span>`;
+            } else {
+                log.innerHTML = `<span style="color:#0f0">${content}</span>`;
+            }
+            
             history.appendChild(log);
-            if(history.childNodes.length > 30) history.removeChild(history.firstChild);
+            if(history.childNodes.length > 35) history.removeChild(history.firstChild);
             history.scrollTop = history.scrollHeight;
-            setTimeout(addAutoLog, Math.random() * 3000 + 2000);
+            setTimeout(addAutoLog, Math.random() * 2000 + 1500);
         }
         addAutoLog();
 
@@ -246,7 +284,6 @@
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
-        // Typewriter Effect
         const words = ['> Systems Administrator', '> Cyber Security', '> Infrastructure'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
