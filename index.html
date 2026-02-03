@@ -28,7 +28,7 @@
         .terminal-box {
             background: rgba(0, 0, 0, 0.9);
             border: 1px solid rgba(0, 255, 0, 0.4); border-radius: 12px;
-            width: 100%; height: 250px; padding: 12px;
+            width: 100%; height: 260px; padding: 12px;
             box-sizing: border-box; display: flex; flex-direction: column;
             font-family: 'Consolas', monospace; font-size: 12px; color: #0f0;
             cursor: text;
@@ -40,13 +40,16 @@
             display: flex; justify-content: space-between; font-size: 10px; color: #555;
         }
 
+        /* Hướng dẫn nhấp nháy thu hút chú ý */
+        @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .sticky-hint {
             color: #fff; font-size: 11px; margin-bottom: 10px;
-            padding: 6px; border: 1px dashed rgba(255, 255, 255, 0.2);
-            text-align: center; border-radius: 4px; background: rgba(255, 255, 255, 0.05);
+            padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4);
+            text-align: center; border-radius: 4px; background: rgba(255, 255, 0, 0.05);
+            animation: hintBlink 2s infinite;
         }
         .sticky-hint b { color: #0f0; }
-        .sticky-hint span { color: #ff0; text-shadow: 0 0 5px rgba(255,255,0,0.5); }
+        .sticky-hint span b { color: #ff0; text-shadow: 0 0 8px rgba(255,255,0,0.6); }
 
         #terminal-history {
             flex-grow: 1; overflow-y: auto; scrollbar-width: none;
@@ -71,11 +74,12 @@
         }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
 
-        /* Nút Donate Nổi Bật */
+        /* Nút Donate Nổi Bật Siêu Cấp */
         .btn-donate {
             color: #ff0 !important; border-color: #ff0 !important;
-            background: rgba(255, 255, 0, 0.05) !important;
+            background: rgba(255, 255, 0, 0.1) !important;
             font-weight: bold; text-transform: uppercase;
+            box-shadow: 0 0 5px rgba(255, 255, 0, 0.2);
         }
         .btn-donate:hover {
             background: #ff0 !important; color: #000 !important;
@@ -85,9 +89,9 @@
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center;
-            box-shadow: 0 0 30px rgba(255, 255, 0, 0.2);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 1);
         }
-        #donate-modal img { width: 220px; border-radius: 10px; }
+        #donate-modal img { width: 220px; border-radius: 10px; border: 1px solid #333; }
 
         #audio-ctrl {
             position: absolute; bottom: 20px; right: 20px; z-index: 50;
@@ -107,7 +111,7 @@
             <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">FACEBOOK</a>
             <a href="https://zalo.me/0334258458" target="_blank" class="btn">ZALO</a>
             <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn">DISCORD</a>
-            <div class="btn btn-donate" onclick="openDonate()" style="border-style: dashed; cursor:pointer">☕ DONATE BANK (HOT)</div>
+            <div class="btn btn-donate" onclick="openDonate()" style="border-style: dashed; cursor:pointer">☕ DONATE CAFE (SUPPORT)</div>
         </div>
 
         <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
@@ -124,16 +128,16 @@
 
             <div class="input-line">
                 <span style="color: #0f0;">$</span>
-                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="Gõ lệnh...">
+                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="Nhập lệnh tại đây...">
             </div>
         </div>
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-family:monospace;">[CLOSE]</span>
-        <h4 style="color:#ff0; margin-top:0;">MỜI HUY CAFE ☕</h4>
+        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-family:monospace; padding: 5px;">[X]</span>
+        <h4 style="color:#ff0; margin-top:10px;">MỜI HUY CAFE ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
-        <p style="color:#fff; font-size:11px; margin-bottom:0;">Cảm ơn bạn đã ủng hộ!</p>
+        <p style="color:#888; font-size:10px; margin-top:10px;">STK: 0334258458 - VPBank</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
@@ -141,6 +145,7 @@
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
+        // Hiệu ứng Matrix
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -156,6 +161,7 @@
         }
         setInterval(draw, 50);
 
+        // Xử lý Terminal
         const input = document.getElementById('terminal-input');
         const history = document.getElementById('terminal-history');
         const typeSound = document.getElementById('type-sound');
@@ -164,10 +170,10 @@
 
         const commands = {
             'help': 'Commands: about, social, clear, ping, exit | Special: donate',
-            'about': 'Admin: NGUYEN DUC HUY | Expert in SysAdmin & Security.',
+            'about': 'Admin: NGUYEN DUC HUY | Field: Systems Administration & Security.',
             'social': 'FB: huypk100 | Zalo: 0334258458',
-            'donate': 'Opening Donate Window... Thank you!',
-            'ping': 'Pong! System response: 12ms',
+            'donate': 'Redirecting to donation portal... Thank you for your support!',
+            'ping': 'Pong! Latency: 14ms',
             'clear': 'clear'
         };
 
@@ -200,69 +206,39 @@
             }
         });
 
+        // Danh sách logs tự chạy ngẫu nhiên
         const autoLogs = [
-            "[OK] Database connection verified",
-            "[INFO] Scanning for intruders...",
-            "[OK] Firewall Stealth: Active",
-            "[INFO] Proxy rotation successful",
-            "[SYSTEM] Memory clean-up: Completed",
-            "[CRIT] Breach neutralized: IP 192.168.1.105",
-            "[OK] VPBank API: Link Stable",
-            "[OK] SSL Certificate: Valid (Expires in 294 days)",
-            "[OK] Backup created: /backup/sys_v3.tar.gz",
-            "[OK] Kernel 6.5.0-generic: Up to date",
-            "[SYSTEM] CPU Temp: 42°C | RAM: 14% used",
-            "[CRIT] Brute force attack blocked: Admin login",
-            "[OK] API Endpoint: https://api.huy.pro/v1 (200 OK)",
-            "[SYSTEM] Disk health: 98% (Optimal)",
-            "[OK] Root access granted to HUY_ADMIN",
-            "[OK] Database connection verified",
-            "[INFO] Scanning for intruders...",
-            "[OK] Firewall Stealth: Active",
-            "[INFO] Proxy rotation successful",
-            "[OK] Encryption: AES-256 Enabled",
-            "[SYSTEM] Memory clean-up: Completed",
-            "[CRIT] Breach neutralized: IP 192.168.1.105",
-            "[OK] VPBank API: Link Stable",
-            "[INFO] Optimizing system cache...",
-            "[OK] SSL Certificate: Valid (Expires in 294 days)",
-            "[INFO] Cloud sync initiated...",
-            "[OK] Backup created: /backup/sys_v3.tar.gz",
-            "[WARN] High latency detected in node-4",
-            "[OK] Node-4 recovered after 12ms",
-            "[INFO] Patching kernel vulnerabilities...",
-            "[OK] Kernel 6.5.0-generic: Up to date",
-            "[INFO] Analyzing traffic patterns...",
-            "[OK] Traffic: Normal (0.4k requests/sec)",
-            "[SYSTEM] CPU Temp: 42°C | RAM: 14% used",
-            "[INFO] Cleaning temporary log files...",
-            "[OK] Port 443 listening for connections",
-            "[CRIT] Brute force attack blocked: Admin login",
-            "[INFO] Generating daily security report...",
-            "[OK] API Endpoint: https://api.huy.pro/v1 (200 OK)",
-            "[SYSTEM] Disk health: 98% (Optimal)",
-            "[INFO] Refreshing DNS cache...",
-            "[OK] Subdomain 'discord' redirected successfully",
-            "[INFO] Monitoring background processes...",
-            "[OK] Load Balancer: Balanced",
-            "[INFO] Verifying user permissions...",
-            "[OK] Root access granted to HUY_ADMIN"
-            // Thêm các dòng quảng cáo donate rải rác
-            "--- [ADS] Type 'donate' to buy Huy a coffee! ☕ ---",
-            "--- [ADS] Support this project by gõ 'donate' ---",
-            "--- [SYSTEM] Donators get 100% respect! ---"
+            "[OK] Connection established via Proxy",
+            "[INFO] Checking system integrity...",
+            "[OK] Firewall: Active & Stealth Mode",
+            "[SYSTEM] CPU: 32% | RAM: 1.2GB/16GB",
+            "[CRIT] Blocked suspicious IP: 45.12.8.22",
+            "[OK] VPBank API: Connected",
+            "[INFO] Syncing cloud data...",
+            "[OK] SSL Certificate: Secure",
+            "[WARN] Node-7 response delayed (120ms)",
+            "[OK] Kernel: v6.5.0 Optimized",
+            "[INFO] Scanning for malware... 0 found",
+            "[SYSTEM] Backup: Successful (daily_sync.db)",
+            "[OK] Root access: HUY_ADMIN verified",
+            "[INFO] Cleaning cache...",
+            "--- [SYSTEM] Type 'donate' to support Huy ---",
+            "--- [ADS] Coffee fuel required for coding! ---",
+            "--- [HUY] Welcome to my private space! ---"
         ];
 
         function addAutoLog() {
             const log = document.createElement('div');
             const content = autoLogs[Math.floor(Math.random() * autoLogs.length)];
-            log.style.opacity = '0.7';
+            log.style.opacity = '0.6';
             log.style.fontSize = '10px';
             
             if (content.includes("---")) {
                 log.innerHTML = `<span style="color:#ff0; font-weight:bold">${content}</span>`;
             } else if (content.includes("[CRIT]")) {
                 log.innerHTML = `<span style="color:#f44">${content}</span>`;
+            } else if (content.includes("[SYSTEM]")) {
+                log.innerHTML = `<span style="color:#0af">${content}</span>`;
             } else {
                 log.innerHTML = `<span style="color:#0f0">${content}</span>`;
             }
@@ -270,7 +246,7 @@
             history.appendChild(log);
             if(history.childNodes.length > 35) history.removeChild(history.firstChild);
             history.scrollTop = history.scrollHeight;
-            setTimeout(addAutoLog, Math.random() * 2000 + 1500);
+            setTimeout(addAutoLog, Math.random() * 2500 + 1000);
         }
         addAutoLog();
 
@@ -284,6 +260,7 @@
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
+        // Typewriter Effect
         const words = ['> Systems Administrator', '> Cyber Security', '> Infrastructure'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
