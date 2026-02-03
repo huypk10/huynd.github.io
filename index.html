@@ -30,7 +30,7 @@
         .terminal-box {
             background: rgba(0, 0, 0, 0.95);
             border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px;
-            width: 100%; height: 260px; padding: 12px;
+            width: 100%; height: 280px; padding: 12px;
             box-sizing: border-box; display: flex; flex-direction: column;
             font-family: 'Consolas', monospace; font-size: 11px; color: #0f0;
             cursor: text;
@@ -41,6 +41,17 @@
             margin-bottom: 8px; padding-bottom: 5px;
             display: flex; justify-content: space-between; font-size: 10px; color: #444;
         }
+
+        /* KHÔI PHỤC: Dòng hướng dẫn nhấp nháy */
+        @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .sticky-hint {
+            color: #fff; font-size: 10px; margin-bottom: 8px;
+            padding: 5px; border: 1px dashed rgba(255, 255, 0, 0.3);
+            text-align: center; border-radius: 4px; background: rgba(255, 255, 0, 0.05);
+            animation: hintBlink 2s infinite;
+        }
+        .sticky-hint b { color: #0f0; }
+        .sticky-hint span b { color: #ff0; }
 
         #terminal-history {
             flex-grow: 1; overflow-y: auto; scrollbar-width: none;
@@ -100,27 +111,31 @@
             
             <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">Facebook</a>
             <a href="https://zalo.me/0334258458" target="_blank" class="btn">Zalo</a>
+            <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn">Discord</a>
             <div class="btn btn-donate" onclick="openDonate()">☕ Donate Coffee</div>
         </div>
 
         <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
             <div class="terminal-header">
-                <span>HUY_CORE_INTERFACE_v4.0</span>
+                <span>HUY_CORE_INTERFACE_v4.5</span>
                 <span id="term-time"></span>
             </div>
-            <div id="terminal-history">
-                <div style="color: #555;">[SYSTEM] Core initialized. Type 'help' for commands.</div>
+            
+            <div class="sticky-hint">
+                💡 Type <b>'help'</b> or <span><b>'donate'</b></span> to support
             </div>
+
+            <div id="terminal-history"></div>
             <div class="input-line">
                 <span style="color: #0f0;">$</span>
-                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="...">
+                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="Nhập lệnh...">
             </div>
         </div>
     </div>
 
     <div id="donate-modal">
         <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[CLOSE]</span>
-        <h4 style="color:#ff0; margin: 10px 0;">MỜI HUY CAFE ☕</h4>
+        <h4 style="color:#ff0; margin: 10px 0;">ỦNG HỘ HUY ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
         
         <div class="bank-info" onclick="copySTK()">
@@ -138,7 +153,6 @@
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
-        // Matrix Effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -157,7 +171,6 @@
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
 
-        // Hàm lấy IP và Vị trí
         async function fetchVisitorData() {
             addLog("Scanning connection metadata...", "#0af");
             try {
@@ -165,13 +178,11 @@
                 const data = await response.json();
                 addLog(`[IP] ${data.ip}`, "#ff0");
                 addLog(`[LOC] ${data.city}, ${data.country_name}`, "#ff0");
-                addLog(`[ISP] ${data.org}`, "#ff0");
             } catch (err) {
                 addLog("[ERR] Metadata capture failed.", "#f44");
             }
         }
 
-        // Xử lý lệnh console
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 const val = input.value.toLowerCase().trim();
@@ -187,7 +198,7 @@
                 } else if (val === 'track') {
                     fetchVisitorData();
                 } else if (val === 'about') {
-                    addLog("Admin: Nguyễn Đức Huy - Systems Administrator.");
+                    addLog("Admin: Nguyễn Đức Huy - SysAdmin.");
                 } else if (val === 'clear') {
                     history.innerHTML = '';
                 } else if (val === 'donate') {
@@ -210,36 +221,22 @@
             history.scrollTop = history.scrollHeight;
         }
 
-        // Tự động log (Thỉnh thoảng mới khều)
-        const systemLogs = [
-            "[OK] Firewall active",
-            "[OK] Database synced",
-            "[INFO] Traffic stable",
-            "[SYSTEM] Memory: 42% free"
-        ];
-        
+        const systemLogs = ["[OK] Firewall active", "[OK] Database synced", "[INFO] Traffic stable", "[SYSTEM] Memory: 42% free"];
         function addAutoLog() {
             let content;
             let color = "#0f0";
-            let opacity = "0.4";
-            
-            // Tỉ lệ 20% khều donate, 80% log hệ thống
-            if (Math.random() < 0.2) {
-                content = "--- Type 'donate' to support me ---";
+            if (Math.random() < 0.15) {
+                content = "--- Type 'donate' to support Huy ---";
                 color = "#ff0";
-                opacity = "0.8";
             } else {
                 content = `[LOG] ${systemLogs[Math.floor(Math.random() * systemLogs.length)]}`;
             }
-
             const div = document.createElement('div');
-            div.style.color = color; div.style.opacity = opacity; div.style.fontSize = "10px";
+            div.style.color = color; div.style.opacity = "0.4"; div.style.fontSize = "10px";
             div.textContent = content;
             history.appendChild(div);
             if(history.childNodes.length > 20) history.removeChild(history.firstChild);
             history.scrollTop = history.scrollHeight;
-            
-            // Thời gian xuất hiện ngẫu nhiên từ 5-10 giây cho đỡ spam
             setTimeout(addAutoLog, Math.random() * 5000 + 5000);
         }
         addAutoLog();
