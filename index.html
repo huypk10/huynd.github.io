@@ -77,7 +77,6 @@
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
 
-        /* MODAL DONATE ĐÃ FIX */
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px;
@@ -136,7 +135,7 @@
     <div id="donate-modal">
         <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold; font-size: 14px;">[X]</span>
         <h4 style="color:#ff0; margin: 10px 0; text-align: center;">MỜI HUY CAFE ☕</h4>
-        <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
+        <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY" style="display: block; margin: 0 auto 15px auto;">
         
         <div class="bank-info" onclick="copySTK()">
             <span class="bank-label">Ngân hàng & Chủ tài khoản</span>
@@ -146,7 +145,7 @@
             <span class="bank-value">0334258458</span>
             <span class="copy-hint">COPY</span>
         </div>
-        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none; font-family: monospace; text-align: center;">> STK COPIED!</p>
+        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none; text-align: center; font-family: monospace;">_> STK COPIED!</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
@@ -171,9 +170,10 @@
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
 
+        // ĐÃ ĐỔI THÀNH _>
         function addLog(text, color = "#0af") {
             const div = document.createElement('div');
-            div.style.color = color; div.textContent = `> ${text}`;
+            div.style.color = color; div.textContent = `_> ${text}`;
             history.appendChild(div);
             history.scrollTop = history.scrollHeight;
         }
@@ -211,7 +211,8 @@
             if (e.key === 'Enter') {
                 const val = input.value.toLowerCase().trim();
                 const log = document.createElement('div');
-                log.innerHTML = `<span style="color: #666;">$ ${input.value}</span>`;
+                // CHỖ NÀY CŨNG ĐỔI THÀNH _> CHO ĐỒNG BỘ
+                log.innerHTML = `<span style="color: #666;">_> ${input.value}</span>`;
                 history.appendChild(log);
 
                 if (val === 'help') {
@@ -258,7 +259,7 @@
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
-        const words = ['_> Systems Administrator', '_> Cyber Security', '_> Infrastructure'];
+        const words = ['> Systems Administrator', '> Cyber Security', '> Infrastructure'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
             const cur = words[wIdx];
