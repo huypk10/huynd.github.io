@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nguyễn Đức Huy Profile</title>
+    <title>NGUYỄN ĐỨC HUY | SYSTEM ADMIN</title>
     <style>
         body {
             margin: 0; padding: 0; background: #000;
@@ -12,163 +12,138 @@
         }
         canvas { position: absolute; top: 0; left: 0; z-index: 1; }
         
-        /* Đồng hồ LED */
+        /* Hiệu ứng Scanline - Màn hình cũ */
+        body::before {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 30; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+
         #clock {
-            position: absolute; top: 20px; right: 20px;
+            position: absolute; top: 20px; left: 20px;
             color: #0f0; font-family: 'Courier New', monospace;
-            font-size: 24px; text-shadow: 0 0 10px #0f0; z-index: 20;
-            background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; border: 1px solid #0f0;
+            font-size: 20px; text-shadow: 0 0 10px #0f0; z-index: 20;
+            background: rgba(0,0,0,0.7); padding: 8px 15px; border-radius: 5px; border: 1px solid #0f0;
         }
 
         .profile-card {
-            position: relative; z-index: 10;
-            background: rgba(10, 10, 10, 0.95); padding: 40px; border-radius: 25px;
+            position: relative; z-index: 40;
+            background: rgba(5, 5, 5, 0.9); padding: 40px; border-radius: 15px;
             text-align: center; border: 1px solid #0f0;
-            box-shadow: 0 0 25px rgba(0, 255, 0, 0.2); width: 350px;
+            /* Hiệu ứng khung phát sáng theo nhịp thở */
+            animation: breathe 4s infinite ease-in-out;
+            width: 350px;
         }
+
+        @keyframes breathe {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(0, 255, 0, 0.5); border-color: #5f5; }
+        }
+
         .avatar {
-            width: 150px; height: 150px; border-radius: 50%;
-            border: 3px solid #0f0; object-fit: cover; margin-bottom: 20px;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            width: 140px; height: 140px; border-radius: 10px; /* Đổi sang hình vuông bo góc cho lạ */
+            border: 2px solid #0f0; object-fit: cover; margin-bottom: 20px;
+            filter: grayscale(100%) contrast(120%); /* Làm ảnh đen trắng cho ngầu */
+            transition: 0.5s;
         }
-        h1 { margin: 10px 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; color: #0f0; text-shadow: 0 0 10px #0f0; }
-        
-        /* Style cho chữ tự chạy */
+        .profile-card:hover .avatar { filter: none; transform: scale(1.05); }
+
+        /* Glitch Effect cho tên */
+        .glitch {
+            font-size: 26px; font-weight: bold; color: #0f0;
+            text-transform: uppercase; position: relative;
+            text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.025em -0.05em 0 rgba(0,255,0,.75), 0.025em 0.05em 0 rgba(0,0,255,.75);
+            animation: glitch 500ms infinite;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75); }
+            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,.75), -0.025em -0.025em 0 rgba(0,255,0,.75); }
+        }
+
         #typewriter {
-            font-size: 18px; color: #0f0; height: 24px;
-            margin-bottom: 25px; font-family: 'Courier New', Courier, monospace;
-            display: block;
+            font-size: 16px; color: #0f0; height: 20px;
+            margin: 15px 0 30px; font-family: 'Courier New', monospace;
+            display: block; letter-spacing: 1px;
         }
 
-        .button-group { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .button-group { display: flex; flex-direction: column; gap: 12px; }
         .btn {
-            display: inline-flex; align-items: center; justify-content: flex-start;
-            width: 85%; padding: 12px 20px; background: transparent; color: #0f0;
-            text-decoration: none; border: 1px solid #0f0; border-radius: 50px; 
-            font-weight: bold; transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: center;
+            padding: 10px; background: rgba(0, 255, 0, 0.1); color: #0f0;
+            text-decoration: none; border: 1px solid #0f0; 
+            font-family: 'Courier New', monospace; font-size: 14px;
+            transition: 0.3s;
         }
-        .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; transform: translateY(-3px); }
-        .btn img { width: 24px; height: 24px; margin-right: 15px; filter: drop-shadow(0 0 2px #0f0); }
-        .btn:hover img { filter: brightness(0); }
+        .btn:hover { background: #0f0; color: #000; font-weight: bold; }
 
-        /* Nút điều khiển nhạc */
-        #music-control {
-            position: absolute; bottom: 20px; right: 20px;
-            z-index: 20; background: none; border: 1px solid #0f0;
-            color: #0f0; cursor: pointer; padding: 10px; border-radius: 50%;
-            width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;
+        #music-btn {
+            position: absolute; bottom: 20px; left: 20px;
+            z-index: 50; background: none; border: 1px solid #0f0;
+            color: #0f0; padding: 5px 10px; cursor: pointer;
         }
     </style>
 </head>
 <body>
     <canvas id="matrix"></canvas>
-    
     <div id="clock">00:00:00</div>
 
     <div class="profile-card">
-        <img src="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" alt="Nguyễn Đức Huy" class="avatar">
-        <h1>NGUYỄN ĐỨC HUY</h1>
+        <img src="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" alt="HUY" class="avatar">
+        <div class="glitch">NGUYỄN ĐỨC HUY</div>
         <span id="typewriter"></span>
         
         <div class="button-group">
-            <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg" alt="Facebook">
-                FACEBOOK: HUYPK100
-            </a>
-            <a href="https://zalo.me/0334258458" target="_blank" class="btn">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo">
-                ZALO: 0334258458
-            </a>
+            <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">[ FACEBOOK_LINK ]</a>
+            <a href="https://zalo.me/0334258458" target="_blank" class="btn">[ ZALO_CONTACT ]</a>
         </div>
     </div>
 
-    <button id="music-control">🔇</button>
-    <audio id="bgm" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+    <button id="music-btn" onclick="toggleMusic()">AUDIO: OFF</button>
+    <audio id="bgm" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg"></audio>
 
     <script>
-        // Matrix Background
+        // Matrix Rain
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const letters = "日HｱUｲY100101010101010110";
         const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
+        const drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
 
-        function drawMatrix() {
+        function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#0f0';
             ctx.font = fontSize + 'px monospace';
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops.forEach((y, i) => {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
-            }
+            });
         }
 
-        // Typewriter Effect
-        const txtElement = document.getElementById('typewriter');
-        const words = ['>_ Systems Administrator', '>_ Infrastructure as Code', '>_ Network Security & Tunneling','>_ DevOps Enthusiast'];
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
+        // Typewriter
+        const words = ['>_ Systems Administrator', '>_ Infrastructure as Code', '>_ Network Security'];
+        let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
-            const current = words[wordIndex];
-            if (isDeleting) {
-                txtElement.textContent = current.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                txtElement.textContent = current.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            let typeSpeed = 100;
-            if (isDeleting) typeSpeed /= 2;
-
-            if (!isDeleting && charIndex === current.length) {
-                typeSpeed = 2000;
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length;
-                typeSpeed = 500;
-            }
-            setTimeout(type, typeSpeed);
+            const current = words[wIdx];
+            document.getElementById('typewriter').textContent = current.substring(0, isDel ? cIdx-- : cIdx++);
+            if (!isDel && cIdx > current.length) { isDel = true; setTimeout(type, 2000); }
+            else if (isDel && cIdx === 0) { isDel = false; wIdx = (wIdx + 1) % words.length; setTimeout(type, 500); }
+            else setTimeout(type, isDel ? 50 : 100);
         }
 
-        // Clock
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').textContent = now.toLocaleTimeString();
+        function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString(); }
+        function toggleMusic() {
+            const a = document.getElementById('bgm'), b = document.getElementById('music-btn');
+            if (a.paused) { a.play(); b.textContent = "AUDIO: ON"; }
+            else { a.pause(); b.textContent = "AUDIO: OFF"; }
         }
 
-        // Music Control
-        const audio = document.getElementById('bgm');
-        const musicBtn = document.getElementById('music-control');
-        musicBtn.onclick = () => {
-            if (audio.paused) {
-                audio.play();
-                musicBtn.textContent = '🔊';
-            } else {
-                audio.pause();
-                musicBtn.textContent = '🔇';
-            }
-        };
-
-        // Initialize
-        setInterval(drawMatrix, 33);
-        setInterval(updateClock, 1000);
-        type();
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+        setInterval(draw, 33); setInterval(updateClock, 1000); type();
     </script>
 </body>
 </html>
