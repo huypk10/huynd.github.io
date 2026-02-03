@@ -15,17 +15,14 @@
         .avatar { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 15px; }
         .glitch { font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 2px; margin-bottom: 5px; }
         
-        /* Buttons */
         .btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px auto; padding: 12px; background: rgba(0, 255, 0, 0.02); color: #0f0; text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 8px; font-size: 12px; transition: 0.3s; text-transform: uppercase; cursor: pointer; }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
-        .btn-donate:hover { background: #ff0; color: #000; }
 
-        /* Terminal */
         .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 280px; padding: 12px; box-sizing: border-box; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; }
         .terminal-header { border-bottom: 1px solid rgba(0, 255, 0, 0.1); margin-bottom: 8px; padding-bottom: 5px; display: flex; justify-content: space-between; font-size: 10px; color: #444; }
         
-        /* Fix màu Hint */
+        /* CÂU KỀU DONATE - ĐÃ TRỞ LẠI */
         .sticky-hint { color: #fff; font-size: 10px; margin-bottom: 10px; padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4); text-align: center; border-radius: 6px; background: rgba(255, 255, 0, 0.05); animation: hintBlink 2s infinite; }
         .sticky-hint b { color: #0f0 !important; }
         .sticky-hint span b { color: #ff0 !important; }
@@ -35,7 +32,6 @@
         .input-line { display: flex; gap: 5px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 5px; }
         #terminal-input { background: transparent; border: none; color: #fff; outline: none; font-family: inherit; font-size: inherit; flex-grow: 1; }
 
-        /* Modal Donate & Copy */
         #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; box-shadow: 0 0 50px rgba(0,0,0,1); width: 280px; text-align: center; }
         #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
         .bank-info { background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: #fff; font-size: 11px; text-align: left; position: relative; cursor: pointer; }
@@ -101,30 +97,43 @@
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
 
-        function addLog(text, color = "#0af") {
-            const div = document.createElement('div');
-            div.style.color = color; div.textContent = `_> ${text}`;
-            history.appendChild(div);
-            history.scrollTop = history.scrollHeight;
-        }
-
+        // DANH SÁCH LOG NGẪU NHIÊN - ĐÃ THÊM ĐẦY ĐỦ
         const systemLogs = [
             { t: "[OK] Firewall active", c: "#0f0" },
-            { t: "[CRIT] Attack blocked", c: "#f44" },
-            { t: "[INFO] Traffic stable", c: "#0af" }
+            { t: "[CRIT] Attack blocked from 104.21.x.x", c: "#f44" },
+            { t: "[INFO] Traffic stable", c: "#0af" },
+            { t: "[WARN] System breach detected!", c: "#f44" },
+            { t: "[OK] Encryption keys rotated", c: "#0f0" },
+            { t: "[INFO] Database backup completed", c: "#0af" },
+            { t: "[WARN] High CPU usage: 89%", c: "#ff0" },
+            { t: "[OK] All systems operational", c: "#0f0" },
+            { t: "[INFO] Port 443 listening...", c: "#0af" },
+            { t: "[OK] SSL Certificate valid", c: "#0f0" },
+            { t: "[CRIT] DDoS attempts mitigated", c: "#f44" },
+            { t: "[INFO] Cache cleared: 1.2GB", c: "#0af" },
+            { t: "[WARN] Low disk space on /dev/sda1", c: "#ff0" },
+            { t: "[OK] Kernel patches applied", c: "#0f0" },
+            { t: "[INFO] Syncing with master node...", c: "#0af" }
         ];
         
         function addAutoLog() {
             let log = systemLogs[Math.floor(Math.random() * systemLogs.length)];
             const div = document.createElement('div');
             div.style.color = log.c; div.style.opacity = "0.3"; div.style.fontSize = "10px";
-            div.textContent = `${log.t}`; // Log sạch, không _>
+            div.textContent = `${log.t}`; 
             history.appendChild(div);
             if(history.childNodes.length > 20) history.removeChild(history.firstChild);
             history.scrollTop = history.scrollHeight;
-            setTimeout(addAutoLog, 6000);
+            setTimeout(addAutoLog, 4500); // Chạy nhanh hơn chút cho sinh động
         }
         addAutoLog();
+
+        function addLog(text, color = "#0af") {
+            const div = document.createElement('div');
+            div.style.color = color; div.textContent = `_> ${text}`;
+            history.appendChild(div);
+            history.scrollTop = history.scrollHeight;
+        }
 
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
@@ -137,7 +146,7 @@
                 else if (val === 'social') addLog("FB: huypk100 | Zalo: 0334258458");
                 else if (val === 'clear') history.innerHTML = '';
                 else if (val === 'donate') openDonate();
-                else if (val === 'ping') addLog("Pong! 14ms");
+                else if (val === 'ping') addLog("Pong! Latency: 14ms");
                 else if (val !== '') addLog(`Error: ${val} not found`, "#f44");
                 input.value = '';
                 history.scrollTop = history.scrollHeight;
