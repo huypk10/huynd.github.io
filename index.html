@@ -30,6 +30,15 @@
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
         }
 
+        /* Modal Donate */
+        #donate-modal {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 100; background: rgba(0, 15, 0, 0.98); border: 1px solid #0f0;
+            padding: 20px; text-align: center; width: 280px; color: #0f0; box-shadow: 0 0 50px rgba(0,255,0,0.3);
+        }
+        #donate-modal img { width: 220px; border: 1px solid #0f0; margin: 15px 0; }
+        .close-btn { cursor: pointer; color: #f00; font-family: monospace; float: right; font-size: 18px; }
+
         .terminal-box {
             background: rgba(0, 10, 0, 0.95);
             border: 1px solid #0f0; border-radius: 5px;
@@ -61,6 +70,7 @@
             background: rgba(0, 255, 0, 0.05); color: #0f0;
             text-decoration: none; border: 1px solid #0f0;
             font-family: 'Courier New', monospace; font-size: 12px; transition: 0.3s;
+            cursor: pointer;
         }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
 
@@ -83,6 +93,7 @@
             <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">[ CMD: OPEN_FACEBOOK ]</a>
             <a href="https://zalo.me/0334258458" target="_blank" class="btn">[ CMD: OPEN_ZALO ]</a>
             <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn">[ CMD: JOIN_DISCORD ]</a>
+            <div class="btn" onclick="openDonate()" style="border-style: dashed;">[ CMD: DONATE_COFFEE ]</div>
         </div>
 
         <div class="terminal-box">
@@ -92,6 +103,15 @@
             </div>
             <div id="terminal-content"></div>
         </div>
+    </div>
+
+    <div id="donate-modal">
+        <span class="close-btn" onclick="closeDonate()">[X]</span>
+        <h3 style="margin: 0; font-size: 16px; color: #0f0;">DONATE SYSTEM</h3>
+        <p style="font-size: 11px; margin: 5px 0;">Mời Huy ly cà phê nhé!</p>
+        <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY" alt="VPBank QR">
+        <p style="font-size: 11px; margin: 0;">VPBank: 0334258458</p>
+        <p style="font-size: 10px; opacity: 0.7;">NGUYEN DUC HUY</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleMic()">AUDIO: OFF</button>
@@ -116,6 +136,10 @@
         }
         setInterval(draw, 35);
 
+        // Donate Modal Logic
+        function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
+        function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
+
         // Typewriter
         const words = ['>_ Systems Administrator', '>_ Cyber Security', '>_ Infrastructure'];
         let wIdx = 0, cIdx = 0, isDel = false;
@@ -137,7 +161,7 @@
             "[CRIT] Breach attempt neutralized",
             "[OK] Encryption: AES-256",
             "[OK] System Health: Optimal",
-            "[INFO] Clearing system logs..."
+            "[OK] VPBank API: Connected"
         ];
         let lIdx = 0;
         function addLog() {
