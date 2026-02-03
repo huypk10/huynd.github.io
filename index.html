@@ -30,9 +30,10 @@
         .terminal-box {
             background: rgba(0, 0, 0, 0.95);
             border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px;
-            width: 100%; height: 200px; padding: 12px;
+            width: 100%; height: 260px; padding: 12px;
             box-sizing: border-box; display: flex; flex-direction: column;
             font-family: 'Consolas', monospace; font-size: 11px; color: #0f0;
+            cursor: text;
         }
 
         .terminal-header {
@@ -47,8 +48,14 @@
         }
         #terminal-history::-webkit-scrollbar { display: none; }
 
+        .input-line { display: flex; gap: 5px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 5px; }
+        #terminal-input {
+            background: transparent; border: none; color: #fff; outline: none;
+            font-family: inherit; font-size: inherit; flex-grow: 1;
+        }
+
         .avatar { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 15px; }
-        .glitch { font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 2px; margin-bottom: 5px; }
+        .glitch { font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 2px; }
 
         .btn {
             display: block; margin: 8px auto; padding: 12px;
@@ -60,23 +67,24 @@
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
 
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.05); font-weight: bold; }
-        .btn-donate:hover { background: #ff0; color: #000; box-shadow: 0 0 20px #ff0; }
 
-        /* Modal Donate & Copy STK */
+        /* Modal Donate Mới - Chốt thông tin ngân hàng */
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center;
-            box-shadow: 0 0 50px rgba(0,0,0,1); width: 260px;
+            box-shadow: 0 0 50px rgba(0,0,0,1); width: 280px;
         }
-        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
         
-        .copy-area {
-            background: #111; border: 1px dashed #ff0; padding: 10px;
-            border-radius: 8px; color: #fff; font-size: 12px;
-            display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; transition: 0.3s;
+        .bank-info {
+            background: #111; border: 1px solid #333; padding: 12px;
+            border-radius: 10px; color: #fff; font-size: 11px;
+            text-align: left; position: relative; cursor: pointer;
         }
-        .copy-area:hover { background: #222; }
+        .bank-info:hover { border-color: #ff0; }
+        .bank-label { color: #ff0; font-size: 9px; text-transform: uppercase; margin-bottom: 4px; display: block; }
+        .bank-value { font-family: 'Consolas', monospace; font-size: 13px; display: block; margin-bottom: 2px; }
+        .copy-hint { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #ff0; font-size: 9px; border: 1px solid #ff0; padding: 2px 5px; border-radius: 4px; }
 
         #audio-ctrl {
             position: absolute; bottom: 20px; right: 20px; z-index: 50;
@@ -93,36 +101,46 @@
             <div class="glitch">NGUYỄN ĐỨC HUY</div>
             <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; height: 20px; margin-bottom: 10px;"></div>
             
-            <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">Connect Facebook</a>
-            <a href="https://zalo.me/0334258458" target="_blank" class="btn">Contact Zalo</a>
+            <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">Facebook</a>
+            <a href="https://zalo.me/0334258458" target="_blank" class="btn">Zalo</a>
+            <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn">Discord</a>
             <div class="btn btn-donate" onclick="openDonate()">☕ Donate Coffee</div>
         </div>
 
-        <div class="terminal-box">
+        <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
             <div class="terminal-header">
-                <span>HUY_CORE_INTERFACE</span>
+                <span>HUY_CORE_INTERFACE_v4.0</span>
                 <span id="term-time"></span>
             </div>
             <div id="terminal-history"></div>
+            <div class="input-line">
+                <span style="color: #0f0;">$</span>
+                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="Type 'help'...">
+            </div>
         </div>
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[X]</span>
-        <h4 style="color:#ff0; margin: 10px 0;">ỦNG HỘ HUY ☕</h4>
+        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[CLOSE]</span>
+        <h4 style="color:#ff0; margin: 10px 0;">MỜI HUY CAFE ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
         
-        <div class="copy-area" onclick="copySTK()">
-            <span>STK: 0334258458</span>
-            <span style="color:#ff0; font-size:10px;">[COPY]</span>
+        <div class="bank-info" onclick="copySTK()">
+            <span class="bank-label">Ngân hàng & Chủ tài khoản</span>
+            <span class="bank-value">VPBANK</span>
+            <span class="bank-value" style="color: #0f0;">NGUYEN DUC HUY</span>
+            <span class="bank-label" style="margin-top: 8px;">Số tài khoản</span>
+            <span class="bank-value" id="stk-num">0334258458</span>
+            <span class="copy-hint">COPY</span>
         </div>
-        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:5px; display:none;">Đã sao chép vào bộ nhớ tạm!</p>
+        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none; font-family: monospace;">> STK COPIED TO CLIPBOARD!</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
+        // Matrix & Typewriter logic giữ nguyên như bản Huy gửi
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -139,30 +157,34 @@
         setInterval(draw, 50);
 
         const history = document.getElementById('terminal-history');
-        async function runInit() {
-            const logs = [
-                {t: "[INFO] Initializing Huy_Core...", c: "#0f0"},
-                {t: `[DETECT] OS: ${navigator.platform}`, c: "#ff0"},
-                {t: `[DETECT] Device: ${/Android|iPhone/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'}`, c: "#ff0"},
-                {t: "[OK] Security Active", c: "#0af"}
-            ];
-            for(let log of logs) {
-                await new Promise(r => setTimeout(r, 600));
-                const div = document.createElement('div');
-                div.style.color = log.c;
-                div.textContent = `> ${log.t}`;
-                history.appendChild(div);
+        const input = document.getElementById('terminal-input');
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const val = input.value.toLowerCase().trim();
+                const log = document.createElement('div');
+                log.innerHTML = `<span style="color: #666;">$ ${input.value}</span>`;
+                history.appendChild(log);
+                if (val === 'help') addLog("Commands: about, social, clear, ping, donate");
+                else if (val === 'about') addLog("Admin: Nguyễn Đức Huy - Systems Administrator.");
+                else if (val === 'clear') history.innerHTML = '';
+                else if (val === 'donate') openDonate();
+                else if (val === 'ping') addLog("Pong! Latency: 12ms");
+                else if (val !== '') addLog(`Unknown command: ${val}`, "#f44");
+                input.value = '';
                 history.scrollTop = history.scrollHeight;
             }
+        });
+
+        function addLog(text, color = "#0af") {
+            const div = document.createElement('div');
+            div.style.color = color; div.textContent = `> ${text}`;
+            history.appendChild(div);
+            history.scrollTop = history.scrollHeight;
         }
-        runInit();
 
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
-        function closeDonate() { 
-            document.getElementById('donate-modal').style.display = 'none'; 
-            document.getElementById('copy-msg').style.display = 'none';
-        }
-
+        function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
         function copySTK() {
             navigator.clipboard.writeText("0334258458");
             const msg = document.getElementById('copy-msg');
