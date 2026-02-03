@@ -68,7 +68,6 @@
 
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.05); font-weight: bold; }
 
-        /* Modal Donate Mới - Chốt thông tin ngân hàng */
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center;
@@ -81,7 +80,6 @@
             border-radius: 10px; color: #fff; font-size: 11px;
             text-align: left; position: relative; cursor: pointer;
         }
-        .bank-info:hover { border-color: #ff0; }
         .bank-label { color: #ff0; font-size: 9px; text-transform: uppercase; margin-bottom: 4px; display: block; }
         .bank-value { font-family: 'Consolas', monospace; font-size: 13px; display: block; margin-bottom: 2px; }
         .copy-hint { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #ff0; font-size: 9px; border: 1px solid #ff0; padding: 2px 5px; border-radius: 4px; }
@@ -121,8 +119,8 @@
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[CLOSE]</span>
-        <h4 style="color:#ff0; margin: 10px 0;">MỜI HUY CAFE ☕</h4>
+        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[X]</span>
+        <h4 style="color:#ff0; margin: 10px 0;">ỦNG HỘ HUY ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
         
         <div class="bank-info" onclick="copySTK()">
@@ -130,17 +128,16 @@
             <span class="bank-value">VPBANK</span>
             <span class="bank-value" style="color: #0f0;">NGUYEN DUC HUY</span>
             <span class="bank-label" style="margin-top: 8px;">Số tài khoản</span>
-            <span class="bank-value" id="stk-num">0334258458</span>
+            <span class="bank-value">0334258458</span>
             <span class="copy-hint">COPY</span>
         </div>
-        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none; font-family: monospace;">> STK COPIED TO CLIPBOARD!</p>
+        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none; font-family: monospace;">> STK COPIED!</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
-        // Matrix & Typewriter logic giữ nguyên như bản Huy gửi
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -159,6 +156,7 @@
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
 
+        // Phản hồi lệnh từ người dùng
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 const val = input.value.toLowerCase().trim();
@@ -166,7 +164,7 @@
                 log.innerHTML = `<span style="color: #666;">$ ${input.value}</span>`;
                 history.appendChild(log);
                 if (val === 'help') addLog("Commands: about, social, clear, ping, donate");
-                else if (val === 'about') addLog("Admin: Nguyễn Đức Huy - Systems Administrator.");
+                else if (val === 'about') addLog("Admin: Nguyễn Đức Huy - SysAdmin.");
                 else if (val === 'clear') history.innerHTML = '';
                 else if (val === 'donate') openDonate();
                 else if (val === 'ping') addLog("Pong! Latency: 12ms");
@@ -183,13 +181,34 @@
             history.scrollTop = history.scrollHeight;
         }
 
+        // KHÔI PHỤC: Các dòng chạy tự động (Auto Logs)
+        const autoLogs = [
+            "[OK] Security shield: ACTIVE",
+            "[INFO] Scanning visitor metadata...",
+            "[OK] Connection via Proxy: SECURE",
+            "[SYSTEM] CPU: 12% | RAM: 1.5GB",
+            "[CRIT] Blocked attack from 104.21.x.x",
+            "--- Welcome to HUY_CORE ---"
+        ];
+        function startAutoLogs() {
+            const content = autoLogs[Math.floor(Math.random() * autoLogs.length)];
+            const log = document.createElement('div');
+            log.style.opacity = '0.5'; log.style.fontSize = '10px';
+            log.style.color = content.includes("[CRIT]") ? "#f44" : "#0f0";
+            log.textContent = `[LOG] ${content}`;
+            history.appendChild(log);
+            if(history.childNodes.length > 25) history.removeChild(history.firstChild);
+            history.scrollTop = history.scrollHeight;
+            setTimeout(startAutoLogs, Math.random() * 3000 + 2000);
+        }
+        startAutoLogs();
+
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
         function copySTK() {
             navigator.clipboard.writeText("0334258458");
-            const msg = document.getElementById('copy-msg');
-            msg.style.display = 'block';
-            setTimeout(() => { msg.style.display = 'none'; }, 2000);
+            document.getElementById('copy-msg').style.display = 'block';
+            setTimeout(() => { document.getElementById('copy-msg').style.display = 'none'; }, 2000);
         }
         
         function toggleAudio() {
