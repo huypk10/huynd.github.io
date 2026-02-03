@@ -17,7 +17,7 @@
         .main-container {
             position: relative; z-index: 40;
             display: flex; flex-direction: column; align-items: center; gap: 15px;
-            width: 90%; max-width: 400px;
+            width: 90%; max-width: 420px;
         }
 
         .profile-card {
@@ -42,13 +42,16 @@
             display: flex; justify-content: space-between; font-size: 10px; color: #444;
         }
 
+        /* Ô HƯỚNG DẪN ĐÂY RỒI HUY ƠI */
         .sticky-hint {
-            color: #fff; font-size: 10px; margin-bottom: 8px;
-            padding: 5px; border: 1px dashed rgba(255, 255, 0, 0.3);
-            text-align: center; border-radius: 4px; background: rgba(255, 255, 0, 0.05);
+            color: #fff; font-size: 10px; margin-bottom: 10px;
+            padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4);
+            text-align: center; border-radius: 6px; background: rgba(255, 255, 0, 0.05);
             animation: hintBlink 2s infinite;
         }
-        @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .sticky-hint b { color: #0f0; }
+        .sticky-hint span b { color: #ff0; }
 
         #terminal-history {
             flex-grow: 1; overflow-y: auto; scrollbar-width: none;
@@ -78,18 +81,12 @@
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center;
-            box-shadow: 0 0 50px rgba(0,0,0,1); width: 280px;
+            width: 280px; box-shadow: 0 0 50px #000;
         }
-        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
-        
-        .bank-info {
-            background: #111; border: 1px solid #333; padding: 12px;
-            border-radius: 10px; color: #fff; font-size: 11px;
-            text-align: left; position: relative; cursor: pointer;
-        }
-        .bank-label { color: #ff0; font-size: 9px; text-transform: uppercase; margin-bottom: 4px; display: block; }
-        .bank-value { font-family: 'Consolas', monospace; font-size: 13px; display: block; margin-bottom: 2px; }
-        .copy-hint { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #ff0; font-size: 9px; border: 1px solid #ff0; padding: 2px 5px; border-radius: 4px; }
+        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        .bank-info { background: #111; padding: 12px; border-radius: 10px; text-align: left; border: 1px solid #333; cursor: pointer; }
+        .bank-label { color: #ff0; font-size: 9px; display: block; }
+        .bank-value { color: #fff; font-family: monospace; font-size: 13px; }
 
         #audio-ctrl {
             position: absolute; bottom: 20px; right: 20px; z-index: 50;
@@ -108,6 +105,7 @@
             
             <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">Facebook</a>
             <a href="https://zalo.me/0334258458" target="_blank" class="btn">Zalo</a>
+            <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn">Discord</a>
             <div class="btn btn-donate" onclick="openDonate()">☕ Donate Coffee</div>
         </div>
 
@@ -130,17 +128,12 @@
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[X]</span>
+        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer;">[X]</span>
         <h4 style="color:#ff0; margin: 10px 0;">ỦNG HỘ HUY ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
-        
-        <div class="bank-info" onclick="copySTK()">
-            <span class="bank-label">Ngân hàng & Chủ tài khoản</span>
-            <span class="bank-value">VPBANK</span>
-            <span class="bank-value" style="color: #0f0;">NGUYEN DUC HUY</span>
-            <span class="bank-label" style="margin-top: 8px;">Số tài khoản</span>
+        <div class="bank-info" onclick="navigator.clipboard.writeText('0334258458'); alert('Copied!')">
+            <span class="bank-label">VPBANK - NGUYEN DUC HUY</span>
             <span class="bank-value">0334258458</span>
-            <span class="copy-hint">COPY</span>
         </div>
     </div>
 
@@ -173,33 +166,29 @@
             history.scrollTop = history.scrollHeight;
         }
 
-        // AUTO LOGS: Thêm các dòng MÀU ĐỎ và MÀU XANH
+        // Tự động log có màu đỏ/xanh/vàng
         const systemLogs = [
             { t: "[OK] Firewall active", c: "#0f0" },
-            { t: "[INFO] Syncing database...", c: "#0af" },
-            { t: "[CRIT] Attack blocked from 1.1.1.1", c: "#f44" }, // Màu đỏ
-            { t: "[WARN] High CPU load: 89%", c: "#ff0" },
-            { t: "[ALARM] System Breach detected!", c: "#f44" }, // Màu đỏ
+            { t: "[CRIT] Attack blocked from 1.1.1.1", c: "#f44" },
+            { t: "[INFO] Traffic stable", c: "#0af" },
+            { t: "[WARN] System breach attempt!", c: "#f44" },
             { t: "[SYSTEM] RAM: 4.2GB/16GB", c: "#0af" }
         ];
         
         function addAutoLog() {
-            let logData;
-            if (Math.random() < 0.1) {
-                logData = { t: "--- [HUY] Need coffee to work! ---", c: "#ff0" };
+            let log;
+            if (Math.random() < 0.15) {
+                log = { t: "--- Type 'donate' to support Huy ---", c: "#ff0" };
             } else {
-                logData = systemLogs[Math.floor(Math.random() * systemLogs.length)];
+                log = systemLogs[Math.floor(Math.random() * systemLogs.length)];
             }
-
             const div = document.createElement('div');
-            div.style.color = logData.c;
-            div.style.opacity = "0.7";
-            div.style.fontSize = "10px";
-            div.textContent = `[LOG] ${logData.t}`;
+            div.style.color = log.c; div.style.opacity = "0.5"; div.style.fontSize = "10px";
+            div.textContent = `[LOG] ${log.t}`;
             history.appendChild(div);
             if(history.childNodes.length > 20) history.removeChild(history.firstChild);
             history.scrollTop = history.scrollHeight;
-            setTimeout(addAutoLog, Math.random() * 3000 + 2000);
+            setTimeout(addAutoLog, Math.random() * 4000 + 3000);
         }
         addAutoLog();
 
@@ -209,11 +198,12 @@
                 const log = document.createElement('div');
                 log.innerHTML = `<span style="color: #666;">$ ${input.value}</span>`;
                 history.appendChild(log);
-                if (val === 'help') addLog("Commands: about, track, clear, donate, ping");
+                if (val === 'help') addLog("Commands: about, clear, donate, ping, social");
+                else if (val === 'social') addLog("FB: fb.com/huypk100 | Zalo: 0334258458", "#ff0");
                 else if (val === 'clear') history.innerHTML = '';
                 else if (val === 'donate') openDonate();
-                else if (val === 'ping') addLog("Pong! Latency: 14ms");
-                else if (val !== '') addLog(`Command not found: ${val}`, "#f44");
+                else if (val === 'ping') addLog("Pong! 14ms");
+                else if (val !== '') addLog(`Error: ${val} not found`, "#f44");
                 input.value = '';
                 history.scrollTop = history.scrollHeight;
             }
@@ -221,10 +211,6 @@
 
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
-        function copySTK() {
-            navigator.clipboard.writeText("0334258458");
-            alert("Đã copy STK!");
-        }
         
         function toggleAudio() {
             const bgm = document.getElementById('bgm');
