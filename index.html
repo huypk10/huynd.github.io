@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NGUYỄN ĐỨC HUY</title>
+    <title>NGUYỄN ĐỨC HUY | PRO SYSTEM</title>
     <style>
         body {
-            margin: 0; padding: 0; background: #050505; /* Đen sâu hơn */
+            margin: 0; padding: 0; background: #050505;
             overflow: hidden; font-family: 'Segoe UI', Roboto, sans-serif;
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
         }
-        canvas { position: absolute; top: 0; left: 0; z-index: 1; opacity: 0.3; /* Làm mờ matrix */ }
-        
-        /* Bỏ hoàn toàn hiệu ứng Scanline gây đau mắt */
+        canvas { position: absolute; top: 0; left: 0; z-index: 1; opacity: 0.25; }
 
         .main-container {
             position: relative; z-index: 40;
@@ -21,74 +19,75 @@
         }
 
         .profile-card {
-            background: rgba(15, 15, 15, 0.85); 
-            backdrop-filter: blur(10px); /* Hiệu ứng kính mờ sang trọng */
-            padding: 35px 25px; border-radius: 20px;
-            text-align: center; border: 1px solid rgba(0, 255, 0, 0.3); 
-            width: 100%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(12px);
+            padding: 30px 25px; border-radius: 20px; text-align: center;
+            border: 1px solid rgba(0, 255, 0, 0.2); width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
 
-        /* Modal Donate - Gọn gàng hơn */
-        #donate-modal {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 100; background: #0a0a0a; border: 1px solid #0f0;
-            padding: 25px; text-align: center; width: 300px; color: #0f0; border-radius: 15px;
-        }
-        #donate-modal img { width: 100%; border-radius: 10px; margin: 15px 0; }
-        .close-btn { cursor: pointer; color: #666; float: right; font-size: 20px; }
-        .close-btn:hover { color: #fff; }
-
+        /* Terminal Pro */
         .terminal-box {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 12px;
-            width: 100%; height: 160px; padding: 15px;
-            box-sizing: border-box; overflow: hidden;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(0, 255, 0, 0.4); border-radius: 12px;
+            width: 100%; height: 200px; padding: 15px;
+            box-sizing: border-box; display: flex; flex-direction: column;
             font-family: 'Consolas', 'Courier New', monospace; font-size: 13px; color: #0f0;
+            cursor: text; transition: 0.3s;
         }
+        .terminal-box:hover { border-color: #0f0; box-shadow: 0 0 15px rgba(0, 255, 0, 0.1); }
 
         .terminal-header {
-            border-bottom: 1px solid rgba(0, 255, 0, 0.1); 
+            border-bottom: 1px solid rgba(0, 255, 0, 0.1);
             margin-bottom: 10px; padding-bottom: 5px;
-            display: flex; justify-content: space-between; 
-            font-size: 11px; color: #888;
+            display: flex; justify-content: space-between; font-size: 10px; color: #666;
         }
 
-        .log-line { margin: 5px 0; line-height: 1.4; letter-spacing: 0.5px; }
-        .log-ok { color: #0f0; opacity: 0.9; }
-        .log-crit { color: #ff4d4d; font-weight: bold; }
+        #terminal-history {
+            flex-grow: 1; overflow-y: auto; scrollbar-width: none;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        #terminal-history::-webkit-scrollbar { display: none; }
+
+        .input-line { display: flex; gap: 8px; align-items: center; }
+        #terminal-input {
+            background: transparent; border: none; color: #0f0; outline: none;
+            font-family: inherit; font-size: inherit; flex-grow: 1;
+        }
+        #terminal-input::placeholder { color: rgba(0, 255, 0, 0.2); }
 
         .avatar {
-            width: 100px; height: 100px; border-radius: 50%;
+            width: 90px; height: 90px; border-radius: 50%;
             border: 2px solid #0f0; object-fit: cover; margin-bottom: 15px;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
-            transition: 0.3s;
         }
 
-        .glitch { 
-            font-size: 24px; font-weight: 700; color: #fff; /* Tên màu trắng cho dễ đọc */
-            letter-spacing: 1px; margin-bottom: 5px;
-        }
+        .glitch { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 1px; }
 
+        /* Nút bấm giữ nguyên */
         .btn {
-            display: block; margin: 10px auto; padding: 12px;
+            display: block; margin: 8px auto; padding: 10px;
             background: rgba(0, 255, 0, 0.03); color: #0f0;
-            text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.4);
-            border-radius: 8px; font-family: monospace; font-size: 12px; 
-            transition: all 0.3s; cursor: pointer;
+            text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 8px; font-family: monospace; font-size: 11px; transition: 0.3s;
         }
-        .btn:hover { 
-            background: rgba(0, 255, 0, 1); color: #000; 
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
-            transform: translateY(-2px);
+        .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; transform: translateY(-2px); }
+
+        /* Modal Donate */
+        #donate-modal {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 100; background: #000; border: 1px solid #0f0;
+            padding: 25px; text-align: center; width: 280px; border-radius: 15px;
         }
+        #donate-modal img { width: 100%; border-radius: 10px; margin: 15px 0; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+        .hint-line { color: #ff0; animation: blink 2s infinite; font-size: 11px; }
 
         #audio-ctrl {
-            position: absolute; bottom: 25px; right: 25px; z-index: 50;
-            background: rgba(20, 20, 20, 0.8); border: 1px solid #333; color: #888;
-            padding: 8px 15px; cursor: pointer; font-size: 11px; border-radius: 20px;
+            position: absolute; bottom: 20px; right: 20px; z-index: 50;
+            background: rgba(0,0,0,0.8); border: 1px solid #333; color: #666;
+            padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px;
         }
-        #audio-ctrl:hover { color: #fff; border-color: #0f0; }
     </style>
 </head>
 <body>
@@ -96,48 +95,52 @@
 
     <div class="main-container">
         <div class="profile-card">
-            <img src="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" alt="HUY" class="avatar">
+            <img src="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" class="avatar">
             <div class="glitch">NGUYỄN ĐỨC HUY</div>
-            <div id="typewriter" style="color: #0f0; margin-bottom: 15px; font-family: monospace; font-size: 14px; opacity: 0.8;"></div>
+            <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; margin: 10px 0;"></div>
             
             <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">OPEN FACEBOOK</a>
             <a href="https://zalo.me/0334258458" target="_blank" class="btn">OPEN ZALO CHAT</a>
             <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn">JOIN DISCORD SERVER</a>
-            <div class="btn" onclick="openDonate()" style="border-color: rgba(0,255,0,0.2);">DONATE BANK</div>
+            <div class="btn" onclick="openDonate()" style="border-style: dashed; cursor:pointer">DONATE BANK</div>
         </div>
 
-        <div class="terminal-box">
+        <div class="terminal-box" onclick="focusTerminal()">
             <div class="terminal-header">
-                <span>SYSTEM STATUS</span>
+                <span>HUY_SYSTEM_INTERFACE</span>
                 <span id="term-time"></span>
             </div>
-            <div id="terminal-content"></div>
+            <div id="terminal-history">
+                <div style="color: #666;">[SYS] Connection established.</div>
+                <div class="hint-line">> Type 'help' to start interaction.</div>
+            </div>
+            <div class="input-line">
+                <span style="color: #0f0;">$</span>
+                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="Gõ lệnh tại đây...">
+            </div>
         </div>
     </div>
 
     <div id="donate-modal">
-        <span class="close-btn" onclick="closeDonate()">×</span>
-        <h3 style="margin: 0; font-size: 18px;">DONATE</h3>
-        <p style="font-size: 12px; color: #888;">Quét mã để mời mình cafe</p>
-        <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY" alt="VPBank QR">
-        <p style="font-size: 14px; margin: 0; font-weight: bold;">VPBank: 0334258458</p>
-        <p style="font-size: 12px; opacity: 0.6;">NGUYEN DUC HUY</p>
+        <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold">[X]</span>
+        <h4 style="color:#0f0; margin:0">DONATE CAFE</h4>
+        <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
+        <p style="color:#fff; font-size:12px; margin:0">VPBank: 0334258458</p>
     </div>
 
-    <button id="audio-ctrl" onclick="toggleMic()">AUDIO: OFF</button>
-    <audio id="bgm" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
-    </audio>
+    <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
+    
+    <audio id="type-sound" src="https://www.soundjay.com/communication/typewriter-key-1.mp3"></audio>
+    <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
+        // Matrix Effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const drops = Array(Math.floor(canvas.width / 20)).fill(1);
-        
         function draw() {
-            ctx.fillStyle = 'rgba(5, 5, 5, 0.15)'; // Tăng độ mờ vết cũ
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.15)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#0f0'; ctx.font = '15px monospace';
             drops.forEach((y, i) => {
                 ctx.fillText(Math.floor(Math.random()*2), i*20, y*20);
@@ -145,12 +148,81 @@
                 drops[i]++;
             });
         }
-        setInterval(draw, 50); // Làm chậm matrix lại cho dịu mắt
+        setInterval(draw, 50);
+
+        // Terminal Interaction
+        const input = document.getElementById('terminal-input');
+        const history = document.getElementById('terminal-history');
+        const typeSound = document.getElementById('type-sound');
+
+        function focusTerminal() { input.focus(); }
+
+        input.addEventListener('input', () => {
+            typeSound.currentTime = 0;
+            typeSound.play().catch(()=>{});
+        });
+
+        const commands = {
+            'help': 'Commands: about, social, donate, clear, ping',
+            'about': 'Admin: NGUYEN DUC HUY | Field: Systems & Security.',
+            'social': 'FB: huypk100 | Zalo: 0334258458',
+            'donate': 'Opening Donate Window...',
+            'ping': 'Pong! Latency: 22ms',
+            'clear': 'clear'
+        };
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const val = input.value.toLowerCase().trim();
+                if (val === '') return;
+
+                const userLine = document.createElement('div');
+                userLine.innerHTML = `<span style="color: #666;">$ ${input.value}</span>`;
+                history.appendChild(userLine);
+
+                if (commands[val]) {
+                    if (val === 'clear') {
+                        history.innerHTML = '<div style="color: #666;">[SYS] History cleared.</div>';
+                    } else {
+                        const res = document.createElement('div');
+                        res.style.color = '#0af';
+                        res.textContent = `> ${commands[val]}`;
+                        history.appendChild(res);
+                        if (val === 'donate') openDonate();
+                    }
+                } else {
+                    const err = document.createElement('div');
+                    err.style.color = '#f44';
+                    err.textContent = `> Error: '${val}' is not a valid command.`;
+                    history.appendChild(err);
+                }
+                input.value = '';
+                history.scrollTop = history.scrollHeight;
+            }
+        });
+
+        // Tự động nhắc sau 12 giây
+        setTimeout(() => {
+            const suggest = document.createElement('div');
+            suggest.style.color = '#0f0';
+            suggest.style.fontSize = '11px';
+            suggest.innerHTML = '[AUTO] Hint: Type <span style="color:#ff0">"donate"</span> to see QR code.';
+            history.appendChild(suggest);
+            history.scrollTop = history.scrollHeight;
+        }, 12000);
 
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
+        
+        function toggleAudio() {
+            const bgm = document.getElementById('bgm');
+            const btn = document.getElementById('audio-ctrl');
+            if (bgm.paused) { bgm.play(); btn.textContent = "SOUND: ON"; }
+            else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
+        }
 
-        const words = ['> Systems Admin', '> Cyber Security', '> Infrastructure'];
+        // Typewriter Effect
+        const words = ['> Systems Administrator', '> Cyber Security', '> Infrastructure'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
             const cur = words[wIdx];
@@ -161,26 +233,6 @@
         }
         type();
 
-        const logs = ["[OK] Firewall Stealth Active", "[OK] SSH Handshake Verified", "[INFO] No Vulnerabilities Found", "[CRIT] Threat Mitigated", "[OK] System Optimal"];
-        let lIdx = 0;
-        function addLog() {
-            const term = document.getElementById('terminal-content');
-            const line = document.createElement('div');
-            line.className = 'log-line';
-            const cur = logs[lIdx];
-            line.innerHTML = cur.includes("[CRIT]") ? `<span class="log-crit">${cur}</span>` : `<span class="log-ok">${cur}</span>`;
-            term.appendChild(line);
-            if (term.childNodes.length > 5) term.removeChild(term.firstChild);
-            lIdx = (lIdx + 1) % logs.length;
-            setTimeout(addLog, 2500); // Terminal hiện chữ chậm lại
-        }
-        addLog();
-
-        function toggleMic() {
-            const a = document.getElementById('bgm'), b = document.getElementById('audio-ctrl');
-            if (a.paused) { a.play(); b.textContent = "AUDIO: ON"; }
-            else { a.pause(); b.textContent = "AUDIO: OFF"; }
-        }
         setInterval(() => { document.getElementById('term-time').textContent = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
