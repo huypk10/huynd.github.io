@@ -13,9 +13,9 @@
         canvas { position: absolute; top: 0; left: 0; z-index: 1; }
         .profile-card {
             position: relative; z-index: 10;
-            background: rgba(15, 15, 15, 0.9); padding: 40px; border-radius: 25px;
+            background: rgba(10, 10, 10, 0.95); padding: 40px; border-radius: 25px;
             text-align: center; border: 1px solid #0f0;
-            box-shadow: 0 0 25px rgba(0, 255, 0, 0.3); width: 350px;
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.2); width: 350px;
         }
         .avatar {
             width: 150px; height: 150px; border-radius: 50%;
@@ -23,16 +23,22 @@
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
         }
         h1 { margin: 10px 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; color: #0f0; text-shadow: 0 0 10px #0f0; }
-        p { font-size: 16px; color: #0f0; opacity: 0.8; margin-bottom: 30px; }
-        .fb-button {
-            display: inline-block; padding: 12px 30px; background: transparent; color: #0f0;
-            text-decoration: none; border: 1px solid #0f0; border-radius: 50px; font-weight: bold;
-            transition: all 0.3s ease;
+        p { font-size: 16px; color: #0f0; opacity: 0.8; margin-bottom: 25px; font-family: 'Courier New', Courier, monospace; }
+        
+        .button-group { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 80%; padding: 12px 20px; background: transparent; color: #0f0;
+            text-decoration: none; border: 1px solid #0f0; border-radius: 50px; 
+            font-weight: bold; transition: all 0.3s ease;
         }
-        .fb-button:hover {
+        .btn:hover {
             background: #0f0; color: #000;
             box-shadow: 0 0 20px #0f0; transform: translateY(-3px);
         }
+        .btn img { width: 20px; margin-right: 10px; filter: drop-shadow(0 0 2px #0f0); }
+        .btn-zalo:hover img { filter: invert(1); }
     </style>
 </head>
 <body>
@@ -41,7 +47,16 @@
         <img src="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" alt="Nguyễn Đức Huy" class="avatar">
         <h1>NGUYỄN ĐỨC HUY</h1>
         <p>>_ Ubuntu Server Creator</p>
-        <a href="https://www.facebook.com/huypk100" target="_blank" class="fb-button">KẾT NỐI FACEBOOK</a>
+        
+        <div class="button-group">
+            <a href="https://www.facebook.com/huypk100" target="_blank" class="btn">
+                KẾT NỐI FACEBOOK
+            </a>
+            <a href="https://zalo.me/0334258458" target="_blank" class="btn btn-zalo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo">
+                ZALO: 0334258458
+            </a>
+        </div>
     </div>
 
     <script>
