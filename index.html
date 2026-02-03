@@ -42,7 +42,6 @@
             display: flex; justify-content: space-between; font-size: 10px; color: #444;
         }
 
-        /* FIX MÀU HINT Ở ĐÂY */
         .sticky-hint {
             color: #fff; font-size: 10px; margin-bottom: 10px;
             padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4);
@@ -50,8 +49,8 @@
             animation: hintBlink 2s infinite;
         }
         @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-        .sticky-hint b { color: #0f0 !important; } /* Màu xanh lá cho 'help' */
-        .sticky-hint span b { color: #ff0 !important; } /* Màu vàng cho 'donate' */
+        .sticky-hint b { color: #0f0 !important; }
+        .sticky-hint span b { color: #ff0 !important; }
 
         #terminal-history {
             flex-grow: 1; overflow-y: auto; scrollbar-width: none;
@@ -78,9 +77,10 @@
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
 
+        /* MODAL DONATE ĐÃ FIX */
         #donate-modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center;
+            z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px;
             box-shadow: 0 0 50px rgba(0,0,0,1); width: 280px;
         }
         #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
@@ -134,8 +134,8 @@
     </div>
 
     <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-weight:bold;">[CLOSE]</span>
-        <h4 style="color:#ff0; margin: 10px 0;">MỜI HUY CAFE ☕</h4>
+        <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold; font-size: 14px;">[X]</span>
+        <h4 style="color:#ff0; margin: 10px 0; text-align: center;">MỜI HUY CAFE ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
         
         <div class="bank-info" onclick="copySTK()">
@@ -146,7 +146,7 @@
             <span class="bank-value">0334258458</span>
             <span class="copy-hint">COPY</span>
         </div>
-        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none; font-family: monospace;">> STK COPIED!</p>
+        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none; font-family: monospace; text-align: center;">> STK COPIED!</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
