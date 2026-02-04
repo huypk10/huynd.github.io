@@ -11,7 +11,13 @@
         body { margin: 0; padding: 0; background: #050505; overflow-x: hidden; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.25; }
 
-        .main-container { position: relative; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 15px; width: 90%; max-width: 420px; margin-top: 50px; flex-grow: 1; }
+        /* KHÔI PHỤC 2 NÚT GÓC TRÊN */
+        .corner-btn { position: fixed; z-index: 100; top: 20px; padding: 10px 18px; background: rgba(0, 255, 0, 0.05); border: 1px solid #0f0; color: #0f0; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .corner-btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
+        .btn-left { left: 20px; }
+        .btn-right { right: 20px; }
+
+        .main-container { position: relative; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 15px; width: 90%; max-width: 420px; margin-top: 80px; flex-grow: 1; }
         .profile-card { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(15px); padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 255, 0, 0.2); width: 100%; box-shadow: 0 10px 50px rgba(0, 0, 0, 1); }
         .avatar { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 15px; }
         .glitch { font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 2px; margin-bottom: 5px; }
@@ -19,35 +25,37 @@
         .btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px auto; padding: 12px; background: rgba(0, 255, 0, 0.02); color: #0f0; text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 8px; font-size: 12px; transition: 0.3s; text-transform: uppercase; cursor: pointer; }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
 
-        /* NÚT CV MÀU CYAN NỔI BẬT */
         .btn-cv { color: #00d2ff; border-color: rgba(0, 210, 255, 0.3); background: rgba(0, 210, 255, 0.05); font-weight: bold; }
         .btn-cv:hover { background: #00d2ff; color: #000; box-shadow: 0 0 20px #00d2ff; border-color: #00d2ff; }
-
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
 
-        .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 300px; padding: 12px; box-sizing: border-box; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; margin-bottom: 30px; }
+        .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 280px; padding: 12px; box-sizing: border-box; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; margin-bottom: 30px; }
         .terminal-header { border-bottom: 1px solid rgba(0, 255, 0, 0.1); margin-bottom: 8px; padding-bottom: 5px; display: flex; justify-content: space-between; font-size: 10px; color: #444; }
         
-        .sticky-hint { color: #fff; font-size: 10px; margin-bottom: 10px; padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4); text-align: center; border-radius: 6px; background: rgba(255, 255, 0, 0.05); animation: hintBlink 2s infinite; }
-        .sticky-hint b { color: #0f0 !important; }
-        @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-
         #terminal-history { flex-grow: 1; overflow-y: auto; scrollbar-width: none; display: flex; flex-direction: column; gap: 4px; }
         .input-line { display: flex; gap: 5px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 5px; }
         #terminal-input { background: transparent; border: none; color: #fff; outline: none; font-family: inherit; font-size: inherit; flex-grow: 1; }
 
-        footer { position: relative; z-index: 40; width: 100%; text-align: center; padding: 25px 0; color: #444; font-size: 10px; letter-spacing: 1px; line-height: 1.6; }
+        footer { position: relative; z-index: 40; width: 100%; text-align: center; padding: 25px 0; color: #444; font-size: 10px; letter-spacing: 1px; }
         footer b { color: #0f0; }
+
+        /* MODALS */
+        .info-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 200; width: 300px; background: #000; border: 1px solid #0f0; padding: 25px; border-radius: 10px; box-shadow: 0 0 50px rgba(0,255,0,0.5); }
+        .modal-header { color: #ff0; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 8px; display: flex; justify-content: space-between; font-size: 12px; }
+        .info-content { color: #fff; font-size: 12px; line-height: 1.7; }
 
         #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; box-shadow: 0 0 50px rgba(0,0,0,1); width: 280px; text-align: center; }
         #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
-        .bank-info { background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: #fff; font-size: 11px; text-align: left; position: relative; cursor: pointer; }
+        .bank-info { background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: #fff; font-size: 11px; text-align: left; cursor: pointer; }
         
         #audio-ctrl { position: fixed; bottom: 20px; right: 20px; z-index: 100; background: rgba(0,0,0,0.8); border: 1px solid #0f0; color: #0f0; padding: 8px 15px; cursor: pointer; border-radius: 20px; font-size: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
     <canvas id="matrix"></canvas>
+
+    <button class="corner-btn btn-left" onclick="toggleModal('about-modal')">About Me</button>
+    <button class="corner-btn btn-right" onclick="toggleModal('work-modal')">Contact Work</button>
 
     <div class="main-container">
         <div class="profile-card">
@@ -66,18 +74,34 @@
 
         <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
             <div class="terminal-header"><span>HUY_CORE_v5.0_STABLE</span><span id="term-time"></span></div>
-            <div class="sticky-hint">💡 Type <b>'help'</b>, <b>'projects'</b> or <b>'cv'</b></div>
             <div id="terminal-history">
-                <div style="color: #444;"># System Boot Complete. Verified identity: NGUYỄN ĐỨC HUY.</div>
+                <div style="color: #444;"># Shell Khởi động... Chào mừng Huy trở lại.</div>
             </div>
-            <div class="input-line"><span style="color: #0f0; font-weight: bold;">_></span><input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="..."></div>
+            <div class="input-line"><span style="color: #0f0; font-weight: bold;">_></span><input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="Gõ 'help'..."></div>
         </div>
     </div>
 
     <footer>
-        © 2026 <b>NGUYỄN ĐỨC HUY</b> | OFFICIAL IDENTITY VERIFIED<br>
-        <span style="opacity: 0.6;">Developed for Professional Systems & Network Administration</span>
+        © 2026 <b>NGUYỄN ĐỨC HUY</b> | OFFICIAL IDENTITY VERIFIED
     </footer>
+
+    <div id="about-modal" class="info-modal">
+        <div class="modal-header"><span>[IDENTITY]</span> <span onclick="toggleModal('about-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
+        <div class="info-content">
+            <b>HỌ TÊN:</b> NGUYỄN ĐỨC HUY<br>
+            <b>VỊ TRÍ:</b> Systems Administrator<br>
+            <b>CHUYÊN MÔN:</b> Network Security & Infrastructure
+        </div>
+    </div>
+
+    <div id="work-modal" class="info-modal">
+        <div class="modal-header"><span>[CONTACT]</span> <span onclick="toggleModal('work-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
+        <div class="info-content">
+            <b>EMAIL:</b> huynguyenduc090@gmail.com<br>
+            <b>PHONE:</b> 0334258458<br>
+            <b>STATUS:</b> Sẵn sàng hợp tác.
+        </div>
+    </div>
 
     <div id="donate-modal">
         <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold;">[X]</span>
@@ -87,7 +111,7 @@
             <span style="color:#ff0; font-size:9px;">VPBANK - NGUYEN DUC HUY</span><br>
             <span style="font-size:13px;">0334258458</span>
         </div>
-        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none;">_> STK COPIED!</p>
+        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none;">_> ĐÃ SAO CHÉP STK!</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
@@ -111,7 +135,7 @@
 
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
-        const cvURL = "#"; // Huy dán link file CV vào đây nhé
+        const cvURL = "#"; 
 
         function addLog(text, color = "#0af") {
             const div = document.createElement('div');
@@ -129,26 +153,25 @@
                 history.appendChild(userLine);
                 
                 if (val === 'help') {
-                    addLog("Commands: projects, cv, about, clear, donate, ping");
+                    addLog("Lệnh: projects, cv, about, clear, donate, contact");
                 } else if (val === 'projects' || val === 'project') {
                     addLog("- Setup HAProxy Load Balancer", "#0f0");
                     addLog("- Hardening Linux Server", "#0f0");
                     addLog("- Docker Monitoring Stack", "#0f0");
                     addLog("- VPN Site-to-Site", "#0f0");
                 } else if (val === 'cv') {
-                    addLog("Accessing secure storage...", "#00d2ff");
-                    addLog("Downloading CV file...", "#00d2ff");
+                    addLog("Đang tải file CV của Huy...", "#00d2ff");
                     window.open(cvURL, '_blank');
                 } else if (val === 'about') {
-                    addLog("Owner: Nguyễn Đức Huy | Systems Administrator");
+                    toggleModal('about-modal');
+                } else if (val === 'contact') {
+                    toggleModal('work-modal');
                 } else if (val === 'clear') {
                     history.innerHTML = '';
                 } else if (val === 'donate') {
                     openDonate();
-                } else if (val === 'ping') {
-                    addLog("Pong! Latency: 12ms");
-                } else if (val !== '') {
-                    addLog(`Error: Command '${val}' not recognized.`, "#f44");
+                } else {
+                    addLog(`Lỗi: Không tìm thấy lệnh '${val}'`, "#f44");
                 }
                 
                 input.value = '';
@@ -156,7 +179,10 @@
             }
         });
 
-        document.getElementById('cv-link').href = cvURL;
+        function toggleModal(id) {
+            const m = document.getElementById(id);
+            m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+        }
 
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
@@ -168,8 +194,8 @@
         function toggleAudio() {
             const bgm = document.getElementById('bgm');
             const btn = document.getElementById('audio-ctrl');
-            if (bgm.paused) { bgm.play(); btn.textContent = "SOUND: ON"; btn.style.boxShadow = "0 0 10px #0f0"; }
-            else { bgm.pause(); btn.textContent = "SOUND: OFF"; btn.style.boxShadow = "none"; }
+            if (bgm.paused) { bgm.play(); btn.textContent = "SOUND: ON"; }
+            else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
         const words = ['_> Systems Administrator', '_> Cyber Security', '_> Infrastructure Engineer'];
