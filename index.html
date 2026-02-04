@@ -2,75 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NGUYỄN ĐỨC HUY | OFFICIAL SITE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" type="image/x-icon">
     
     <style>
-        /* RESET & BASE */
-        body { margin: 0; padding: 0; background: #050505; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        /* RESET & BASE - Fix lỗi tràn màn hình Android */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; padding: 0; background: #050505; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; overflow-y: auto; }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.25; pointer-events: none; }
 
-        /* HEADER NAV - Sửa lỗi chồng chéo trên Mobile */
-        .header-nav { position: relative; z-index: 100; width: 100%; max-width: 420px; display: flex; justify-content: space-between; padding: 20px 15px; box-sizing: border-box; }
-        .corner-btn { padding: 10px 18px; background: rgba(0, 255, 0, 0.05); border: 1px solid #0f0; color: #0f0; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px; }
-        .corner-btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
+        /* HEADER NAV - Tách biệt rõ ràng để không đè Avatar */
+        .header-nav { position: relative; z-index: 100; width: 100%; max-width: 420px; display: flex; justify-content: space-between; padding: 15px; }
+        .corner-btn { padding: 8px 12px; background: rgba(0, 255, 0, 0.05); border: 1px solid #0f0; color: #0f0; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* MAIN CONTAINER */
-        .main-container { position: relative; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 15px; width: 95%; max-width: 420px; padding-bottom: 40px; }
+        /* MAIN CONTAINER - Cuộn tự nhiên */
+        .main-container { position: relative; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 12px; width: 95%; max-width: 400px; padding-bottom: 20px; }
         
-        .profile-card { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(15px); padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 255, 0, 0.2); width: 100%; box-sizing: border-box; box-shadow: 0 10px 50px rgba(0, 0, 0, 1); }
-        .avatar { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 15px; object-fit: cover; }
-        .glitch { font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 2px; margin-bottom: 5px; }
+        .profile-card { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(15px); padding: 20px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 255, 0, 0.2); width: 100%; box-shadow: 0 10px 40px rgba(0, 0, 0, 1); }
+        .avatar { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 12px; object-fit: cover; }
+        .glitch { font-size: 20px; font-weight: bold; color: #fff; letter-spacing: 2px; margin-bottom: 5px; }
         
-        /* BUTTONS */
-        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px auto; padding: 12px; background: rgba(0, 255, 0, 0.02); color: #0f0; text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 8px; font-size: 12px; transition: 0.3s; text-transform: uppercase; width: 100%; box-sizing: border-box; cursor: pointer; }
-        .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
-        .btn-cv { color: #00d2ff; border-color: #00d2ff; background: rgba(0, 210, 255, 0.1); font-weight: bold; }
-        .btn-cv:hover { background: #00d2ff; color: #000; box-shadow: 0 0 20px #00d2ff; }
-        .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
-        .btn-donate:hover { background: #ff0; color: #000; box-shadow: 0 0 20px #ff0; }
+        /* SOCIAL BUTTONS */
+        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 6px auto; padding: 10px; background: rgba(0, 255, 0, 0.02); color: #0f0; text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 8px; font-size: 11px; transition: 0.3s; text-transform: uppercase; width: 100%; }
+        .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
+        .btn-cv { color: #00d2ff; border-color: #00d2ff; background: rgba(0, 210, 255, 0.1); }
+        .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); }
 
-        /* TERMINAL AREA */
-        .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 280px; padding: 12px; box-sizing: border-box; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; }
-        .terminal-header { border-bottom: 1px solid rgba(0, 255, 0, 0.1); margin-bottom: 8px; padding-bottom: 5px; display: flex; justify-content: space-between; font-size: 10px; color: #444; }
+        /* TERMINAL AREA - Fix lỗi input Android */
+        .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 250px; padding: 12px; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; margin-bottom: 20px; }
+        .terminal-header { border-bottom: 1px solid rgba(0, 255, 0, 0.1); margin-bottom: 8px; padding-bottom: 5px; display: flex; justify-content: space-between; font-size: 9px; color: #444; }
         
         .sticky-hint { color: #fff; font-size: 10px; margin-bottom: 10px; padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4); text-align: center; border-radius: 6px; background: rgba(255, 255, 0, 0.05); animation: hintBlink 2s infinite; }
-        .sticky-hint b { color: #0f0 !important; }
         @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-        #terminal-history { flex-grow: 1; overflow-y: auto; scrollbar-width: none; display: flex; flex-direction: column; gap: 4px; }
-        .input-line { display: flex; gap: 5px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 5px; }
-        #terminal-input { background: transparent; border: none; color: #fff; outline: none; font-family: inherit; font-size: inherit; flex-grow: 1; width: 20px; }
+        #terminal-history { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+        .input-line { display: flex; gap: 5px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 8px; }
+        #terminal-input { background: transparent; border: none; color: #fff; outline: none; font-family: inherit; font-size: 13px; flex-grow: 1; width: 50px; }
 
-        /* FOOTER - Không dùng Fixed trên Mobile để tránh đè Terminal */
-        footer { margin-top: auto; padding: 25px 0; width: 100%; text-align: center; z-index: 50; }
-        .footer-badge { background: rgba(255, 255, 255, 0.05); color: #fff; padding: 4px 15px; font-size: 10px; font-weight: bold; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; display: inline-block; letter-spacing: 1px; margin-bottom: 6px; }
-        .footer-sub { color: #444; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; }
+        /* FOOTER - Để mặc định để Android không bị đè */
+        footer { width: 100%; text-align: center; padding: 20px 0; z-index: 50; margin-top: auto; }
+        .footer-badge { background: rgba(255, 255, 255, 0.05); color: #fff; padding: 4px 12px; font-size: 9px; font-weight: bold; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; display: inline-block; }
+        .footer-sub { color: #444; font-size: 8px; text-transform: uppercase; margin-top: 5px; }
 
         /* MODALS */
-        .info-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 200; width: 90%; max-width: 300px; background: #000; border: 1px solid #0f0; padding: 25px; border-radius: 10px; box-shadow: 0 0 50px rgba(0,255,0,0.5); }
-        .modal-header { color: #ff0; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 8px; display: flex; justify-content: space-between; font-size: 12px; }
+        .info-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 200; width: 90%; max-width: 300px; background: #000; border: 1px solid #0f0; padding: 20px; border-radius: 10px; }
+        #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 250; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; width: 85%; max-width: 280px; text-align: center; }
+        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 12px; }
         
-        #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 250; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; width: 85%; max-width: 280px; text-align: center; box-shadow: 0 0 50px rgba(0,0,0,1); }
-        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
-        
-        .bank-info { background: #111; border: 1px solid #333; padding: 15px; border-radius: 10px; color: #fff; font-size: 11px; text-align: left; cursor: pointer; transition: 0.3s; position: relative; }
-        .bank-info:hover { border-color: #ff0; background: #1a1a00; }
-        .bank-label { color: #ff0; font-size: 10px; font-weight: bold; display: block; margin-bottom: 5px; text-transform: uppercase; }
-        .bank-name { color: #00d2ff; font-size: 11px; display: block; margin-bottom: 3px; }
-        .bank-user { color: #fff; font-size: 12px; font-weight: bold; display: block; margin-bottom: 3px; }
-        .bank-stk { font-family: 'Consolas', monospace; font-size: 16px; color: #ff0; display: block; margin-top: 5px; letter-spacing: 1px; }
-        .copy-badge { position: absolute; right: 10px; bottom: 10px; font-size: 8px; border: 1px solid #444; padding: 2px 4px; border-radius: 3px; color: #666; }
+        .bank-info { background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; text-align: left; position: relative; }
+        .bank-stk { font-family: 'Consolas', monospace; font-size: 15px; color: #ff0; display: block; margin-top: 4px; }
 
-        /* SOUND CTRL */
-        #audio-ctrl { position: fixed; bottom: 20px; right: 20px; z-index: 150; background: rgba(0,0,0,0.8); border: 1px solid #0f0; color: #0f0; padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px; text-transform: uppercase; border: 1px solid #0f0; }
-
-        @media (max-height: 750px) {
-            .avatar { width: 70px; height: 70px; }
-            .terminal-box { height: 220px; }
-        }
+        /* SOUND CONTROL - Đẩy lên trên cùng layer */
+        #audio-ctrl { position: fixed; bottom: 15px; right: 15px; z-index: 300; background: rgba(0,0,0,0.8); border: 1px solid #0f0; color: #0f0; padding: 6px 10px; cursor: pointer; border-radius: 20px; font-size: 9px; }
     </style>
 </head>
 <body>
@@ -85,13 +70,13 @@
         <div class="profile-card">
             <img src="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" class="avatar">
             <div class="glitch">NGUYỄN ĐỨC HUY</div>
-            <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; height: 20px; margin-bottom: 10px;"></div>
+            <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 12px; min-height: 20px; margin-bottom: 8px;"></div>
             
             <a href="https://www.facebook.com/huypk100" target="_blank" class="btn"><i class="fab fa-facebook"></i> Facebook</a>
             <a href="https://zalo.me/0334258458" target="_blank" class="btn"><i class="fas fa-comment"></i> Zalo</a>
             <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn"><i class="fab fa-discord"></i> Discord</a>
             
-            <a href="#" id="cv-btn" class="btn btn-cv"><i class="fas fa-file-download"></i> Download CV</a>
+            <a href="#" class="btn btn-cv"><i class="fas fa-file-download"></i> Download CV</a>
             <div class="btn btn-donate" onclick="openDonate()"><i class="fas fa-coffee"></i> Donate Coffee</div>
         </div>
 
@@ -100,9 +85,12 @@
             <div class="sticky-hint">💡 Type <b>'help'</b>, <b>'projects'</b> or <b>'cv'</b></div>
             <div id="terminal-history">
                 <div style="color: #444;"># Booting secure shell... Success.</div>
-                <div style="color: #444;"># Language: English | Location: Hanoi, Vietnam.</div>
+                <div style="color: #444;"># Location: Hanoi, Vietnam.</div>
             </div>
-            <div class="input-line"><span style="color: #0f0; font-weight: bold;">_></span><input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="..."></div>
+            <div class="input-line">
+                <span style="color: #0f0; font-weight: bold;">_></span>
+                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="...">
+            </div>
         </div>
     </div>
 
@@ -116,8 +104,7 @@
         <div style="color:#fff; font-size:12px; line-height:1.6;">
             <b>NAME:</b> NGUYỄN ĐỨC HUY<br>
             <b>ROLE:</b> Systems Administrator<br>
-            <b>SPECIALTY:</b> Network Security & Infrastructure<br>
-            <b>EXPERIENCE:</b> Server Hardening, Virtualization, Cloud Security.
+            <b>SPECIALTY:</b> Network Security & Infrastructure
         </div>
     </div>
 
@@ -125,31 +112,27 @@
         <div class="modal-header"><span>[CONTACT]</span> <span onclick="toggleModal('work-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
         <div style="color:#fff; font-size:12px; line-height:1.6;">
             <b>EMAIL:</b> huynguyenduc090@gmail.com<br>
-            <b>PHONE/ZALO:</b> 0334258458<br>
-            <b>LOCATION:</b> Hanoi, Vietnam<br>
-            <b>STATUS:</b> Open for collaboration.
+            <b>PHONE:</b> 0334258458<br>
+            <b>STATUS:</b> Available for Work.
         </div>
     </div>
 
     <div id="donate-modal">
         <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold;">[X]</span>
-        <h4 style="color:#ff0; margin: 10px 0;">DONATE COFFEE ☕</h4>
+        <h4 style="color:#ff0; margin: 8px 0;">DONATE COFFEE ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY" width="100%">
         <div class="bank-info" onclick="copySTK()">
-            <span class="bank-label">PAYMENT DETAILS</span>
-            <span class="bank-name">BANK: <b>VPBANK</b></span>
-            <span class="bank-user">HOLDER: <b>NGUYEN DUC HUY</b></span>
+            <span style="color:#ff0; font-size:9px;">VPBANK - NGUYEN DUC HUY</span>
             <span class="bank-stk">0334258458</span>
-            <span class="copy-badge">CLICK TO COPY</span>
+            <span style="position:absolute; right:10px; bottom:10px; font-size:8px; color:#666;">COPY</span>
         </div>
-        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none;">_> STK COPIED SUCCESSFULLY!</p>
+        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none;">_> COPIED!</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
-        // Matrix Effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -166,10 +149,8 @@
         }
         setInterval(draw, 50);
 
-        // Terminal Logic - Đầy đủ lệnh và sửa lỗi command
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
-
         function addLog(text, color = "#0af") {
             const div = document.createElement('div');
             div.style.color = color; div.textContent = `_> ${text}`;
@@ -184,22 +165,16 @@
                 line.innerHTML = `<span style="color: #666;">_> ${input.value}</span>`;
                 history.appendChild(line);
                 
-                if (val === 'help') {
-                    addLog("Commands: projects, cv, about, contact, donate, clear", "#ff0");
-                } else if (val === 'projects' || val === 'project') {
+                if (val === 'help') addLog("Commands: projects, cv, about, contact, donate, clear");
+                else if (val === 'projects' || val === 'project') {
                     addLog("--- RECENT PROJECTS ---", "#ff0");
                     addLog("- Deploy HAProxy + Nginx Load Balancer", "#0f0");
                     addLog("- Setup Monitoring Zabbix", "#0f0");
                     addLog("- VPN Server OpenVPN", "#0f0");
                     addLog("- Docker CI/CD Pipeline", "#0f0");
-                } else if (val === 'cv') {
-                    addLog("Downloading CV...", "#00d2ff");
-                    window.open("#", '_blank');
-                } else if (val === 'about') toggleModal('about-modal');
-                else if (val === 'contact') toggleModal('work-modal');
+                } else if (val === 'clear') history.innerHTML = '';
                 else if (val === 'donate') openDonate();
-                else if (val === 'clear') history.innerHTML = '';
-                else if (val !== '') addLog(`Error: Command '${val}' not recognized.`, "#f44");
+                else if (val !== '') addLog(`Command not found: ${val}`, "#f44");
 
                 input.value = '';
                 history.scrollTop = history.scrollHeight;
