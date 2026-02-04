@@ -38,7 +38,7 @@
         .input-line { display: flex; gap: 5px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 5px; }
         #terminal-input { background: transparent; border: none; color: #fff; outline: none; font-family: inherit; font-size: inherit; flex-grow: 1; }
 
-        /* MODAL */
+        /* MODAL THÔNG TIN */
         .info-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 200; width: 300px; background: #000; border: 1px solid #0f0; padding: 25px; border-radius: 10px; box-shadow: 0 0 50px rgba(0,255,0,0.5); }
         .modal-header { color: #ff0; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 8px; display: flex; justify-content: space-between; font-size: 12px; }
         .info-content { color: #fff; font-size: 12px; line-height: 1.7; }
@@ -47,7 +47,6 @@
         #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; box-shadow: 0 0 50px rgba(0,0,0,1); width: 280px; text-align: center; }
         #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
         .bank-info { background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: #fff; font-size: 11px; text-align: left; position: relative; cursor: pointer; }
-        #audio-ctrl { position: absolute; bottom: 20px; right: 20px; z-index: 50; background: rgba(0,0,0,0.8); border: 1px solid #333; color: #555; padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px; }
     </style>
 </head>
 <body>
@@ -71,7 +70,7 @@
             <div class="terminal-header"><span>HUY_CORE_INTERFACE_v5.0</span><span id="term-time"></span></div>
             <div class="sticky-hint">💡 Type <b>'help'</b> or <span><b>'donate'</b></span> to support</div>
             <div id="terminal-history">
-                <div style="color: #444;"># System initialized. No background traffic logs active.</div>
+                <div style="color: #444;"># System initialized. Waiting for commands...</div>
             </div>
             <div class="input-line"><span style="color: #0f0; font-weight: bold;">_></span><input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="..."></div>
         </div>
@@ -105,11 +104,7 @@
         </div>
     </div>
 
-    <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
-    <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
-
     <script>
-        // Matrix Background
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -133,7 +128,7 @@
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
 
-        // Xử lý lệnh Terminal (Đã bỏ AutoLog)
+        // Xử lý lệnh Terminal (Đã bỏ AutoLog hoàn toàn)
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 const val = input.value.toLowerCase().trim();
@@ -141,14 +136,29 @@
                 log.innerHTML = `<span style="color: #fff;">_> ${input.value}</span>`;
                 history.appendChild(log);
                 
-                if (val === 'help') addLog("Commands: projects, skills, about, contact, clear, donate");
-                else if (val === 'projects') addLog("Projects: Server Deployment, Network Security, Web Dev.");
-                else if (val === 'skills') addLog("Skills: Infra (85%), Networking (75%), Security (60%)");
-                else if (val === 'clear') history.innerHTML = '';
-                else if (val === 'about') toggleModal('about-modal');
-                else if (val === 'contact') toggleModal('work-modal');
-                else if (val === 'donate') openDonate();
-                else if (val !== '') addLog(`Error: Command '${val}' not recognized.`, "#f44");
+                // Hỗ trợ cả project và projects
+                if (val === 'help') {
+                    addLog("Commands: projects, skills, about, contact, clear, donate");
+                } else if (val === 'project' || val === 'projects') {
+                    addLog("- Deploy HAProxy + Nginx Load Balancer", "#0f0");
+                    addLog("- Setup Monitoring Zabbix", "#0f0");
+                    addLog("- VPN Server OpenVPN", "#0f0");
+                    addLog("- Docker CI/CD Pipeline", "#0f0");
+                } else if (val === 'skills') {
+                    addLog("Infra: [████████░░] 80%");
+                    addLog("Networking: [███████░░░] 70%");
+                    addLog("Security: [██████░░░░] 60%");
+                } else if (val === 'clear') {
+                    history.innerHTML = '';
+                } else if (val === 'about') {
+                    toggleModal('about-modal');
+                } else if (val === 'contact') {
+                    toggleModal('work-modal');
+                } else if (val === 'donate') {
+                    openDonate();
+                } else if (val !== '') {
+                    addLog(`Error: Command '${val}' not recognized.`, "#f44");
+                }
                 
                 input.value = '';
                 history.scrollTop = history.scrollHeight;
@@ -165,14 +175,11 @@
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
         
-        function toggleAudio() {
-            const bgm = document.getElementById('bgm');
-            const btn = document.getElementById('audio-ctrl');
-            if (bgm.paused) { bgm.play(); btn.textContent = "SOUND: ON"; }
-            else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
+        function copySTK() {
+            navigator.clipboard.writeText("0334258458");
+            alert("Đã sao chép STK!");
         }
 
-        // Hiệu ứng Typewriter
         const words = ['_> System Engineer', '_> Network Architect', '_> Infrastructure Expert'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
