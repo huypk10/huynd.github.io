@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NGUYỄN ĐỨC HUY | SYSTEM ENGINEER</title>
+    <title>NGUYỄN ĐỨC HUY | CV</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg">
     
@@ -12,12 +12,11 @@
         canvas { position: absolute; top: 0; left: 0; z-index: 1; opacity: 0.2; }
         
         /* CORNER BUTTONS */
-        .corner-btn { position: fixed; z-index: 100; top: 15px; padding: 10px 15px; background: rgba(0, 255, 0, 0.05); border: 1px solid #0f0; color: #0f0; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: bold; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .corner-btn { position: fixed; z-index: 100; top: 15px; padding: 10px 15px; background: rgba(0, 255, 0, 0.05); border: 1px solid #0f0; color: #0f0; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: bold; transition: 0.3s; text-transform: uppercase; }
         .corner-btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
         .btn-left { left: 15px; }
         .btn-right { right: 15px; }
 
-        /* MAIN CONTAINER */
         .main-container { position: relative; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 15px; width: 90%; max-width: 420px; }
         .profile-card { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(15px); padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 255, 0, 0.2); width: 100%; box-shadow: 0 10px 50px rgba(0, 0, 0, 1); }
         .avatar { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 15px; }
@@ -26,7 +25,11 @@
         .btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px auto; padding: 12px; background: rgba(0, 255, 0, 0.02); color: #0f0; text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 8px; font-size: 12px; transition: 0.3s; text-transform: uppercase; }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
 
-        /* TERMINAL - PRO ENGLISH VERSION */
+        /* HINT MÀU NỔI BẬT */
+        .terminal-hint { color: #fff; font-size: 10px; margin-bottom: 8px; padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4); text-align: center; border-radius: 6px; background: rgba(255, 255, 0, 0.05); animation: hintPulse 2s infinite; font-family: 'Consolas', monospace; }
+        .terminal-hint b { color: #ff0; }
+        @keyframes hintPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
         .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 250px; padding: 12px; box-sizing: border-box; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; }
         .terminal-header { border-bottom: 1px solid rgba(0, 255, 0, 0.1); margin-bottom: 8px; padding-bottom: 5px; display: flex; justify-content: space-between; font-size: 10px; color: #444; }
         
@@ -39,6 +42,11 @@
         .modal-header { color: #ff0; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 5px; display: flex; justify-content: space-between; font-size: 12px; }
         .info-content { color: #fff; font-size: 12px; line-height: 1.6; }
         .info-content b { color: #0f0; }
+
+        /* DONATE STYLING */
+        .donate-area { margin-top: 15px; padding-top: 10px; border-top: 1px solid #222; text-align: center; }
+        .btn-donate { background: rgba(255, 255, 0, 0.1); color: #ff0; border: 1px solid #ff0; padding: 8px; border-radius: 5px; cursor: pointer; display: block; text-decoration: none; font-size: 11px; font-weight: bold; }
+        .btn-donate:hover { background: #ff0; color: #000; }
     </style>
 </head>
 <body>
@@ -58,13 +66,17 @@
             <a href="https://discord.gg/KjhUN7Hn2h" target="_blank" class="btn"><i class="fab fa-discord"></i> Discord</a>
         </div>
 
+        <div class="terminal-hint">
+            💡 Type <b>'help'</b> to start or <b>'donate'</b> to support
+        </div>
+
         <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
-            <div class="terminal-header"><span>HUY_CORE_v5.0_STABLE</span><span id="term-time"></span></div>
+            <div class="terminal-header"><span>HUY_CORE_v5.0_PRO</span><span id="term-time"></span></div>
             <div id="terminal-history">
-                <div style="color: #444;"># System integrity check: OK</div>
-                <div style="color: #444;"># Type 'help' to list available commands.</div>
+                <div style="color: #444;"># System Boot Complete.</div>
+                <div style="color: #444;"># Secure Connection Established.</div>
             </div>
-            <div class="input-line"><span style="color: #0f0; font-weight: bold;">_></span><input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="Command..."></div>
+            <div class="input-line"><span style="color: #0f0; font-weight: bold;">_></span><input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="..."></div>
         </div>
     </div>
 
@@ -78,11 +90,18 @@
     </div>
 
     <div id="work-modal" class="info-modal">
-        <div class="modal-header"><span>[CONTACT_FOR_WORK]</span> <span onclick="toggleModal('work-modal')" style="cursor:pointer; color:#f00;">X</span></div>
+        <div class="modal-header"><span>[CONTACT_&_DONATE]</span> <span onclick="toggleModal('work-modal')" style="cursor:pointer; color:#f00;">X</span></div>
         <div class="info-content">
             <b>EMAIL:</b> huynguyenduc090@gmail.com<br>
             <b>ZALO:</b> 0334258458<br>
-            <b>STATUS:</b> <span style="color: #ff0;">Open for Collaboration</span>
+            <b>STATUS:</b> <span style="color: #ff0;">Available for Work</span>
+            
+            <div class="donate-area">
+                <p style="font-size: 10px; margin-bottom: 8px; color: #888;">Buy me a coffee?</p>
+                <a href="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png" target="_blank" class="btn-donate">
+                    <i class="fas fa-coffee"></i> DONATE (QR CODE)
+                </a>
+            </div>
         </div>
     </div>
 
@@ -119,26 +138,26 @@
                 
                 if(val === 'projects') {
                     const res = document.createElement('div');
-                    res.innerHTML = "> Enterprise Server Deployment<br>> Network Infrastructure Security<br>> Full-stack Web Development";
+                    res.innerHTML = "> Enterprise Server Deployment<br>> Network Security Hardening<br>> Web Development Solutions";
                     history.appendChild(res);
                 } else if(val === 'help') {
                     const res = document.createElement('div');
-                    res.innerHTML = "Commands: projects, skills, about, contact, clear";
+                    res.innerHTML = "Commands: projects, skills, about, contact, donate, clear";
+                    history.appendChild(res);
+                } else if(val === 'donate') {
+                    toggleModal('work-modal');
+                    const res = document.createElement('div');
+                    res.innerHTML = "Opening donation portal...";
                     history.appendChild(res);
                 } else if(val === 'skills') {
                     const res = document.createElement('div');
-                    res.innerHTML = "Infrastructure: [████████░░] 85%<br>Networking: [███████░░░] 75%<br>CyberSecurity: [██████░░░░] 60%";
+                    res.innerHTML = "Infra: [████████░░] 80%<br>Networking: [███████░░░] 70%<br>Security: [██████░░░░] 60%";
                     history.appendChild(res);
-                } else if(val === 'about') {
-                    toggleModal('about-modal');
-                } else if(val === 'contact') {
-                    toggleModal('work-modal');
-                } else if(val === 'clear') { 
-                    history.innerHTML = ''; 
-                } else if(val !== '') {
+                } else if(val === 'clear') { history.innerHTML = ''; }
+                else if(val !== '') {
                     const err = document.createElement('div');
                     err.style.color = "#f44";
-                    err.innerHTML = `Error: Command '${val}' not recognized.`;
+                    err.innerHTML = `Error: Unknown command.`;
                     history.appendChild(err);
                 }
 
@@ -147,7 +166,7 @@
             }
         });
 
-        const words = ['_> System Engineer', '_> Network Specialist', '_> Security Enthusiast'];
+        const words = ['_> System Engineer', '_> Network Specialist', '_> Security Expert'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
             const cur = words[wIdx];
@@ -157,10 +176,7 @@
             else setTimeout(type, isDel ? 60 : 100);
         }
         type();
-
-        setInterval(() => { 
-            document.getElementById('term-time').textContent = new Date().toLocaleTimeString(); 
-        }, 1000);
+        setInterval(() => { document.getElementById('term-time').textContent = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
 </html>
