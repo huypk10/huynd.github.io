@@ -11,6 +11,7 @@
         body { margin: 0; padding: 0; background: #050505; overflow: hidden; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         canvas { position: absolute; top: 0; left: 0; z-index: 1; opacity: 0.25; }
 
+        /* 2 NÚT GÓC */
         .corner-btn { position: fixed; z-index: 100; top: 20px; padding: 10px 18px; background: rgba(0, 255, 0, 0.05); border: 1px solid #0f0; color: #0f0; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         .corner-btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
         .btn-left { left: 20px; }
@@ -23,34 +24,39 @@
         
         .btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px auto; padding: 12px; background: rgba(0, 255, 0, 0.02); color: #0f0; text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 8px; font-size: 12px; transition: 0.3s; text-transform: uppercase; cursor: pointer; }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
-        
         .btn-cv { color: #00d2ff; border-color: #00d2ff; background: rgba(0, 210, 255, 0.1); font-weight: bold; }
-        .btn-cv:hover { background: #00d2ff; color: #000; box-shadow: 0 0 20px #00d2ff; }
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
 
+        /* TERMINAL */
         .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 260px; padding: 12px; box-sizing: border-box; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; }
         .terminal-header { border-bottom: 1px solid rgba(0, 255, 0, 0.1); margin-bottom: 8px; padding-bottom: 5px; display: flex; justify-content: space-between; font-size: 10px; color: #444; }
-        
         .sticky-hint { color: #fff; font-size: 10px; margin-bottom: 10px; padding: 6px; border: 1px dashed rgba(255, 255, 0, 0.4); text-align: center; border-radius: 6px; background: rgba(255, 255, 0, 0.05); animation: hintBlink 2s infinite; }
-        .sticky-hint b { color: #0f0 !important; }
         @keyframes hintBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-
         #terminal-history { flex-grow: 1; overflow-y: auto; scrollbar-width: none; display: flex; flex-direction: column; gap: 4px; }
         .input-line { display: flex; gap: 5px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 5px; }
         #terminal-input { background: transparent; border: none; color: #fff; outline: none; font-family: inherit; font-size: inherit; flex-grow: 1; }
 
-        /* FOOTER THEO MẪU ẢNH */
+        /* FOOTER */
         footer { position: fixed; bottom: 20px; width: 100%; text-align: center; z-index: 50; }
-        .footer-badge { background: #0044cc; color: #fff; padding: 4px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; display: inline-block; letter-spacing: 1px; margin-bottom: 5px; box-shadow: 0 0 10px rgba(0, 68, 204, 0.5); }
-        .footer-sub { color: rgba(255,255,255,0.4); font-size: 9px; letter-spacing: 1px; }
+        .footer-badge { background: rgba(255, 255, 255, 0.05); color: #fff; padding: 4px 15px; font-size: 10px; font-weight: bold; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; display: inline-block; letter-spacing: 1px; margin-bottom: 6px; }
+        .footer-sub { color: #444; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; }
 
+        /* MODALS & DONATE (KHÔI PHỤC ĐỦ THÔNG TIN) */
         .info-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 200; width: 300px; background: #000; border: 1px solid #0f0; padding: 25px; border-radius: 10px; box-shadow: 0 0 50px rgba(0,255,0,0.5); }
         .modal-header { color: #ff0; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 8px; display: flex; justify-content: space-between; font-size: 12px; }
         
         #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; box-shadow: 0 0 50px rgba(0,0,0,1); width: 280px; text-align: center; }
-        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
         
-        #audio-ctrl { position: fixed; bottom: 20px; right: 20px; z-index: 100; background: rgba(0,0,0,0.8); border: 1px solid #0f0; color: #0f0; padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px; text-transform: uppercase; }
+        .bank-info { background: #111; border: 1px solid #333; padding: 15px; border-radius: 10px; color: #fff; font-size: 11px; text-align: left; cursor: pointer; transition: 0.3s; position: relative; }
+        .bank-info:hover { border-color: #ff0; background: #1a1a00; }
+        .bank-label { color: #ff0; font-size: 10px; font-weight: bold; display: block; margin-bottom: 5px; }
+        .bank-name { color: #00d2ff; font-size: 11px; display: block; margin-bottom: 3px; }
+        .bank-user { color: #fff; font-size: 12px; font-weight: bold; display: block; margin-bottom: 3px; }
+        .bank-stk { font-family: 'Consolas', monospace; font-size: 16px; color: #ff0; display: block; margin-top: 5px; letter-spacing: 1px; }
+        .copy-badge { position: absolute; right: 10px; bottom: 10px; font-size: 8px; border: 1px solid #444; padding: 2px 4px; border-radius: 3px; color: #666; }
+
+        #audio-ctrl { position: fixed; bottom: 20px; right: 20px; z-index: 100; background: rgba(0,0,0,0.8); border: 1px solid #0f0; color: #0f0; padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px; }
     </style>
 </head>
 <body>
@@ -75,9 +81,9 @@
 
         <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
             <div class="terminal-header"><span>HUY_CORE_v5.0_STABLE</span><span id="term-time"></span></div>
-            <div class="sticky-hint">💡 Type <b>'help'</b>, <b>'projects'</b> or <b>'cv'</b> to explore</div>
+            <div class="sticky-hint">💡 Type <b>'help'</b>, <b>'projects'</b> or <b>'cv'</b></div>
             <div id="terminal-history">
-                <div style="color: #444;"># Booting secure shell... Success.</div>
+                <div style="color: #444;"># Systems active. Language: English. Location: Hanoi.</div>
             </div>
             <div class="input-line"><span style="color: #0f0; font-weight: bold;">_></span><input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="..."></div>
         </div>
@@ -111,6 +117,15 @@
         <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold;">[X]</span>
         <h4 style="color:#ff0; margin: 10px 0;">DONATE COFFEE ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY" width="100%">
+        
+        <div class="bank-info" onclick="copySTK()">
+            <span class="bank-label">PAYMENT INFORMATION</span>
+            <span class="bank-name">BANK: VPBANK</span>
+            <span class="bank-user">HOLDER: NGUYEN DUC HUY</span>
+            <span class="bank-stk">0334258458</span>
+            <span class="copy-badge">CLICK TO COPY</span>
+        </div>
+        <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:8px; display:none;">_> ACCOUNT COPIED!</p>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
@@ -134,7 +149,6 @@
 
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
-        const cvURL = "#"; 
 
         function addLog(text, color = "#0af") {
             const div = document.createElement('div');
@@ -149,22 +163,12 @@
                 const line = document.createElement('div');
                 line.innerHTML = `<span style="color: #666;">_> ${input.value}</span>`;
                 history.appendChild(line);
-                
                 if (val === 'help') addLog("Commands: projects, cv, about, contact, donate, clear");
-                else if (val === 'projects' || val === 'project') {
-                    addLog("- Deploy HAProxy + Nginx Load Balancer", "#0f0");
-                    addLog("- Setup Monitoring Zabbix", "#0f0");
-                    addLog("- VPN Server OpenVPN", "#0f0");
-                    addLog("- Docker CI/CD Pipeline", "#0f0");
-                } else if (val === 'cv') {
-                    addLog("Accessing secure cloud storage... Downloading CV.", "#00d2ff");
-                    window.open(cvURL, '_blank');
-                } else if (val === 'about') toggleModal('about-modal');
-                else if (val === 'contact') toggleModal('work-modal');
+                else if (val === 'projects') {
+                    addLog("- Deploy HAProxy Load Balancer", "#0f0");
+                    addLog("- Setup Zabbix Monitoring", "#0f0");
+                } else if (val === 'donate') openDonate();
                 else if (val === 'clear') history.innerHTML = '';
-                else if (val === 'donate') openDonate();
-                else if (val !== '') addLog(`Error: Command '${val}' not recognized.`, "#f44");
-
                 input.value = '';
                 history.scrollTop = history.scrollHeight;
             }
@@ -178,11 +182,17 @@
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
         
+        function copySTK() {
+            navigator.clipboard.writeText("0334258458");
+            document.getElementById('copy-msg').style.display = 'block';
+            setTimeout(() => { document.getElementById('copy-msg').style.display = 'none'; }, 2000);
+        }
+        
         function toggleAudio() {
             const bgm = document.getElementById('bgm');
             const btn = document.getElementById('audio-ctrl');
-            if (bgm.paused) { bgm.play(); btn.textContent = "SOUND: ON"; btn.style.borderColor = "#0f0"; }
-            else { bgm.pause(); btn.textContent = "SOUND: OFF"; btn.style.borderColor = "#333"; }
+            if (bgm.paused) { bgm.play(); btn.textContent = "SOUND: ON"; }
+            else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
         const words = ['_> Systems Administrator', '_> Cyber Security', '_> Infrastructure Engineer'];
