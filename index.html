@@ -26,7 +26,7 @@
         .glitch { font-size: 24px; font-weight: bold; color: #fff; letter-spacing: 2px; margin-bottom: 5px; }
         
         /* ACTION BUTTONS */
-        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px auto; padding: 12px; background: rgba(0, 255, 0, 0.02); color: #0f0; text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 8px; font-size: 12px; transition: 0.3s; text-transform: uppercase; width: 100%; }
+        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px auto; padding: 12px; background: rgba(0, 255, 0, 0.02); color: #0f0; text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 8px; font-size: 12px; transition: 0.3s; text-transform: uppercase; width: 100%; cursor: pointer; }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
         .btn-cv { color: #00d2ff; border-color: #00d2ff; background: rgba(0, 210, 255, 0.1); font-weight: bold; }
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
@@ -51,9 +51,16 @@
         /* MODALS */
         .info-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 200; width: 90%; max-width: 320px; background: #000; border: 1px solid #0f0; padding: 25px; border-radius: 12px; }
         .modal-header { color: #ff0; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 8px; display: flex; justify-content: space-between; font-size: 12px; }
+        
+        /* DONATE MODAL SPECIFIC */
         #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 250; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; width: 85%; max-width: 300px; text-align: center; }
         #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
-        .bank-info { background: #111; border: 1px solid #333; padding: 15px; border-radius: 10px; text-align: left; position: relative; cursor: pointer; }
+        
+        /* Nút Xem Số Tài Khoản giống ảnh mẫu */
+        .btn-view-stk { background: #0f0; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; font-size: 12px; box-shadow: 0 0 15px rgba(0,255,0,0.4); margin-top: 5px; transition: 0.3s; }
+        .btn-view-stk:hover { background: #0c0; transform: scale(1.02); }
+
+        .bank-info { background: #111; border: 1px solid #333; padding: 15px; border-radius: 10px; text-align: left; position: relative; cursor: pointer; display: none; margin-top: 10px; }
         .bank-stk { font-family: 'Consolas', monospace; font-size: 17px; color: #ff0; display: block; margin-top: 5px; }
 
         @media (min-width: 769px) {
@@ -132,11 +139,15 @@
         <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold;">[X]</span>
         <h4 style="color:#ff0; margin: 10px 0;">DONATE COFFEE ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY" width="100%">
-        <div class="bank-info" onclick="copySTK()">
+        
+        <button id="btn-show-stk" class="btn-view-stk" onclick="revealBank()">Xem số tài khoản</button>
+
+        <div id="stk-details" class="bank-info" onclick="copySTK()">
             <span style="color:#ff0; font-size:10px; font-weight:bold;">VPBANK - NGUYEN DUC HUY</span>
             <span class="bank-stk">0334258458</span>
             <span style="position:absolute; right:12px; bottom:12px; font-size:8px; color:#666; border:1px solid #333; padding:2px 4px;">CLICK TO COPY</span>
         </div>
+
         <p id="copy-msg" style="color:#0f0; font-size:10px; margin-top:10px; display:none;">_> ACCOUNT COPIED!</p>
     </div>
 
@@ -144,7 +155,7 @@
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
-        // Matrix Canvas
+        // Matrix Canvas logic
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -161,10 +172,8 @@
         }
         setInterval(draw, 50);
 
-        // --- CẤU HÌNH LINK CV TẠI ĐÂY ---
+        // CONFIG CV LINK
         const MY_CV_URL = "http://huypk10.ddns.net"; 
-        
-        // Tự động đồng bộ link vào nút bấm
         document.getElementById('btn-cv-main').href = MY_CV_URL;
 
         const history = document.getElementById('terminal-history');
@@ -211,18 +220,32 @@
             }
         });
 
-        // Other functions
         function toggleModal(id) {
             const m = document.getElementById(id);
             m.style.display = (m.style.display === 'block') ? 'none' : 'block';
         }
-        function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
+
+        // Logic ẩn hiện Donate STK
+        function openDonate() { 
+            document.getElementById('donate-modal').style.display = 'block'; 
+            // Reset trạng thái: hiện nút xanh, ẩn STK
+            document.getElementById('btn-show-stk').style.display = 'block';
+            document.getElementById('stk-details').style.display = 'none';
+        }
+
+        function revealBank() {
+            document.getElementById('btn-show-stk').style.display = 'none';
+            document.getElementById('stk-details').style.display = 'block';
+        }
+
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
+
         function copySTK() {
             navigator.clipboard.writeText("0334258458");
             document.getElementById('copy-msg').style.display = 'block';
             setTimeout(() => { document.getElementById('copy-msg').style.display = 'none'; }, 2000);
         }
+
         function toggleAudio() {
             const bgm = document.getElementById('bgm');
             const btn = document.getElementById('audio-ctrl');
