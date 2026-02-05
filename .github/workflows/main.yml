@@ -1,0 +1,31 @@
+name: Deploy Portfolio
+on:
+  push:
+    branches:
+      - main  # Kiểm tra xem branch chính của Huy là 'main' hay 'master' nhé
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Inject All Secrets
+        # Đây chính là nơi lệnh sed hoạt động
+        run: |
+          sed -i "s|{{STK_NUMBER}}|${{ secrets.STK_NUMBER }}|g" index.html
+          sed -i "s|{{BANK_INFO}}|${{ secrets.BANK_INFO }}|g" index.html
+          sed -i "s|{{MY_PHONE}}|${{ secrets.MY_PHONE }}|g" index.html
+          sed -i "s|{{MY_EMAIL}}|${{ secrets.MY_EMAIL }}|g" index.html
+          sed -i "s|{{MY_NAME}}|${{ secrets.MY_NAME }}|g" index.html
+          sed -i "s|{{LINK_FB}}|${{ secrets.LINK_FB }}|g" index.html
+          sed -i "s|{{LINK_ZALO}}|${{ secrets.LINK_ZALO }}|g" index.html
+          sed -i "s|{{LINK_DISCORD}}|${{ secrets.LINK_DISCORD }}|g" index.html
+          sed -i "s|{{QR_LINK}}|${{ secrets.QR_LINK }}|g" index.html
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
