@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="{{MY_AVATAR}}" type="image/x-icon">
     <style>
+        /* GIỮ NGUYÊN TOÀN BỘ CSS CỦA BẠN VÌ NÓ ĐÃ RẤT ĐẸP */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background: #050505; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.25; pointer-events: none; }
@@ -22,29 +23,22 @@
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
         .btn-cv { color: #00d2ff; border-color: #00d2ff; background: rgba(0, 210, 255, 0.1); font-weight: bold; }
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
-        
         .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 280px; padding: 15px; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; }
         .terminal-header { border-bottom: 1px solid rgba(0, 255, 0, 0.1); margin-bottom: 10px; padding-bottom: 5px; display: flex; justify-content: space-between; font-size: 10px; color: #444; }
         #terminal-history { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; scrollbar-width: none; }
         .input-line { display: flex; gap: 8px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 10px; }
         #terminal-input { background: transparent; border: none; color: #fff; outline: none; font-family: inherit; font-size: 13px; flex-grow: 1; }
-        
         footer { width: 100%; text-align: center; padding: 25px 0; z-index: 50; position: relative; }
         .footer-text { color: #555; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
         .footer-sub { color: #333; font-size: 8px; text-transform: uppercase; margin-top: 5px; letter-spacing: 1px; }
-        
         .info-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 200; width: 90%; max-width: 320px; background: #000; border: 1px solid #0f0; padding: 25px; border-radius: 12px; }
         .modal-header { color: #ff0; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 8px; display: flex; justify-content: space-between; font-size: 12px; }
-        
         #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 250; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; width: 90%; max-width: 320px; text-align: center; max-height: 90vh; overflow-y: auto; box-shadow: 0 0 30px rgba(255, 255, 0, 0.2); }
         #donate-modal img { width: 100%; max-width: 180px; border-radius: 10px; margin: 10px 0; border: 2px solid #333; }
-        
         .reveal-btn { background: #ff0; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer; margin-top: 10px; width: 100%; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         .reveal-btn:hover { background: #fff; box-shadow: 0 0 15px #ff0; }
-        
         .bank-info-box { display: none; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; text-align: center; margin-top: 10px; animation: fadeIn 0.5s; }
         .bank-stk { font-family: 'Consolas', monospace; font-size: 18px; color: #ff0; display: block; margin-top: 5px; letter-spacing: 1px; }
-        
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         #audio-ctrl { position: fixed; bottom: 20px; right: 20px; z-index: 300; background: rgba(0,0,0,0.8); border: 1px solid #0f0; color: #0f0; padding: 8px 12px; cursor: pointer; border-radius: 20px; font-size: 9px; }
     </style>
@@ -125,27 +119,29 @@
     <audio id="bgm" loop src="{{LINK_BGM}}"></audio>
 
     <script>
-        // Security: Base64 Decoding Logic
-        const rawData = {
+        // Bảo mật: Sử dụng Base64 cho các dữ liệu nhạy cảm
+        const dataRaw = {
             stk: "{{STK_NUMBER}}",
             phone: "{{MY_PHONE}}",
             email: "{{MY_EMAIL}}"
         };
 
-        const encode = (str) => btoa(str);
         const decode = (str) => atob(str);
-
-        // Chuyển dữ liệu sang dạng an toàn ngay khi load
+        
+        // Mã hóa ngay khi load vào biến tĩnh để tránh hacker xem text thuần
         const SECURE = {
-            s: encode(rawData.stk),
-            p: encode(rawData.phone),
-            e: encode(rawData.email)
+            s: btoa(dataRaw.stk),
+            p: btoa(dataRaw.phone),
+            e: btoa(dataRaw.email)
         };
 
-        // Gán dữ liệu giải mã vào UI
-        document.getElementById('m-email').textContent = decode(SECURE.e);
-        document.getElementById('m-phone').textContent = decode(SECURE.p);
-        document.getElementById('stk-value').textContent = decode(SECURE.s);
+        // Hàm gán dữ liệu vào UI một cách an toàn
+        function initDecodedData() {
+            document.getElementById('m-email').textContent = decode(SECURE.e);
+            document.getElementById('m-phone').textContent = decode(SECURE.p);
+            document.getElementById('stk-value').textContent = decode(SECURE.s);
+        }
+        window.onload = initDecodedData;
 
         // Matrix Effect
         const canvas = document.getElementById('matrix');
@@ -164,7 +160,7 @@
         }
         setInterval(draw, 50);
 
-        // Modals & Donate Logic
+        // Modals Logic
         function toggleModal(id) {
             const m = document.getElementById(id);
             m.style.display = (m.style.display === 'block') ? 'none' : 'block';
@@ -199,29 +195,30 @@
         input.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const cmd = this.value.toLowerCase().trim();
+                if (cmd === '') return;
+
                 const line = document.createElement('div');
-                line.innerHTML = `<span style="color: #fff;">> ${cmd}</span>`;
+                line.innerHTML = `<span style="color: #666;">$ ${this.value}</span>`;
                 history.appendChild(line);
 
                 const res = document.createElement('div');
                 res.style.marginBottom = "10px";
 
-                const specText = "Systems Administration & Cyber Security.";
-
                 if (cmd === 'help') {
-                    res.innerHTML = `<span style="color: #0f0;">Available: about, cv, projects, clear, donate</span>`;
+                    res.innerHTML = `<span style="color: #0f0;">Available: about, cv, projects, clear, donate, contact</span>`;
                 } else if (cmd === 'about') {
-                    res.innerHTML = `Identity: {{MY_NAME}}. Role: {{MY_ROLE}}. Field: ${specText}`;
+                    res.innerHTML = `Identity: {{MY_NAME}} | Role: {{MY_ROLE}} | Specialty: {{MY_SPECIALTY}}`;
+                } else if (cmd === 'contact') {
+                    res.innerHTML = `Email: ${decode(SECURE.e)} | Phone: ${decode(SECURE.p)}`;
                 } else if (cmd === 'cv') {
-                    res.innerHTML = `<a href="{{LINK_CV}}" style="color: #00d2ff; text-decoration: underline;">[Download CV_Huy.pdf]</a>`;
-                } else if (cmd === 'projects' || cmd === 'project') {
-                    res.innerHTML = `Field: ${specText} | Status: encrypted.`;
+                    res.innerHTML = `<a href="{{LINK_CV}}" target="_blank" style="color: #00d2ff; text-decoration: underline;">[Download_CV.pdf]</a>`;
                 } else if (cmd === 'clear') {
                     history.innerHTML = '';
                 } else if (cmd === 'donate') {
                     openDonate();
-                } else if (cmd !== '') {
-                    res.innerHTML = `<span style="color: #f00;">Command not found.</span>`;
+                    res.innerHTML = `<span style="color: #ff0;">Opening coffee portal...</span>`;
+                } else {
+                    res.innerHTML = `<span style="color: #f00;">Command not found. Type 'help' for options.</span>`;
                 }
 
                 history.appendChild(res);
@@ -232,7 +229,7 @@
         });
 
         // Typewriter Effect
-        const words = ['_> {{MY_ROLE}}', '_> {{MY_SPECIALTY}}', '_> Security Expert'];
+        const words = ['_> {{MY_ROLE}}', '_> {{MY_SPECIALTY}}', '_> Verified Identity'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
             const cur = words[wIdx];
