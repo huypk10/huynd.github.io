@@ -24,21 +24,20 @@
         .avatar { width: 95px; height: 95px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 15px; object-fit: cover; }
         .glitch { font-size: 24px; font-weight: bold; color: #fff; letter-spacing: 2px; margin-bottom: 5px; }
         
-        /* ACTION BUTTONS */
         .btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px auto; padding: 12px; background: rgba(0, 255, 0, 0.02); color: #0f0; text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 8px; font-size: 12px; transition: 0.3s; text-transform: uppercase; width: 100%; cursor: pointer; }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
         .btn-cv { color: #00d2ff; border-color: #00d2ff; background: rgba(0, 210, 255, 0.1); font-weight: bold; }
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
 
         /* TERMINAL INTERFACE */
-        .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 280px; padding: 15px; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; }
+        .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 260px; padding: 15px; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; }
         .terminal-header { border-bottom: 1px solid rgba(0, 255, 0, 0.1); margin-bottom: 10px; padding-bottom: 5px; display: flex; justify-content: space-between; font-size: 10px; color: #444; }
         #terminal-history { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; scrollbar-width: none; }
         .input-line { display: flex; gap: 8px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 10px; }
         #terminal-input { background: transparent; border: none; color: #fff; outline: none; font-family: inherit; font-size: 13px; flex-grow: 1; }
 
         /* FOOTER */
-        footer { width: 100%; text-align: center; padding: 20px 0; z-index: 50; position: relative; }
+        footer { width: 100%; text-align: center; padding: 25px 0; z-index: 50; position: relative; }
         .footer-text { color: #555; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
         .footer-sub { color: #333; font-size: 8px; text-transform: uppercase; margin-top: 5px; letter-spacing: 1px; }
 
@@ -126,7 +125,6 @@
     <audio id="bgm" loop src="{{LINK_BGM}}"></audio>
 
     <script>
-        // Matrix Effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
