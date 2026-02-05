@@ -51,7 +51,7 @@
     <div class="main-container">
         <div class="profile-card">
             <img src="{{MY_AVATAR}}" class="avatar">
-            <div class="glitch" id="display-name">Loading...</div>
+            <div class="glitch">{{MY_NAME}}</div>
             <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; min-height: 20px; margin-bottom: 10px;"></div>
             <a href="{{LINK_FB}}" target="_blank" class="btn"><i class="fab fa-facebook"></i> Facebook</a>
             <a href="{{LINK_ZALO}}" target="_blank" class="btn"><i class="fas fa-comment"></i> Zalo</a>
@@ -75,14 +75,14 @@
     </div>
 
     <footer>
-        <div class="footer-text">© 2026 <span class="inject-name"></span> | ALL RIGHTS RESERVED</div>
+        <div class="footer-text">© 2026 {{MY_NAME}} | ALL RIGHTS RESERVED</div>
         <div class="footer-sub">SECURED IDENTITY VERIFIED</div>
     </footer>
 
     <div id="about-modal" class="info-modal">
         <div class="modal-header"><span>[IDENTITY]</span> <span onclick="toggleModal('about-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
         <div style="color:#fff; font-size:12px; line-height:1.6;">
-            <b>FULL NAME:</b> <span class="inject-name"></span><br>
+            <b>FULL NAME:</b> {{MY_NAME}}<br>
             <b>CURRENT ROLE:</b> {{MY_ROLE}}<br>
             <b>SPECIALTY:</b> {{MY_SPECIALTY}}
         </div>
@@ -118,27 +118,13 @@
 
     <script>
         const _0xHuy = {
-            n: "{{MY_NAME}}",
             s: "{{STK_NUMBER}}",
             p: "{{MY_PHONE}}",
             e: "{{MY_EMAIL}}"
         };
 
         const decode = (str) => {
-            try {
-                return decodeURIComponent(atob(str).split('').map(function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-            } catch(e) {
-                try { return atob(str); } catch(err) { return "Error"; }
-            }
-        };
-
-        window.onload = function() {
-            const name = decode(_0xHuy.n);
-            document.getElementById('display-name').textContent = name;
-            document.title = name;
-            document.querySelectorAll('.inject-name').forEach(el => el.textContent = name);
+            try { return atob(str); } catch(e) { return "Error"; }
         };
 
         function toggleModal(id) {
@@ -203,7 +189,7 @@
                 res.style.marginBottom = "10px";
 
                 if (cmd === 'help') res.innerHTML = `<span style="color: #0f0;">about, project(s), cv, clear, donate, contact</span>`;
-                else if (cmd === 'about') res.innerHTML = `Identity: ${decode(_0xHuy.n)} | Role: {{MY_ROLE}}`;
+                else if (cmd === 'about') res.innerHTML = `Identity: {{MY_NAME}} | Role: {{MY_ROLE}}`;
                 else if (cmd === 'contact') res.innerHTML = `Email: ${decode(_0xHuy.e)} | Phone: ${decode(_0xHuy.p)}`;
                 else if (cmd === 'project' || cmd === 'projects') {
                     res.innerHTML = `<span style="color: #00d2ff;">[SYSTEM PROJECTS]</span><br>` +
@@ -214,7 +200,7 @@
                 else if (cmd === 'cv') res.innerHTML = `<a href="{{LINK_CV}}" target="_blank" style="color: #00d2ff; text-decoration: underline;">[Download_CV.pdf]</a>`;
                 else if (cmd === 'clear') history.innerHTML = '';
                 else if (cmd === 'donate') { openDonate(); res.innerHTML = "Opening portal..."; }
-                else res.innerHTML = `<span style="color: #f00;">Command not found. Type 'help' for available commands.</span>`;
+                else res.innerHTML = `<span style="color: #f00;">Command not found.</span>`;
 
                 history.appendChild(res);
                 this.value = '';
