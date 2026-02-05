@@ -18,23 +18,41 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Inject All Secrets
+        env:
+          MY_NAME: ${{ secrets.MY_NAME }}
+          MY_ROLE: ${{ secrets.MY_JOB }}
+          MY_SPECIALTY: ${{ secrets.MY_SPECIALTY }}
+          MY_LOCATION: ${{ secrets.MY_LOCATION }}
+          MY_EMAIL: ${{ secrets.MY_EMAIL }}
+          MY_PHONE: ${{ secrets.MY_PHONE }}
+          MY_AVATAR: ${{ secrets.MY_AVATAR }}
+          LINK_FB: ${{ secrets.LINK_FB }}
+          LINK_ZALO: ${{ secrets.LINK_ZALO }}
+          LINK_DISCORD: ${{ secrets.LINK_DISCORD }}
+          LINK_CV: ${{ secrets.LINK_CV }}
+          LINK_BGM: ${{ secrets.LINK_BGM }}
+          BANK_INFO: ${{ secrets.BANK_INFO }}
+          STK_NUMBER: ${{ secrets.STK_NUMBER }}
+          QR_LINK: ${{ secrets.QR_LINK }}
+          TERMINAL_TITLE: ${{ secrets.TERMINAL_TITLE }}
         run: |
-          sed -i "s|{{MY_NAME}}|${{ secrets.MY_NAME }}|g" index.html
-          sed -i "s|{{MY_ROLE}}|${{ secrets.MY_JOB }}|g" index.html
-          sed -i "s|{{MY_SPECIALTY}}|${{ secrets.MY_SPECIALTY }}|g" index.html
-          sed -i "s|{{MY_LOCATION}}|${{ secrets.MY_LOCATION }}|g" index.html
-          sed -i "s|{{MY_EMAIL}}|${{ secrets.MY_EMAIL }}|g" index.html
-          sed -i "s|{{MY_PHONE}}|${{ secrets.MY_PHONE }}|g" index.html
-          sed -i "s|{{MY_AVATAR}}|${{ secrets.MY_AVATAR }}|g" index.html
-          sed -i "s|{{LINK_FB}}|${{ secrets.LINK_FB }}|g" index.html
-          sed -i "s|{{LINK_ZALO}}|${{ secrets.LINK_ZALO }}|g" index.html
-          sed -i "s|{{LINK_DISCORD}}|${{ secrets.LINK_DISCORD }}|g" index.html
-          sed -i "s|{{LINK_CV}}|${{ secrets.LINK_CV }}|g" index.html
-          sed -i "s|{{LINK_BGM}}|${{ secrets.LINK_BGM }}|g" index.html
-          sed -i "s|{{BANK_INFO}}|${{ secrets.BANK_INFO }}|g" index.html
-          sed -i "s|{{STK_NUMBER}}|${{ secrets.STK_NUMBER }}|g" index.html
-          sed -i "s|{{QR_LINK}}|${{ secrets.QR_LINK }}|g" index.html
-          sed -i "s|{{TERMINAL_TITLE}}|${{ secrets.TERMINAL_TITLE }}|g" index.html
+          # Sử dụng ký tự phân cách là | và biến môi trường để tránh lỗi ký tự đặc biệt
+          sed -i "s|{{MY_NAME}}|$MY_NAME|g" index.html
+          sed -i "s|{{MY_ROLE}}|$MY_ROLE|g" index.html
+          sed -i "s|{{MY_SPECIALTY}}|$MY_SPECIALTY|g" index.html
+          sed -i "s|{{MY_LOCATION}}|$MY_LOCATION|g" index.html
+          sed -i "s|{{MY_EMAIL}}|$MY_EMAIL|g" index.html
+          sed -i "s|{{MY_PHONE}}|$MY_PHONE|g" index.html
+          sed -i "s|{{MY_AVATAR}}|$MY_AVATAR|g" index.html
+          sed -i "s|{{LINK_FB}}|$LINK_FB|g" index.html
+          sed -i "s|{{LINK_ZALO}}|$LINK_ZALO|g" index.html
+          sed -i "s|{{LINK_DISCORD}}|$LINK_DISCORD|g" index.html
+          sed -i "s|{{LINK_CV}}|$LINK_CV|g" index.html
+          sed -i "s|{{LINK_BGM}}|$LINK_BGM|g" index.html
+          sed -i "s|{{BANK_INFO}}|$BANK_INFO|g" index.html
+          sed -i "s|{{STK_NUMBER}}|$STK_NUMBER|g" index.html
+          sed -i "s|{{QR_LINK}}|$QR_LINK|g" index.html
+          sed -i "s|{{TERMINAL_TITLE}}|$TERMINAL_TITLE|g" index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
