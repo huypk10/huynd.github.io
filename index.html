@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="{{MY_AVATAR}}" type="image/x-icon">
     <style>
-        /* GIỮ NGUYÊN TOÀN BỘ CSS CỦA BẠN VÌ NÓ ĐÃ RẤT ĐẸP */
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background: #050505; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.25; pointer-events: none; }
@@ -119,7 +119,7 @@
     <audio id="bgm" loop src="{{LINK_BGM}}"></audio>
 
     <script>
-        // Bảo mật: Sử dụng Base64 cho các dữ liệu nhạy cảm
+       
         const dataRaw = {
             stk: "{{STK_NUMBER}}",
             phone: "{{MY_PHONE}}",
@@ -127,15 +127,14 @@
         };
 
         const decode = (str) => atob(str);
-        
-        // Mã hóa ngay khi load vào biến tĩnh để tránh hacker xem text thuần
+  
         const SECURE = {
             s: btoa(dataRaw.stk),
             p: btoa(dataRaw.phone),
             e: btoa(dataRaw.email)
         };
 
-        // Hàm gán dữ liệu vào UI một cách an toàn
+    
         function initDecodedData() {
             document.getElementById('m-email').textContent = decode(SECURE.e);
             document.getElementById('m-phone').textContent = decode(SECURE.p);
@@ -143,7 +142,7 @@
         }
         window.onload = initDecodedData;
 
-        // Matrix Effect
+
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -160,7 +159,7 @@
         }
         setInterval(draw, 50);
 
-        // Modals Logic
+     
         function toggleModal(id) {
             const m = document.getElementById(id);
             m.style.display = (m.style.display === 'block') ? 'none' : 'block';
@@ -179,7 +178,7 @@
             navigator.clipboard.writeText(decode(SECURE.s));
         }
 
-        // Audio Logic
+  
         function toggleAudio() {
             const bgm = document.getElementById('bgm');
             const btn = document.getElementById('audio-ctrl');
@@ -187,7 +186,7 @@
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
-        // Terminal Commands
+
         const input = document.getElementById('terminal-input');
         const history = document.getElementById('terminal-history');
         const typeSound = document.getElementById('type-sound');
@@ -228,7 +227,7 @@
             }
         });
 
-        // Typewriter Effect
+       
         const words = ['_> {{MY_ROLE}}', '_> {{MY_SPECIALTY}}', '_> Verified Identity'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
