@@ -202,14 +202,19 @@
                 const res = document.createElement('div');
                 res.style.marginBottom = "10px";
 
-                if (cmd === 'help') res.innerHTML = `<span style="color: #0f0;">about, projects, cv, clear, donate, contact</span>`;
+                if (cmd === 'help') res.innerHTML = `<span style="color: #0f0;">about, project(s), cv, clear, donate, contact</span>`;
                 else if (cmd === 'about') res.innerHTML = `Identity: ${decode(_0xHuy.n)} | Role: {{MY_ROLE}}`;
                 else if (cmd === 'contact') res.innerHTML = `Email: ${decode(_0xHuy.e)} | Phone: ${decode(_0xHuy.p)}`;
-                else if (cmd === 'projects') res.innerHTML = `[1] Portfolio v5 (Current)<br>[2] System Admin Tools<br>[3] Automation Scripts`;
+                else if (cmd === 'project' || cmd === 'projects') {
+                    res.innerHTML = `<span style="color: #00d2ff;">[SYSTEM PROJECTS]</span><br>` +
+                                    `1. <span style="color: #fff;">Home Lab:</span> Proxmox Virtualization & Docker Deployment<br>` +
+                                    `2. <span style="color: #fff;">Network Security:</span> PFSense Firewall & OpenVPN Configuration<br>` +
+                                    `3. <span style="color: #fff;">Monitoring:</span> Zabbix & Grafana Real-time Dashboard`;
+                }
                 else if (cmd === 'cv') res.innerHTML = `<a href="{{LINK_CV}}" target="_blank" style="color: #00d2ff; text-decoration: underline;">[Download_CV.pdf]</a>`;
                 else if (cmd === 'clear') history.innerHTML = '';
                 else if (cmd === 'donate') { openDonate(); res.innerHTML = "Opening portal..."; }
-                else res.innerHTML = `<span style="color: #f00;">Command not found.</span>`;
+                else res.innerHTML = `<span style="color: #f00;">Command not found. Type 'help' for available commands.</span>`;
 
                 history.appendChild(res);
                 this.value = '';
@@ -218,7 +223,7 @@
             }
         });
 
-        const words = ['_> {{MY_ROLE}}', '_> {{MY_SPECIALTY}}', '_> Verified Identity'];
+        const words = ['_> Network Administrator', '_> {{MY_SPECIALTY}}', '_> Verified Identity'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
             const cur = words[wIdx];
