@@ -225,10 +225,8 @@
             m.style.display = (m.style.display === 'block') ? 'none' : 'block';
         }
 
-        // Logic ẩn hiện Donate STK
         function openDonate() { 
             document.getElementById('donate-modal').style.display = 'block'; 
-            // Reset trạng thái: hiện nút xanh, ẩn STK
             document.getElementById('btn-show-stk').style.display = 'block';
             document.getElementById('stk-details').style.display = 'none';
         }
@@ -257,13 +255,19 @@
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
             const cur = words[wIdx];
-            document.getElementById('typewriter').textContent = cur.substring(0, isDel ? cIdx-- : cIdx++);
-            if(!isDel && cIdx > cur.length) { isDel = true; setTimeout(type, 2000); }
-            else if(isDel && cIdx === 0) { isDel = false; wIdx = (wIdx+1)%words.length; setTimeout(type, 500); }
-            else setTimeout(type, isDel ? 60 : 100);
+            const el = document.getElementById('typewriter');
+            if (el) {
+                el.textContent = cur.substring(0, isDel ? cIdx-- : cIdx++);
+                if(!isDel && cIdx > cur.length) { isDel = true; setTimeout(type, 2000); }
+                else if(isDel && cIdx === 0) { isDel = false; wIdx = (wIdx+1)%words.length; setTimeout(type, 500); }
+                else setTimeout(type, isDel ? 60 : 100);
+            }
         }
         type();
-        setInterval(() => { document.getElementById('term-time').textContent = new Date().toLocaleTimeString(); }, 1000);
+        setInterval(() => { 
+            const timeEl = document.getElementById('term-time');
+            if(timeEl) timeEl.textContent = new Date().toLocaleTimeString(); 
+        }, 1000);
     </script>
 </body>
 </html>
