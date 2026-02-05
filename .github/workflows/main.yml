@@ -19,9 +19,8 @@ jobs:
 
       - name: Inject All Secrets
         run: |
-          # Sửa đổi: Đảm bảo script tìm đúng thẻ {{MY_ROLE}} để thay thế bằng secret MY_ROLE
           sed -i "s|{{MY_NAME}}|${{ secrets.MY_NAME }}|g" index.html
-          sed -i "s|{{MY_ROLE}}|${{ secrets.MY_ROLE }}|g" index.html
+          sed -i "s|{{MY_ROLE}}|${{ secrets.MY_JOB }}|g" index.html
           sed -i "s|{{MY_SPECIALTY}}|${{ secrets.MY_SPECIALTY }}|g" index.html
           sed -i "s|{{MY_LOCATION}}|${{ secrets.MY_LOCATION }}|g" index.html
           sed -i "s|{{MY_EMAIL}}|${{ secrets.MY_EMAIL }}|g" index.html
