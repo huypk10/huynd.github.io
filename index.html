@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{MY_NAME}} | OFFICIAL SITE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" type="image/x-icon">
+    <link rel="icon" href="{{MY_AVATAR}}" type="image/x-icon">
     
     <style>
         /* BASE SETUP */
@@ -56,7 +56,6 @@
         #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 250; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; width: 85%; max-width: 300px; text-align: center; }
         #donate-modal img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
         
-        /* Nút Xem Số Tài Khoản giống ảnh mẫu */
         .btn-view-stk { background: #0f0; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; font-size: 12px; box-shadow: 0 0 15px rgba(0,255,0,0.4); margin-top: 5px; transition: 0.3s; }
         .btn-view-stk:hover { background: #0c0; transform: scale(1.02); }
 
@@ -85,7 +84,7 @@
 
     <div class="main-container">
         <div class="profile-card">
-            <img src="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" class="avatar">
+            <img src="{{MY_AVATAR}}" class="avatar">
             <div class="glitch">{{MY_NAME}}</div>
             <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; min-height: 20px; margin-bottom: 10px;"></div>
             
@@ -93,13 +92,13 @@
             <a href="{{LINK_ZALO}}" target="_blank" class="btn"><i class="fas fa-comment"></i> Zalo</a>
             <a href="{{LINK_DISCORD}}" target="_blank" class="btn"><i class="fab fa-discord"></i> Discord</a>
             
-            <a href="#" target="_blank" id="btn-cv-main" class="btn btn-cv"><i class="fas fa-file-download"></i> Download CV</a>
+            <a href="{{LINK_CV}}" target="_blank" id="btn-cv-main" class="btn btn-cv"><i class="fas fa-file-download"></i> Download CV</a>
             
             <div class="btn btn-donate" onclick="openDonate()"><i class="fas fa-coffee"></i> Donate Coffee</div>
         </div>
 
         <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
-            <div class="terminal-header"><span>HUY_CORE_v5.0_STABLE</span><span id="term-time"></span></div>
+            <div class="terminal-header"><span>{{TERMINAL_TITLE}}</span><span id="term-time"></span></div>
             <div class="sticky-hint">💡 Type <b>'help'</b>, <b>'projects'</b> or <b>'cv'</b></div>
             <div id="terminal-history">
                 <div style="color: #444;"># Booting secure shell... Success.</div>
@@ -121,8 +120,8 @@
         <div class="modal-header"><span>[IDENTITY]</span> <span onclick="toggleModal('about-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
         <div style="color:#fff; font-size:12px; line-height:1.6;">
             <b>NAME:</b> {{MY_NAME}}<br>
-            <b>ROLE:</b> Systems Administrator<br>
-            <b>SPECIALTY:</b> Network Security & Infrastructure
+            <b>ROLE:</b> {{MY_ROLE}}<br>
+            <b>SPECIALTY:</b> {{MY_SPECIALTY}}
         </div>
     </div>
 
@@ -131,7 +130,7 @@
         <div style="color:#fff; font-size:12px; line-height:1.6;">
             <b>EMAIL:</b> {{MY_EMAIL}}<br>
             <b>PHONE/ZALO:</b> {{MY_PHONE}}<br>
-            <b>LOCATION:</b> Hanoi, Vietnam
+            <b>LOCATION:</b> {{MY_LOCATION}}
         </div>
     </div>
 
@@ -152,7 +151,7 @@
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
-    <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
+    <audio id="bgm" loop src="{{LINK_BGM}}"></audio>
 
     <script>
         // Matrix Canvas logic
@@ -171,10 +170,6 @@
             });
         }
         setInterval(draw, 50);
-
-        // CONFIG CV LINK
-        const MY_CV_URL = "http://huypk10.ddns.net"; 
-        document.getElementById('btn-cv-main').href = MY_CV_URL;
 
         const history = document.getElementById('terminal-history');
         const input = document.getElementById('terminal-input');
@@ -203,7 +198,7 @@
                     addLog("- Docker CI/CD Pipeline", "#0f0");
                 } else if (val === 'cv') {
                     addLog("Accessing secure cloud... Opening CV.", "#00d2ff");
-                    window.open(MY_CV_URL, '_blank');
+                    window.open("{{LINK_CV}}", '_blank');
                 } else if (val === 'clear') {
                     history.innerHTML = '';
                 } else if (val === 'donate') {
@@ -251,7 +246,7 @@
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
-        const words = ['_> Systems Administrator', '_> Cyber Security', '_> Infrastructure Engineer'];
+        const words = ['_> {{MY_ROLE}}', '_> Cyber Security', '_> Infrastructure Engineer'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
             const cur = words[wIdx];
