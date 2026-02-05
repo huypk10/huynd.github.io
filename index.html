@@ -22,7 +22,6 @@
         .btn-cv { color: #00d2ff; border-color: #00d2ff; background: rgba(0, 210, 255, 0.1); font-weight: bold; }
         .btn-donate { color: #ff0; border-color: #ff0; background: rgba(255,255,0,0.1); font-weight: bold; }
         
-        /* TERMINAL CSS */
         .terminal-box { background: rgba(0, 0, 0, 0.95); border: 1px solid rgba(0, 255, 0, 0.3); border-radius: 12px; width: 100%; height: 280px; padding: 15px; display: flex; flex-direction: column; font-family: 'Consolas', monospace; font-size: 11px; color: #0f0; }
         .terminal-header { border-bottom: 1px solid rgba(0, 255, 0, 0.1); margin-bottom: 10px; padding-bottom: 5px; display: flex; justify-content: space-between; font-size: 10px; color: #444; }
         #terminal-history { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; scrollbar-width: none; }
@@ -36,11 +35,18 @@
         .info-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 200; width: 90%; max-width: 320px; background: #000; border: 1px solid #0f0; padding: 25px; border-radius: 12px; }
         .modal-header { color: #ff0; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 8px; display: flex; justify-content: space-between; font-size: 12px; }
         
-        /* DONATE POPUP FIX */
-        #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 250; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; width: 90%; max-width: 320px; text-align: center; max-height: 90vh; overflow-y: auto; }
-        #donate-modal img { width: 100%; max-width: 200px; border-radius: 10px; margin: 10px 0; border: 2px solid #333; }
-        .bank-info { background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; text-align: center; margin-top: 10px; }
+        /* DONATE POPUP */
+        #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 250; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; width: 90%; max-width: 320px; text-align: center; max-height: 90vh; overflow-y: auto; box-shadow: 0 0 30px rgba(255, 255, 0, 0.2); }
+        #donate-modal img { width: 100%; max-width: 180px; border-radius: 10px; margin: 10px 0; border: 2px solid #333; }
+        
+        /* BANK REVEAL BUTTON */
+        .reveal-btn { background: #ff0; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; margin-top: 10px; width: 100%; transition: 0.3s; }
+        .reveal-btn:hover { background: #fff; box-shadow: 0 0 15px #ff0; }
+        
+        .bank-info-box { display: none; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; text-align: center; margin-top: 10px; animation: fadeIn 0.5s; }
         .bank-stk { font-family: 'Consolas', monospace; font-size: 18px; color: #ff0; display: block; margin-top: 5px; letter-spacing: 1px; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
         #audio-ctrl { position: fixed; bottom: 20px; right: 20px; z-index: 300; background: rgba(0,0,0,0.8); border: 1px solid #0f0; color: #0f0; padding: 8px 12px; cursor: pointer; border-radius: 20px; font-size: 9px; }
     </style>
@@ -67,7 +73,7 @@
             <div class="terminal-header"><span>{{TERMINAL_TITLE}}</span><span id="term-time"></span></div>
             <div id="terminal-history">
                 <div style="background: rgba(255, 255, 0, 0.1); border: 1px dashed #ff0; padding: 8px; border-radius: 5px; margin-bottom: 10px; text-align: center; font-size: 10px;">
-                    <span style="color: #ff0;">💡 HINT: Type <span style="color: #0f0;">'help'</span>, <span style="color: #0f0;">'projects'</span> or <span style="color: #0f0;">'cv'</span></span>
+                    <span style="color: #ff0;">💡 HINT: Type <span style="color: #0f0;">'help'</span> or <span style="color: #0f0;">'cv'</span></span>
                 </div>
             </div>
             <div class="input-line">
@@ -103,12 +109,18 @@
     <div id="donate-modal">
         <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold; font-size: 20px;">&times;</span>
         <h3 style="color:#ff0; margin: 10px 0;">SUPPORT ME ☕</h3>
-        <p style="font-size: 11px; color: #aaa;">Your support is my motivation!</p>
+        <p style="font-size: 11px; color: #aaa;">Scan QR or click below for banking</p>
+        
         <img src="{{QR_LINK}}" alt="QR Code">
-        <div class="bank-info">
-            <span style="color:#ff0; font-size:11px; text-transform: uppercase; letter-spacing: 1px;">{{BANK_INFO}}</span>
-            <span class="bank-stk" id="stk-copy">{{STK_NUMBER}}</span>
-            <small style="color: #555; font-size: 9px; margin-top: 5px; display: block;">(Click STK to copy)</small>
+        
+        <button class="reveal-btn" id="reveal-bank-btn" onclick="revealBank()">
+            <i class="fas fa-university"></i> HIỆN THÔNG TIN STK
+        </button>
+
+        <div class="bank-info-box" id="bank-reveal-area">
+            <span style="color:#ff0; font-size:11px; text-transform: uppercase;">{{BANK_INFO}}</span>
+            <span class="bank-stk" id="stk-value">{{STK_NUMBER}}</span>
+            <small style="color: #0f0; font-size: 9px; margin-top: 5px; display: block;">✅ Đã tự động copy STK!</small>
         </div>
     </div>
 
@@ -138,14 +150,26 @@
             const m = document.getElementById(id);
             m.style.display = (m.style.display === 'block') ? 'none' : 'block';
         }
-        function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
+        function openDonate() { 
+            document.getElementById('donate-modal').style.display = 'block'; 
+            // Reset trạng thái nút khi mở lại
+            document.getElementById('bank-reveal-area').style.display = 'none';
+            document.getElementById('reveal-bank-btn').style.display = 'block';
+        }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
 
-        // STK Copy Function
-        document.getElementById('stk-copy').onclick = function() {
-            navigator.clipboard.writeText(this.innerText);
-            alert("Đã sao chép số tài khoản!");
-        };
+        // REVEAL & COPY BANK INFO
+        function revealBank() {
+            const area = document.getElementById('bank-reveal-area');
+            const btn = document.getElementById('reveal-bank-btn');
+            const stk = document.getElementById('stk-value').innerText;
+
+            area.style.display = 'block';
+            btn.style.display = 'none';
+
+            // Auto copy
+            navigator.clipboard.writeText(stk);
+        }
 
         // Audio Controls
         function toggleAudio() {
@@ -170,19 +194,17 @@
                 response.style.marginBottom = "10px";
 
                 if (cmd === 'help') {
-                    response.innerHTML = `<span style="color: #0f0;">Available commands:<br>- about: Show my info<br>- cv: Download my CV<br>- projects: My latest work<br>- clear: Clear terminal</span>`;
+                    response.innerHTML = `<span style="color: #0f0;">Commands: about, cv, projects, clear</span>`;
                 } else if (cmd === 'about') {
                     response.innerHTML = `System: Identity confirmed. Role: {{MY_ROLE}}`;
                 } else if (cmd === 'cv') {
-                    response.innerHTML = `<span style="color: #00d2ff;">Accessing CV... <a href="{{LINK_CV}}" style="color: #fff;">[Download Link]</a></span>`;
+                    response.innerHTML = `<a href="{{LINK_CV}}" style="color: #00d2ff;">[Click to Download CV]</a>`;
                 } else if (cmd === 'projects') {
-                    response.innerHTML = `1. Network Security Tool v1.0<br>2. Automation Script (Python)<br>3. Security Portfolio Site`;
+                    response.innerHTML = `Loading works... [Forbidden Access]`;
                 } else if (cmd === 'clear') {
                     history.innerHTML = '';
-                } else if (cmd === '') {
-                    // Do nothing
                 } else {
-                    response.innerHTML = `<span style="color: #f00;">Command not found: ${cmd}</span>`;
+                    response.innerHTML = `<span style="color: #f00;">Unknown command: ${cmd}</span>`;
                 }
 
                 history.appendChild(response);
