@@ -19,8 +19,9 @@ jobs:
 
       - name: Inject All Secrets
         run: |
+          # Sửa đổi: Đảm bảo script tìm đúng thẻ {{MY_ROLE}} để thay thế bằng secret MY_ROLE
           sed -i "s|{{MY_NAME}}|${{ secrets.MY_NAME }}|g" index.html
-          sed -i "s|{{MY_JOB}}|${{ secrets.MY_JOB }}|g" index.html
+          sed -i "s|{{MY_ROLE}}|${{ secrets.MY_ROLE }}|g" index.html
           sed -i "s|{{MY_SPECIALTY}}|${{ secrets.MY_SPECIALTY }}|g" index.html
           sed -i "s|{{MY_LOCATION}}|${{ secrets.MY_LOCATION }}|g" index.html
           sed -i "s|{{MY_EMAIL}}|${{ secrets.MY_EMAIL }}|g" index.html
@@ -34,6 +35,7 @@ jobs:
           sed -i "s|{{BANK_INFO}}|${{ secrets.BANK_INFO }}|g" index.html
           sed -i "s|{{STK_NUMBER}}|${{ secrets.STK_NUMBER }}|g" index.html
           sed -i "s|{{QR_LINK}}|${{ secrets.QR_LINK }}|g" index.html
+          sed -i "s|{{TERMINAL_TITLE}}|${{ secrets.TERMINAL_TITLE }}|g" index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
