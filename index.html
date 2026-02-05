@@ -6,10 +6,15 @@
     <title>NGUYỄN ĐỨC HUY | OFFICIAL SITE</title>
     <link rel="icon" href="https://i.postimg.cc/VsBCHj47/489777607-9718259594886940-1437063185497436584-n.jpg" type="image/x-icon">
     <style>
-        body { margin: 0; padding: 0; background: #050505; overflow: hidden; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        body { margin: 0; padding: 0; background: #050505; overflow: hidden; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         canvas { position: absolute; top: 0; left: 0; z-index: 1; opacity: 0.25; }
 
-        .main-container { position: relative; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 20px; width: 90%; max-width: 420px; }
+        /* Nút ở góc trên */
+        .header-nav { position: relative; z-index: 100; width: 100%; max-width: 1200px; display: flex; justify-content: space-between; padding: 20px; box-sizing: border-box; }
+        .corner-btn { padding: 10px 18px; background: rgba(0, 255, 0, 0.05); border: 1px solid #0f0; color: #0f0; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .corner-btn:hover { background: #0f0; color: #000; box-shadow: 0 0 15px #0f0; }
+
+        .main-container { position: relative; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 20px; width: 90%; max-width: 420px; margin-top: 10px; }
         .profile-card { background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(12px); padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 255, 0, 0.2); width: 100%; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8); }
         .avatar { width: 85px; height: 85px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 10px; }
         .glitch { font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 1px; }
@@ -29,18 +34,26 @@
         .input-line { display: flex; gap: 5px; align-items: center; margin-top: 5px; border-top: 1px solid rgba(0,255,0,0.1); padding-top: 5px; }
         #terminal-input { background: transparent; border: none; color: #fff; outline: none; font-family: inherit; font-size: inherit; flex-grow: 1; }
 
-        /* DONATE MODAL IMPROVED */
-        #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 0 50px rgba(0, 0, 0, 1); width: 280px; }
-        #donate-modal img { width: 100%; border-radius: 10px; border: 1px solid #333; margin-bottom: 10px; }
-        .reveal-btn { background: #ff0; color: #000; border: none; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; text-transform: uppercase; width: 100%; }
-        .bank-info { display: none; margin-top: 10px; padding: 10px; background: #111; border-radius: 8px; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* MODALS */
+        .info-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 200; width: 90%; max-width: 320px; background: #000; border: 1px solid #0f0; padding: 25px; border-radius: 12px; box-shadow: 0 0 30px rgba(0, 255, 0, 0.2); }
+        .modal-header { color: #ff0; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; font-size: 12px; }
 
+        #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 250; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; text-align: center; width: 280px; box-shadow: 0 0 50px rgba(0, 0, 0, 1); }
+        #donate-modal img { width: 100%; border-radius: 10px; border: 1px solid #333; margin-bottom: 10px; }
+        .reveal-btn { background: #ff0; color: #000; border: none; padding: 10px; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; text-transform: uppercase; width: 100%; }
+        .bank-info { display: none; margin-top: 10px; padding: 10px; background: #111; border-radius: 8px; animation: fadeIn 0.5s; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         #audio-ctrl { position: absolute; bottom: 20px; right: 20px; z-index: 50; background: rgba(0,0,0,0.8); border: 1px solid #333; color: #666; padding: 6px 12px; cursor: pointer; border-radius: 20px; font-size: 10px; }
     </style>
 </head>
 <body>
     <canvas id="matrix"></canvas>
+
+    <div class="header-nav">
+        <button class="corner-btn" onclick="toggleModal('about-modal')">About Me</button>
+        <button class="corner-btn" onclick="toggleModal('work-modal')">Contact Work</button>
+    </div>
 
     <div class="main-container">
         <div class="profile-card">
@@ -61,7 +74,7 @@
             </div>
             <div class="sticky-hint">💡 Type <b>'help'</b>, <b>'projects'</b> or <b>'cv'</b></div>
             <div id="terminal-history">
-                <div style="color: #0f0; opacity: 0.5;"># Booting secure shell... Success.</div>
+                <div style="color: #0f0; opacity: 0.5;"># Security shell connected... Ready.</div>
             </div>
             <div class="input-line">
                 <span style="color: #0f0;">$</span>
@@ -70,17 +83,33 @@
         </div>
     </div>
 
+    <div id="about-modal" class="info-modal">
+        <div class="modal-header"><span>[IDENTITY]</span> <span onclick="toggleModal('about-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
+        <div style="color:#fff; font-size:12px; line-height:1.6;">
+            <b>NAME:</b> NGUYỄN ĐỨC HUY<br>
+            <b>ROLE:</b> Systems Administrator<br>
+            <b>SPECIALTY:</b> {{MY_SPECIALTY}}
+        </div>
+    </div>
+
+    <div id="work-modal" class="info-modal">
+        <div class="modal-header"><span>[CONTACT]</span> <span onclick="toggleModal('work-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
+        <div style="color:#fff; font-size:12px; line-height:1.6;">
+            <b>EMAIL:</b> {{MY_EMAIL}}<br>
+            <b>PHONE:</b> 0334258458<br>
+            <b>LOCATION:</b> {{MY_LOCATION}}
+        </div>
+    </div>
+
     <div id="donate-modal">
         <span onclick="closeDonate()" style="color:#ff0; float:right; cursor:pointer; font-family:monospace;">[X]</span>
         <h4 style="color:#ff0; margin: 10px 0;">SUPPORT ME ☕</h4>
         <img src="https://img.vietqr.io/image/vpbank-0334258458-qr_only.png?accountName=NGUYEN%20DUC%20HUY">
-        
         <button class="reveal-btn" id="reveal-btn" onclick="revealBank()">Reveal Bank Info</button>
-        
         <div class="bank-info" id="bank-info">
             <div style="color:#888; font-size:10px;">VPBANK</div>
             <div style="color:#fff; font-size:16px; font-family:monospace; margin: 5px 0;" id="stk-num">0334258458</div>
-            <div style="color:#0f0; font-size:9px;">✅ Auto-copied to clipboard!</div>
+            <div style="color:#0f0; font-size:9px;">✅ Auto-copied!</div>
         </div>
     </div>
 
@@ -89,7 +118,6 @@
     <audio id="bgm" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
 
     <script>
-        // Matrix Effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -106,7 +134,11 @@
         }
         setInterval(draw, 50);
 
-        // Terminal Logic
+        function toggleModal(id) {
+            const m = document.getElementById(id);
+            m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+        }
+
         const input = document.getElementById('terminal-input');
         const history = document.getElementById('terminal-history');
         const typeSound = document.getElementById('type-sound');
@@ -118,7 +150,7 @@
             'about': 'Admin: NGUYEN DUC HUY | Role: Systems Administrator.',
             'social': 'FB: huypk100 | Zalo: 0334258458',
             'projects': 'Repositories: Security_Audit_v1, Automation_Scripts, Matrix_Portfolio.',
-            'cv': 'Accessing CV... [Download Link: https://huynd.me/cv.pdf]',
+            'cv': 'Accessing CV... [Check Download CV button above]',
             'ping': 'Pong! Latency: 14ms',
             'donate': 'Opening donation portal...'
         };
@@ -151,7 +183,6 @@
             }
         });
 
-        // Donate Modal Functions
         function openDonate() { document.getElementById('donate-modal').style.display = 'block'; }
         function closeDonate() { 
             document.getElementById('donate-modal').style.display = 'none';
@@ -161,8 +192,7 @@
         function revealBank() {
             document.getElementById('bank-info').style.display = 'block';
             document.getElementById('reveal-btn').style.display = 'none';
-            const stk = document.getElementById('stk-num').innerText;
-            navigator.clipboard.writeText(stk);
+            navigator.clipboard.writeText(document.getElementById('stk-num').innerText);
         }
 
         function toggleAudio() {
@@ -172,7 +202,6 @@
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
-        // Typewriter
         const words = ['> Systems Administrator', '> Cyber Security', '> Infrastructure'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
