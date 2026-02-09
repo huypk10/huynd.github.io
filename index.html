@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="{{MY_AVATAR}}" type="image/x-icon">
     <style>
+        /* CSS phong cách Hacker/Systems Admin của ông */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background: #050505; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.25; pointer-events: none; }
@@ -83,7 +84,7 @@
         <div class="modal-header"><span>[IDENTITY]</span> <span onclick="toggleModal('about-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
         <div style="color:#fff; font-size:12px; line-height:1.6;">
             <b>FULL NAME:</b> {{MY_NAME}}<br>
-            <b>CURRENT ROLE:</b> {{MY_ROLE}}<br>
+            <b>CURRENT ROLE:</b> {{MY_JOB}}<br>
             <b>SPECIALTY:</b> {{MY_SPECIALTY}}
         </div>
     </div>
@@ -91,8 +92,8 @@
     <div id="work-modal" class="info-modal">
         <div class="modal-header"><span>[CONTACT]</span> <span onclick="toggleModal('work-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
         <div style="color:#fff; font-size:12px; line-height:1.6;">
-            <b>EMAIL:</b> <span id="m-email">Encrypted</span><br>
-            <b>PHONE:</b> <span id="m-phone">Encrypted</span><br>
+            <b>EMAIL:</b> <span id="m-email">Locked</span><br>
+            <b>PHONE:</b> <span id="m-phone">Locked</span><br>
             <b>LOCATION:</b> {{MY_LOCATION}}
         </div>
     </div>
@@ -123,14 +124,21 @@
             e: "{{MY_EMAIL}}"
         };
 
-        const decode = (str) => {
-            try { return atob(str); } catch(e) { return "Error"; }
+        // Hàm giải mã thông minh: tự nhận diện text thường hoặc Base64
+        const safeDecode = (str) => {
+            try { 
+                if (!str || str.includes("{{")) return "Not Set";
+                // Kiểm tra xem chuỗi có phải Base64 hợp lệ không
+                const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+                if (base64regex.test(str)) return atob(str);
+                return str;
+            } catch(e) { return str; }
         };
 
         function toggleModal(id) {
             if(id === 'work-modal') {
-                document.getElementById('m-email').textContent = decode(_0xHuy.e);
-                document.getElementById('m-phone').textContent = decode(_0xHuy.p);
+                document.getElementById('m-email').textContent = safeDecode(_0xHuy.e);
+                document.getElementById('m-phone').textContent = safeDecode(_0xHuy.p);
             }
             const m = document.getElementById(id);
             m.style.display = (m.style.display === 'block') ? 'none' : 'block';
@@ -144,7 +152,7 @@
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
         
         function revealBank() {
-            const val = decode(_0xHuy.s);
+            const val = safeDecode(_0xHuy.s);
             document.getElementById('stk-value').textContent = val;
             document.getElementById('bank-reveal-area').style.display = 'block';
             document.getElementById('reveal-bank-btn').style.display = 'none';
@@ -154,7 +162,7 @@
         function toggleAudio() {
             const bgm = document.getElementById('bgm');
             const btn = document.getElementById('audio-ctrl');
-            if (bgm.paused) { bgm.play(); btn.textContent = "SOUND: ON"; }
+            if (bgm.paused) { bgm.play().catch(()=>{}); btn.textContent = "SOUND: ON"; }
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
@@ -188,14 +196,14 @@
                 const res = document.createElement('div');
                 res.style.marginBottom = "10px";
 
-                if (cmd === 'help') res.innerHTML = `<span style="color: #0f0;">about, project(s), cv, clear, donate, contact</span>`;
-                else if (cmd === 'about') res.innerHTML = `Identity: {{MY_NAME}} | Role: {{MY_ROLE}}`;
-                else if (cmd === 'contact') res.innerHTML = `Email: ${decode(_0xHuy.e)} | Phone: ${decode(_0xHuy.p)}`;
-                else if (cmd === 'project' || cmd === 'projects') {
+                if (cmd === 'help') res.innerHTML = `<span style="color: #0f0;">about, projects, cv, clear, donate, contact</span>`;
+                else if (cmd === 'about') res.innerHTML = `Identity: {{MY_NAME}} | Role: {{MY_JOB}}`;
+                else if (cmd === 'contact') res.innerHTML = `Email: ${safeDecode(_0xHuy.e)} | Phone: ${safeDecode(_0xHuy.p)}`;
+                else if (cmd === 'projects') {
                     res.innerHTML = `<span style="color: #00d2ff;">[SYSTEM PROJECTS]</span><br>` +
-                                    `1. <span style="color: #fff;">Home Lab:</span> Proxmox Virtualization & Docker Deployment<br>` +
-                                    `2. <span style="color: #fff;">Network Security:</span> PFSense Firewall & OpenVPN Configuration<br>` +
-                                    `3. <span style="color: #fff;">Monitoring:</span> Zabbix & Grafana Real-time Dashboard`;
+                                    `1. <span style="color: #fff;">Home Lab:</span> Proxmox & Docker Deployment<br>` +
+                                    `2. <span style="color: #fff;">Network:</span> PFSense & VPN Setup<br>` +
+                                    `3. <span style="color: #fff;">Monitoring:</span> Zabbix Dashboard`;
                 }
                 else if (cmd === 'cv') res.innerHTML = `<a href="{{LINK_CV}}" target="_blank" style="color: #00d2ff; text-decoration: underline;">[Download_CV.pdf]</a>`;
                 else if (cmd === 'clear') history.innerHTML = '';
