@@ -16,26 +16,59 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Replace All Variables
+      - name: Inject Secrets
+        shell: python
+        env:
+          MY_NAME: ${{ secrets.MY_NAME }}
+          MY_JOB: ${{ secrets.MY_JOB }}
+          MY_SPECIALTY: ${{ secrets.MY_SPECIALTY }}
+          MY_LOCATION: ${{ secrets.MY_LOCATION }}
+          MY_EMAIL: ${{ secrets.MY_EMAIL }}
+          MY_PHONE: ${{ secrets.MY_PHONE }}
+          MY_AVATAR: ${{ secrets.MY_AVATAR }}
+          LINK_FB: ${{ secrets.LINK_FB }}
+          LINK_ZALO: ${{ secrets.LINK_ZALO }}
+          LINK_DISCORD: ${{ secrets.LINK_DISCORD }}
+          LINK_CV: ${{ secrets.LINK_CV }}
+          LINK_BGM: ${{ secrets.LINK_BGM }}
+          BANK_INFO: ${{ secrets.BANK_INFO }}
+          STK_NUMBER: ${{ secrets.STK_NUMBER }}
+          QR_LINK: ${{ secrets.QR_LINK }}
+          TERMINAL_TITLE: ${{ secrets.TERMINAL_TITLE }}
         run: |
-          # Đồng bộ hóa tất cả các biến có thể xuất hiện trong HTML
-          sed -i 's|{{MY_NAME}}|${{ secrets.MY_NAME }}|g' index.html
-          sed -i 's|{{MY_AVATAR}}|${{ secrets.MY_AVATAR }}|g' index.html
-          sed -i 's|{{MY_JOB}}|${{ secrets.MY_JOB }}|g' index.html
-          sed -i 's|{{MY_ROLE}}|${{ secrets.MY_JOB }}|g' index.html
-          sed -i 's|{{MY_SPECIALTY}}|${{ secrets.MY_SPECIALTY }}|g' index.html
-          sed -i 's|{{MY_LOCATION}}|${{ secrets.MY_LOCATION }}|g' index.html
-          sed -i 's|{{MY_EMAIL}}|${{ secrets.MY_EMAIL }}|g' index.html
-          sed -i 's|{{MY_PHONE}}|${{ secrets.MY_PHONE }}|g' index.html
-          sed -i 's|{{LINK_FB}}|${{ secrets.LINK_FB }}|g' index.html
-          sed -i 's|{{LINK_ZALO}}|${{ secrets.LINK_ZALO }}|g' index.html
-          sed -i 's|{{LINK_DISCORD}}|${{ secrets.LINK_DISCORD }}|g' index.html
-          sed -i 's|{{LINK_CV}}|${{ secrets.LINK_CV }}|g' index.html
-          sed -i 's|{{LINK_BGM}}|${{ secrets.LINK_BGM }}|g' index.html
-          sed -i 's|{{BANK_INFO}}|${{ secrets.BANK_INFO }}|g' index.html
-          sed -i 's|{{STK_NUMBER}}|${{ secrets.STK_NUMBER }}|g' index.html
-          sed -i 's|{{QR_LINK}}|${{ secrets.QR_LINK }}|g' index.html
-          sed -i 's|{{TERMINAL_TITLE}}|${{ secrets.TERMINAL_TITLE }}|g' index.html
+          import os
+          with open('index.html', 'r', encoding='utf-8') as f:
+              content = f.read()
+
+          # Tui tạo danh sách này để dù trong HTML ông viết ROLE hay JOB nó cũng thay hết
+          reps = {
+              "{{MY_NAME}}": os.environ.get('MY_NAME', ''),
+              "{{MY_ROLE}}": os.environ.get('MY_JOB', ''),
+              "{{MY_JOB}}": os.environ.get('MY_JOB', ''),
+              "{{MY_SPECIALTY}}": os.environ.get('MY_SPECIALTY', ''),
+              "{{MY_LOCATION}}": os.environ.get('MY_LOCATION', ''),
+              "{{MY_EMAIL}}": os.environ.get('MY_EMAIL', ''),
+              "{{MY_PHONE}}": os.environ.get('MY_PHONE', ''),
+              "{{MY_AVATAR}}": os.environ.get('MY_AVATAR', ''),
+              "{{LINK_FB}}": os.environ.get('LINK_FB', ''),
+              "{{LINK_ZALO}}": os.environ.get('LINK_ZALO', ''),
+              "{{LINK_DISCORD}}": os.environ.get('LINK_DISCORD', ''),
+              "{{LINK_CV}}": os.environ.get('LINK_CV', ''),
+              "{{LINK_BGM}}": os.environ.get('LINK_BGM', ''),
+              "{{BANK_INFO}}": os.environ.get('BANK_INFO', ''),
+              "{{STK_NUMBER}}": os.environ.get('STK_NUMBER', ''),
+              "{{QR_LINK}}": os.environ.get('QR_LINK', ''),
+              "{{TERMINAL_TITLE}}": os.environ.get('TERMINAL_TITLE', '')
+          }
+
+          for k, v in reps.items():
+              content = content.replace(k, v)
+
+          with open('index.html', 'w', encoding='utf-8') as f:
+              f.write(content)
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
