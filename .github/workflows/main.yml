@@ -1,4 +1,5 @@
 name: Deploy Portfolio
+
 on:
   push:
     branches:
@@ -21,7 +22,7 @@ jobs:
         shell: python
         env:
           MY_NAME: ${{ secrets.MY_NAME }}
-          MY_ROLE: ${{ secrets.MY_JOB }}
+          MY_JOB: ${{ secrets.MY_JOB }}
           MY_SPECIALTY: ${{ secrets.MY_SPECIALTY }}
           MY_LOCATION: ${{ secrets.MY_LOCATION }}
           MY_EMAIL: ${{ secrets.MY_EMAIL }}
@@ -38,14 +39,15 @@ jobs:
           TERMINAL_TITLE: ${{ secrets.TERMINAL_TITLE }}
         run: |
           import os
-
+          
+          # Đọc file index.html
           with open('index.html', 'r', encoding='utf-8') as f:
               content = f.read()
 
-          # Danh sách các biến cần thay thế
+          # Danh sách thay thế - Tui đã đồng bộ lại tên {{MY_JOB}}
           replacements = {
               "{{MY_NAME}}": os.environ.get('MY_NAME', ''),
-              "{{MY_ROLE}}": os.environ.get('MY_ROLE', ''),
+              "{{MY_JOB}}": os.environ.get('MY_JOB', ''),
               "{{MY_SPECIALTY}}": os.environ.get('MY_SPECIALTY', ''),
               "{{MY_LOCATION}}": os.environ.get('MY_LOCATION', ''),
               "{{MY_EMAIL}}": os.environ.get('MY_EMAIL', ''),
@@ -63,8 +65,10 @@ jobs:
           }
 
           for key, value in replacements.items():
-              content = content.replace(key, value)
+              if value: # Chỉ thay thế nếu biến có dữ liệu
+                  content = content.replace(key, value)
 
+          # Ghi lại file
           with open('index.html', 'w', encoding='utf-8') as f:
               f.write(content)
 
