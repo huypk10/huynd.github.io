@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="{{MY_AVATAR}}" type="image/x-icon">
     <style>
-        /* CSS phong cách Hacker/Systems Admin của ông */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background: #050505; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.25; pointer-events: none; }
@@ -51,7 +50,7 @@
     </div>
     <div class="main-container">
         <div class="profile-card">
-            <img src="{{MY_AVATAR}}" class="avatar">
+            <img src="{{MY_AVATAR}}" class="avatar" alt="Avatar">
             <div class="glitch">{{MY_NAME}}</div>
             <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; min-height: 20px; margin-bottom: 10px;"></div>
             <a href="{{LINK_FB}}" target="_blank" class="btn"><i class="fab fa-facebook"></i> Facebook</a>
@@ -92,8 +91,8 @@
     <div id="work-modal" class="info-modal">
         <div class="modal-header"><span>[CONTACT]</span> <span onclick="toggleModal('work-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
         <div style="color:#fff; font-size:12px; line-height:1.6;">
-            <b>EMAIL:</b> <span id="m-email">Locked</span><br>
-            <b>PHONE:</b> <span id="m-phone">Locked</span><br>
+            <b>EMAIL:</b> <span id="m-email">Encrypted</span><br>
+            <b>PHONE:</b> <span id="m-phone">Encrypted</span><br>
             <b>LOCATION:</b> {{MY_LOCATION}}
         </div>
     </div>
@@ -118,19 +117,19 @@
     <audio id="bgm" loop src="{{LINK_BGM}}"></audio>
 
     <script>
+        // Data storage
         const _0xHuy = {
             s: "{{STK_NUMBER}}",
             p: "{{MY_PHONE}}",
             e: "{{MY_EMAIL}}"
         };
 
-        // Hàm giải mã thông minh: tự nhận diện text thường hoặc Base64
+        // Decryption logic with fallback
         const safeDecode = (str) => {
             try { 
-                if (!str || str.includes("{{")) return "Not Set";
-                // Kiểm tra xem chuỗi có phải Base64 hợp lệ không
-                const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-                if (base64regex.test(str)) return atob(str);
+                if(!str || str.includes("{{")) return "Not Configured";
+                // Only decode if it looks like Base64 (no spaces, certain length)
+                if(str.length > 5 && !str.includes(" ")) return atob(str);
                 return str;
             } catch(e) { return str; }
         };
@@ -149,6 +148,7 @@
             document.getElementById('bank-reveal-area').style.display = 'none';
             document.getElementById('reveal-bank-btn').style.display = 'block';
         }
+
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
         
         function revealBank() {
@@ -162,10 +162,11 @@
         function toggleAudio() {
             const bgm = document.getElementById('bgm');
             const btn = document.getElementById('audio-ctrl');
-            if (bgm.paused) { bgm.play().catch(()=>{}); btn.textContent = "SOUND: ON"; }
+            if (bgm.paused) { bgm.play().catch(e=>console.log("Audio play blocked")); btn.textContent = "SOUND: ON"; }
             else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
         }
 
+        // Matrix Effect
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -182,6 +183,7 @@
         }
         setInterval(draw, 50);
 
+        // Terminal Logic
         const input = document.getElementById('terminal-input');
         const history = document.getElementById('terminal-history');
         const typeSound = document.getElementById('type-sound');
@@ -202,13 +204,13 @@
                 else if (cmd === 'projects') {
                     res.innerHTML = `<span style="color: #00d2ff;">[SYSTEM PROJECTS]</span><br>` +
                                     `1. <span style="color: #fff;">Home Lab:</span> Proxmox & Docker Deployment<br>` +
-                                    `2. <span style="color: #fff;">Network:</span> PFSense & VPN Setup<br>` +
+                                    `2. <span style="color: #fff;">Network:</span> PFSense Firewall Config<br>` +
                                     `3. <span style="color: #fff;">Monitoring:</span> Zabbix Dashboard`;
                 }
                 else if (cmd === 'cv') res.innerHTML = `<a href="{{LINK_CV}}" target="_blank" style="color: #00d2ff; text-decoration: underline;">[Download_CV.pdf]</a>`;
                 else if (cmd === 'clear') history.innerHTML = '';
                 else if (cmd === 'donate') { openDonate(); res.innerHTML = "Opening portal..."; }
-                else res.innerHTML = `<span style="color: #f00;">Command not found.</span>`;
+                else res.innerHTML = `<span style="color: #f00;">Command not found. Type 'help'.</span>`;
 
                 history.appendChild(res);
                 this.value = '';
@@ -217,6 +219,7 @@
             }
         });
 
+        // Typewriter Effect
         const words = ['_> Network Administrator', '_> {{MY_SPECIALTY}}', '_> Verified Identity'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
