@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{MY_NAME}}</title>
     
-    <meta name="google-site-verification" content="0fslcf5SwrcCeJ9ZbFqpp8j2FYxt2YcDBsbgpb4jnK8" />
+    <meta name="google-site-verification" content="GIYrJACazgpqdnxznn_YmDQCzYZbL50GY-j4aNODc5k" />
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="{{MY_AVATAR}}" type="image/x-icon">
     <style>
-        /* Toàn bộ CSS giữ nguyên như bản gốc của ông */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background: #050505; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.25; pointer-events: none; }
@@ -104,7 +103,6 @@
     <div id="donate-modal">
         <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold; font-size: 20px;">&times;</span>
         <h3 style="color:#ff0; margin: 10px 0;">GIVE COFFEE ☕</h3>
-        <p style="font-size: 11px; color: #aaa;">Scan QR or reveal banking details</p>
         <img src="{{QR_LINK}}" alt="QR Code">
         <button class="reveal-btn" id="reveal-bank-btn" onclick="revealBank()">
             <i class="fas fa-university"></i> REVEAL BANK INFO
@@ -112,7 +110,6 @@
         <div class="bank-info-box" id="bank-reveal-area">
             <span style="color:#ff0; font-size:10px; text-transform: uppercase; letter-spacing: 1px;">{{BANK_INFO}}</span>
             <span class="bank-stk" id="stk-value"></span>
-            <small style="color: #0f0; font-size: 9px; margin-top: 5px; display: block;">✅ Auto-copied!</small>
         </div>
     </div>
 
@@ -121,16 +118,8 @@
     <audio id="bgm" loop src="{{LINK_BGM}}"></audio>
 
     <script>
-        /* Toàn bộ Script xử lý biến và Terminal giữ nguyên */
-        const _0xHuy = {
-            s: "{{STK_NUMBER}}",
-            p: "{{MY_PHONE}}",
-            e: "{{MY_EMAIL}}"
-        };
-
-        const decode = (str) => {
-            try { return atob(str); } catch(e) { return "Error"; }
-        };
+        const _0xHuy = { s: "{{STK_NUMBER}}", p: "{{MY_PHONE}}", e: "{{MY_EMAIL}}" };
+        const decode = (str) => { try { return atob(str); } catch(e) { return str; } };
 
         function toggleModal(id) {
             if(id === 'work-modal') {
@@ -144,16 +133,12 @@
         function openDonate() { 
             document.getElementById('donate-modal').style.display = 'block'; 
             document.getElementById('bank-reveal-area').style.display = 'none';
-            document.getElementById('reveal-bank-btn').style.display = 'block';
         }
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
-        
         function revealBank() {
-            const val = decode(_0xHuy.s);
-            document.getElementById('stk-value').textContent = val;
+            document.getElementById('stk-value').textContent = decode(_0xHuy.s);
             document.getElementById('bank-reveal-area').style.display = 'block';
             document.getElementById('reveal-bank-btn').style.display = 'none';
-            navigator.clipboard.writeText(val);
         }
 
         function toggleAudio() {
@@ -181,36 +166,20 @@
 
         const input = document.getElementById('terminal-input');
         const history = document.getElementById('terminal-history');
-        const typeSound = document.getElementById('type-sound');
-
         input.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const cmd = this.value.toLowerCase().trim();
-                if (cmd === '') return;
                 const line = document.createElement('div');
                 line.innerHTML = `<span style="color: #666;">$ ${this.value}</span>`;
                 history.appendChild(line);
                 const res = document.createElement('div');
-                res.style.marginBottom = "10px";
-
-                if (cmd === 'help') res.innerHTML = `<span style="color: #0f0;">about, project(s), cv, clear, donate, contact</span>`;
+                if (cmd === 'help') res.innerHTML = `about, projects, contact, clear`;
                 else if (cmd === 'about') res.innerHTML = `Identity: {{MY_NAME}} | Role: {{MY_ROLE}}`;
-                else if (cmd === 'contact') res.innerHTML = `Email: ${decode(_0xHuy.e)} | Phone: ${decode(_0xHuy.p)}`;
-                else if (cmd === 'project' || cmd === 'projects') {
-                    res.innerHTML = `<span style="color: #00d2ff;">[SYSTEM PROJECTS]</span><br>` +
-                                    `1. <span style="color: #fff;">Home Lab:</span> Proxmox Virtualization & Docker Deployment<br>` +
-                                    `2. <span style="color: #fff;">Network Security:</span> PFSense Firewall & OpenVPN Configuration<br>` +
-                                    `3. <span style="color: #fff;">Monitoring:</span> Zabbix & Grafana Real-time Dashboard`;
-                }
-                else if (cmd === 'cv') res.innerHTML = `<a href="{{LINK_CV}}" target="_blank" style="color: #00d2ff; text-decoration: underline;">[Download_CV.pdf]</a>`;
                 else if (cmd === 'clear') history.innerHTML = '';
-                else if (cmd === 'donate') { openDonate(); res.innerHTML = "Opening portal..."; }
-                else res.innerHTML = `<span style="color: #f00;">Command not found.</span>`;
-
+                else res.innerHTML = `Command not found.`;
                 history.appendChild(res);
                 this.value = '';
                 history.scrollTop = history.scrollHeight;
-                if(typeSound) { typeSound.currentTime = 0; typeSound.play().catch(()=>{}); }
             }
         });
 
