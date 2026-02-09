@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Inject Secrets
+      - name: Inject Secrets with Python
         shell: python
         env:
           MY_NAME: ${{ secrets.MY_NAME }}
@@ -40,11 +40,10 @@ jobs:
           with open('index.html', 'r', encoding='utf-8') as f:
               content = f.read()
 
-          # Tui tạo danh sách này để dù trong HTML ông viết ROLE hay JOB nó cũng thay hết
+          # Khớp nối các biến từ Secrets vào HTML
           reps = {
               "{{MY_NAME}}": os.environ.get('MY_NAME', ''),
-              "{{MY_ROLE}}": os.environ.get('MY_JOB', ''),
-              "{{MY_JOB}}": os.environ.get('MY_JOB', ''),
+              "{{MY_ROLE}}": os.environ.get('MY_JOB', ''), 
               "{{MY_SPECIALTY}}": os.environ.get('MY_SPECIALTY', ''),
               "{{MY_LOCATION}}": os.environ.get('MY_LOCATION', ''),
               "{{MY_EMAIL}}": os.environ.get('MY_EMAIL', ''),
