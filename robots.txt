@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://huypk10.ddns.net/sitemap.xml
