@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{MY_NAME}}</title>
-    
     <meta name="google-site-verification" content="GIYrJACazgpqdnxznn_YmDQCzYZbL50GY-j4aNODc5k" />
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="{{MY_AVATAR}}" type="image/x-icon">
     <style>
@@ -19,7 +17,6 @@
         .main-container { position: relative; z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 20px; width: 95%; max-width: 450px; margin-top: 10px; padding-bottom: 20px; flex-grow: 1; }
         .profile-card { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(15px); padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 255, 0, 0.2); width: 100%; box-shadow: 0 10px 50px rgba(0, 0, 0, 1); }
         .avatar { width: 95px; height: 95px; border-radius: 50%; border: 2px solid #0f0; margin-bottom: 15px; object-fit: cover; transition: 0.3s; }
-        .avatar:hover { transform: scale(1.05); box-shadow: 0 0 20px #0f0; }
         .glitch { font-size: 24px; font-weight: bold; color: #fff; letter-spacing: 2px; margin-bottom: 5px; }
         .btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px auto; padding: 12px; background: rgba(0, 255, 0, 0.02); color: #0f0; text-decoration: none; border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 8px; font-size: 12px; transition: 0.3s; text-transform: uppercase; width: 100%; cursor: pointer; }
         .btn:hover { background: #0f0; color: #000; box-shadow: 0 0 20px #0f0; }
@@ -32,16 +29,13 @@
         #terminal-input { background: transparent; border: none; color: #fff; outline: none; font-family: inherit; font-size: 13px; flex-grow: 1; }
         footer { width: 100%; text-align: center; padding: 25px 0; z-index: 50; position: relative; }
         .footer-text { color: #555; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
-        .footer-sub { color: #333; font-size: 8px; text-transform: uppercase; margin-top: 5px; letter-spacing: 1px; }
         .info-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 200; width: 90%; max-width: 320px; background: #000; border: 1px solid #0f0; padding: 25px; border-radius: 12px; }
         .modal-header { color: #ff0; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 8px; display: flex; justify-content: space-between; font-size: 12px; }
-        #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 250; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; width: 90%; max-width: 320px; text-align: center; max-height: 90vh; overflow-y: auto; box-shadow: 0 0 30px rgba(255, 255, 0, 0.2); }
+        #donate-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 250; background: #000; border: 1px solid #ff0; padding: 20px; border-radius: 15px; width: 90%; max-width: 320px; text-align: center; }
         #donate-modal img { width: 100%; max-width: 180px; border-radius: 10px; margin: 10px 0; border: 2px solid #333; }
-        .reveal-btn { background: #ff0; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer; margin-top: 10px; width: 100%; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        .reveal-btn:hover { background: #fff; box-shadow: 0 0 15px #ff0; }
-        .bank-info-box { display: none; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; text-align: center; margin-top: 10px; animation: fadeIn 0.5s; }
-        .bank-stk { font-family: 'Consolas', monospace; font-size: 18px; color: #ff0; display: block; margin-top: 5px; letter-spacing: 1px; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .reveal-btn { background: #ff0; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer; width: 100%; margin-top: 10px; }
+        .bank-info-box { display: none; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; text-align: center; margin-top: 10px; }
+        .bank-stk { font-family: 'Consolas', monospace; font-size: 18px; color: #ff0; display: block; margin-top: 5px; }
         #audio-ctrl { position: fixed; bottom: 20px; right: 20px; z-index: 300; background: rgba(0,0,0,0.8); border: 1px solid #0f0; color: #0f0; padding: 8px 12px; cursor: pointer; border-radius: 20px; font-size: 9px; }
     </style>
 </head>
@@ -58,184 +52,79 @@
             <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; min-height: 20px; margin-bottom: 10px;"></div>
             <a href="{{LINK_FB}}" target="_blank" class="btn"><i class="fab fa-facebook"></i> Facebook</a>
             <a href="{{LINK_ZALO}}" target="_blank" class="btn"><i class="fas fa-comment"></i> Zalo</a>
-            <a href="{{LINK_DISCORD}}" target="_blank" class="btn"><i class="fab fa-discord"></i> Discord</a>
             <a href="{{LINK_CV}}" target="_blank" class="btn btn-cv"><i class="fas fa-file-download"></i> Download CV</a>
             <div class="btn btn-donate" onclick="openDonate()"><i class="fas fa-coffee"></i> Give Coffee</div>
         </div>
-        
         <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
-            <div class="terminal-header"><span>{{TERMINAL_TITLE}}</span><span id="term-time"></span></div>
+            <div class="terminal-header"><span>CONSOLE</span><span id="term-time"></span></div>
             <div id="terminal-history">
-                <div style="background: rgba(255, 255, 0, 0.1); border: 1px dashed #ff0; padding: 8px; border-radius: 5px; margin-bottom: 10px; text-align: center; font-size: 10px;">
-                    <span style="color: #ff0;">💡 HINT: Type <span style="color: #0f0;">'help'</span> or <span style="color: #0f0;">'clear'</span></span>
-                </div>
+                <div style="color:#ff0; font-size:10px; text-align:center;">💡 HELP | CLEAR | ABOUT | PROJECTS | CONTACT</div>
             </div>
             <div class="input-line">
                 <span style="color: #0f0; font-weight: bold;">_></span>
-                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off" placeholder="enter command...">
+                <input type="text" id="terminal-input" spellcheck="false" autocomplete="off">
             </div>
         </div>
     </div>
-
-    <footer>
-        <div class="footer-text">© 2026 {{MY_NAME}} | ALL RIGHTS RESERVED</div>
-        <div class="footer-sub">SECURED IDENTITY VERIFIED</div>
-    </footer>
+    <footer><div class="footer-text">© 2026 {{MY_NAME}}</div></footer>
 
     <div id="about-modal" class="info-modal">
-        <div class="modal-header"><span>[IDENTITY]</span> <span onclick="toggleModal('about-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
-        <div style="color:#fff; font-size:12px; line-height:1.6;">
-            <b>FULL NAME:</b> {{MY_NAME}}<br>
-            <b>CURRENT ROLE:</b> {{MY_ROLE}}<br>
-            <b>SPECIALTY:</b> {{MY_SPECIALTY}}
-        </div>
+        <div class="modal-header"><span>[IDENTITY]</span><span onclick="toggleModal('about-modal')" style="cursor:pointer;color:red;">[X]</span></div>
+        <div style="font-size:12px;"><b>NAME:</b> {{MY_NAME}}<br><b>ROLE:</b> {{MY_ROLE}}<br><b>SKILL:</b> {{MY_SPECIALTY}}</div>
     </div>
-
     <div id="work-modal" class="info-modal">
-        <div class="modal-header"><span>[CONTACT]</span> <span onclick="toggleModal('work-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
-        <div style="color:#fff; font-size:12px; line-height:1.6;">
-            <b>EMAIL:</b> <span id="m-email">Loading...</span><br>
-            <b>PHONE:</b> <span id="m-phone">Loading...</span><br>
-            <b>LOCATION:</b> {{MY_LOCATION}}
-        </div>
+        <div class="modal-header"><span>[CONTACT]</span><span onclick="toggleModal('work-modal')" style="cursor:pointer;color:red;">[X]</span></div>
+        <div style="font-size:12px;"><b>EMAIL:</b> <span id="m-email"></span><br><b>PHONE:</b> <span id="m-phone"></span><br><b>LOC:</b> {{MY_LOCATION}}</div>
     </div>
-
-    <div id="donate-modal">
-        <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold; font-size: 20px;">&times;</span>
-        <h3 style="color:#ff0; margin: 10px 0;">GIVE COFFEE ☕</h3>
-        <p style="font-size: 11px; color: #aaa;">Scan QR or reveal banking details</p>
-        <img src="{{QR_LINK}}" alt="QR Code">
-        <button class="reveal-btn" id="reveal-bank-btn" onclick="revealBank()">
-            <i class="fas fa-university"></i> REVEAL BANK INFO
-        </button>
-        <div class="bank-info-box" id="bank-reveal-area">
-            <span style="color:#ff0; font-size:10px; text-transform: uppercase; letter-spacing: 1px;">{{BANK_INFO}}</span>
-            <span class="bank-stk" id="stk-value"></span>
-            <small style="color: #0f0; font-size: 9px; margin-top: 5px; display: block;">✅ Auto-copied!</small>
+    <div id="donate-modal" class="info-modal" style="background:#000;border-color:#ff0;">
+        <span onclick="closeDonate()" style="color:red;float:right;cursor:pointer;">&times;</span>
+        <h3 style="color:#ff0;">DONATE</h3>
+        <img src="{{QR_LINK}}">
+        <button class="reveal-btn" id="reveal-btn" onclick="revealBank()">REVEAL & COPY</button>
+        <div class="bank-info-box" id="bank-area">
+            <span style="color:#ff0;font-size:10px;">{{BANK_INFO}}</span>
+            <span class="bank-stk" id="stk-val"></span>
         </div>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
-    <audio id="type-sound" src="https://www.soundjay.com/communication/typewriter-key-1.mp3"></audio>
     <audio id="bgm" loop src="{{LINK_BGM}}"></audio>
 
     <script>
-        const _0xHuy = {
-            s: "{{STK_NUMBER}}",
-            p: "{{MY_PHONE}}",
-            e: "{{MY_EMAIL}}"
-        };
-
-        // HÀM GIẢI MÃ ĐÃ FIX: Hỗ trợ cả Base64 và Chữ thường
-        const decode = (str) => {
-            if (!str || str.includes("{{")) return "Not Set";
-            try {
-                // Kiểm tra xem có phải Base64 hợp lệ không
-                return (btoa(atob(str)) === str) ? atob(str) : str;
-            } catch(e) {
-                return str; // Nếu lỗi thì trả về chuỗi gốc
-            }
-        };
+        const _0 = { s: "{{STK_NUMBER}}", p: "{{MY_PHONE}}", e: "{{MY_EMAIL}}" };
+        const dec = (s) => { try { return (btoa(atob(s))===s)?atob(s):s; } catch(e) { return s; } };
 
         function toggleModal(id) {
-            if(id === 'work-modal') {
-                document.getElementById('m-email').textContent = decode(_0xHuy.e);
-                document.getElementById('m-phone').textContent = decode(_0xHuy.p);
-            }
-            const m = document.getElementById(id);
-            m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+            if(id==='work-modal'){document.getElementById('m-email').textContent=dec(_0.e);document.getElementById('m-phone').textContent=dec(_0.p);}
+            const m=document.getElementById(id); m.style.display=(m.style.display==='block')?'none':'block';
         }
+        function openDonate(){document.getElementById('donate-modal').style.display='block';document.getElementById('bank-area').style.display='none';document.getElementById('reveal-btn').style.display='block';}
+        function closeDonate(){document.getElementById('donate-modal').style.display='none';}
+        function revealBank(){const v=dec(_0.s);document.getElementById('stk-val').textContent=v;document.getElementById('bank-area').style.display='block';document.getElementById('reveal-btn').style.display='none';navigator.clipboard.writeText(v);}
+        function toggleAudio(){const a=document.getElementById('bgm');const b=document.getElementById('audio-ctrl');if(a.paused){a.play();b.textContent="SOUND: ON";}else{a.pause();b.textContent="SOUND: OFF";}}
 
-        function openDonate() { 
-            document.getElementById('donate-modal').style.display = 'block'; 
-            document.getElementById('bank-reveal-area').style.display = 'none';
-            document.getElementById('reveal-bank-btn').style.display = 'block';
-        }
-        function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
-        
-        function revealBank() {
-            const val = decode(_0xHuy.s);
-            document.getElementById('stk-value').textContent = val;
-            document.getElementById('bank-reveal-area').style.display = 'block';
-            document.getElementById('reveal-bank-btn').style.display = 'none';
-            navigator.clipboard.writeText(val);
-        }
+        const cvs=document.getElementById('matrix');const ctx=cvs.getContext('2d');
+        function rz(){cvs.width=window.innerWidth;cvs.height=window.innerHeight;}rz();window.onresize=rz;
+        const d=Array(Math.floor(cvs.width/20)).fill(1);
+        function draw(){ctx.fillStyle='rgba(5,5,5,0.15)';ctx.fillRect(0,0,cvs.width,cvs.height);ctx.fillStyle='#0f0';d.forEach((y,i)=>{ctx.fillText(Math.floor(Math.random()*2),i*20,y*20);if(y*20>cvs.height&&Math.random()>0.98)d[i]=0;d[i]++;});}setInterval(draw,50);
 
-        function toggleAudio() {
-            const bgm = document.getElementById('bgm');
-            const btn = document.getElementById('audio-ctrl');
-            if (bgm.paused) { bgm.play().catch(()=>{}); btn.textContent = "SOUND: ON"; }
-            else { bgm.pause(); btn.textContent = "SOUND: OFF"; }
-        }
+        const inp=document.getElementById('terminal-input');const his=document.getElementById('terminal-history');
+        inp.onkeydown=(e)=>{if(e.key==='Enter'){
+            const c=inp.value.toLowerCase().trim(); const l=document.createElement('div'); l.innerHTML=`<span style="color:#666;">$ ${inp.value}</span>`; his.appendChild(l);
+            const r=document.createElement('div'); r.style.marginBottom="10px";
+            if(c==='help') r.innerHTML=`about, projects, contact, clear, donate`;
+            else if(c==='about') r.innerHTML=`Name: {{MY_NAME}} | Role: {{MY_ROLE}}`;
+            else if(c==='projects') r.innerHTML=`[SYSTEMS]<br>1. Home Lab (Proxmox)<br>2. Net Security (PFSense)<br>3. Monitoring (Zabbix)`;
+            else if(c==='contact') r.innerHTML=`Email: ${dec(_0.e)} | Phone: ${dec(_0.p)}`;
+            else if(c==='donate') {openDonate(); r.innerHTML="Opening...";}
+            else if(c==='clear') his.innerHTML='';
+            else r.innerHTML=`<span style="color:red;">Command not found.</span>`;
+            his.appendChild(r); inp.value=''; his.scrollTop=his.scrollHeight;
+        }};
 
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-        const drops = Array(Math.floor(canvas.width / 20)).fill(1);
-        function draw() {
-            ctx.fillStyle = 'rgba(5, 5, 5, 0.15)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#0f0'; ctx.font = '15px monospace';
-            drops.forEach((y, i) => {
-                ctx.fillText(Math.floor(Math.random()*2), i*20, y*20);
-                if (y*20 > canvas.height && Math.random() > 0.98) drops[i] = 0;
-                drops[i]++;
-            });
-        }
-        setInterval(draw, 50);
-
-        const input = document.getElementById('terminal-input');
-        const history = document.getElementById('terminal-history');
-        const typeSound = document.getElementById('type-sound');
-
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const cmd = this.value.toLowerCase().trim();
-                if (cmd === '') return;
-                const line = document.createElement('div');
-                line.innerHTML = `<span style="color: #666;">$ ${this.value}</span>`;
-                history.appendChild(line);
-                const res = document.createElement('div');
-                res.style.marginBottom = "10px";
-
-                if (cmd === 'help') res.innerHTML = `<span style="color: #0f0;">about, project(s), cv, clear, donate, contact</span>`;
-                else if (cmd === 'about') res.innerHTML = `Identity: {{MY_NAME}} | Role: {{MY_ROLE}}`;
-                else if (cmd === 'contact') res.innerHTML = `Email: ${decode(_0xHuy.e)} | Phone: ${decode(_0xHuy.p)}`;
-                else if (cmd === 'project' || cmd === 'projects') {
-                    res.innerHTML = `<span style="color: #00d2ff;">[SYSTEM PROJECTS]</span><br>` +
-                                    `1. <span style="color: #fff;">Home Lab:</span> Proxmox & Docker<br>` +
-                                    `2. <span style="color: #fff;">Security:</span> PFSense Firewall<br>` +
-                                    `3. <span style="color: #fff;">Monitoring:</span> Zabbix & Grafana`;
-                }
-                else if (cmd === 'cv') res.innerHTML = `<a href="{{LINK_CV}}" target="_blank" style="color: #00d2ff; text-decoration: underline;">[Download_CV.pdf]</a>`;
-                else if (cmd === 'clear') history.innerHTML = '';
-                else if (cmd === 'donate') { openDonate(); res.innerHTML = "Opening portal..."; }
-                else res.innerHTML = `<span style="color: #f00;">Command not found.</span>`;
-
-                history.appendChild(res);
-                this.value = '';
-                history.scrollTop = history.scrollHeight;
-                if(typeSound) { typeSound.currentTime = 0; typeSound.play().catch(()=>{}); }
-            }
-        });
-
-        const words = ['_> Network Administrator', '_> {{MY_SPECIALTY}}', '_> Verified Identity'];
-        let wIdx = 0, cIdx = 0, isDel = false;
-        function type() {
-            const cur = words[wIdx];
-            const el = document.getElementById('typewriter');
-            if (el) {
-                el.textContent = cur.substring(0, isDel ? cIdx-- : cIdx++);
-                if(!isDel && cIdx > cur.length) { isDel = true; setTimeout(type, 2000); }
-                else if(isDel && cIdx === 0) { isDel = false; wIdx = (wIdx+1)%words.length; setTimeout(type, 500); }
-                else setTimeout(type, isDel ? 60 : 100);
-            }
-        }
-        type();
-        setInterval(() => { 
-            const timeEl = document.getElementById('term-time');
-            if(timeEl) timeEl.textContent = new Date().toLocaleTimeString(); 
-        }, 1000);
+        const w=['_> Network Admin', '_> {{MY_SPECIALTY}}', '_> Verified']; let wI=0,cI=0,isD=false;
+        function type(){const cur=w[wI];const el=document.getElementById('typewriter');el.textContent=cur.substring(0,isD?cI--:cI++);if(!isD&&cI>cur.length){isD=true;setTimeout(type,2000);}else if(isD&&cI===0){isD=false;wI=(wI+1)%w.length;setTimeout(type,500);}else setTimeout(type,isD?60:100);}type();
+        setInterval(()=>{const t=document.getElementById('term-time');if(t)t.textContent=new Date().toLocaleTimeString();},1000);
     </script>
 </body>
 </html>
