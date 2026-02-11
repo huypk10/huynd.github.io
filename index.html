@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>${{ secrets.MY_NAME }} | Portfolio</title>
+    <title>{{MY_NAME}} | Portfolio</title>
     
-    <meta name="description" content="${{ secrets.MY_NAME }} - ${{ secrets.MY_JOB }}">
-    <meta name="author" content="${{ secrets.MY_NAME }}">
-    <meta property="og:title" content="${{ secrets.MY_NAME }} | ${{ secrets.MY_JOB }}">
-    <meta property="og:image" content="${{ secrets.MY_AVATAR }}">
-    <meta property="og:description" content="${{ secrets.MY_DESC }}">
-    <meta property="og:site_name" content="${{ secrets.MY_NAME }}">
+    <meta name="description" content="{{MY_NAME}} - {{MY_ROLE}}">
+    <meta name="author" content="{{MY_NAME}}">
+    <meta property="og:title" content="{{MY_NAME}} | {{MY_ROLE}}">
+    <meta property="og:image" content="{{MY_AVATAR}}">
+    <meta property="og:description" content="Chuyên gia hạ tầng mạng và bảo mật hệ thống.">
+    <meta property="og:site_name" content="{{MY_NAME}}">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="${{ secrets.MY_DOMAIN }}">
+    <meta property="og:url" content="https://huypk10.ddns.net/">
     <meta name="google-site-verification" content="GIYrJACazgpqdnxznn_YmDQCzYZbL50GY-j4aNODc5k" />
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "${{ secrets.MY_NAME }}",
+      "name": "{{MY_NAME}}",
       "alternateName": ["Huy Portfolio", "NGUYEN DUC HUY"],
-      "url": "${{ secrets.MY_DOMAIN }}"
+      "url": "https://huypk10.ddns.net/"
     }
     </script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="${{ secrets.MY_AVATAR }}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="${{ secrets.MY_AVATAR }}">
+    <link rel="icon" href="{{MY_AVATAR}}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{MY_AVATAR}}">
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background: #050505; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
@@ -72,18 +72,18 @@
     </div>
     <div class="main-container">
         <div class="profile-card">
-            <img src="${{ secrets.MY_AVATAR }}" class="avatar">
-            <div class="glitch">${{ secrets.MY_NAME }}</div>
+            <img src="{{MY_AVATAR}}" class="avatar">
+            <div class="glitch">{{MY_NAME}}</div>
             <div id="typewriter" style="color: #0f0; font-family: monospace; font-size: 13px; min-height: 20px; margin-bottom: 10px;"></div>
-            <a href="${{ secrets.LINK_FB }}" target="_blank" class="btn"><i class="fab fa-facebook"></i> Facebook</a>
-            <a href="${{ secrets.LINK_ZALO }}" target="_blank" class="btn"><i class="fas fa-comment"></i> Zalo</a>
-            <a href="${{ secrets.LINK_DISCORD }}" target="_blank" class="btn"><i class="fab fa-discord"></i> Discord</a>
-            <a href="${{ secrets.LINK_CV }}" target="_blank" class="btn btn-cv"><i class="fas fa-file-download"></i> Download CV</a>
+            <a href="{{LINK_FB}}" target="_blank" class="btn"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="{{LINK_ZALO}}" target="_blank" class="btn"><i class="fas fa-comment"></i> Zalo</a>
+            <a href="{{LINK_DISCORD}}" target="_blank" class="btn"><i class="fab fa-discord"></i> Discord</a>
+            <a href="{{LINK_CV}}" target="_blank" class="btn btn-cv"><i class="fas fa-file-download"></i> Download CV</a>
             <div class="btn btn-donate" onclick="openDonate()"><i class="fas fa-coffee"></i> Give Coffee</div>
         </div>
         
         <div class="terminal-box" onclick="document.getElementById('terminal-input').focus()">
-            <div class="terminal-header"><span>${{ secrets.TERMINAL_TITLE }}</span><span id="term-time"></span></div>
+            <div class="terminal-header"><span>{{TERMINAL_TITLE}}</span><span id="term-time"></span></div>
             <div id="terminal-history">
                 <div style="background: rgba(255, 255, 0, 0.1); border: 1px dashed #ff0; padding: 8px; border-radius: 5px; margin-bottom: 10px; text-align: center; font-size: 10px;">
                     <span style="color: #ff0;">💡 HINT: Type <span style="color: #0f0;">'help'</span> or <span style="color: #0f0;">'clear'</span></span>
@@ -97,25 +97,25 @@
     </div>
 
     <footer>
-        <div class="footer-text">© 2026 ${{ secrets.MY_NAME }} | ALL RIGHTS RESERVED</div>
+        <div class="footer-text">© 2026 {{MY_NAME}} | ALL RIGHTS RESERVED</div>
         <div class="footer-sub">SECURED IDENTITY VERIFIED</div>
     </footer>
 
     <div id="about-modal" class="info-modal">
         <div class="modal-header"><span>[IDENTITY]</span> <span onclick="toggleModal('about-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
         <div style="color:#fff; font-size:12px; line-height:1.6;">
-            <b>FULL NAME:</b> ${{ secrets.MY_NAME }}<br>
-            <b>CURRENT ROLE:</b> ${{ secrets.MY_JOB }}<br>
-            <b>SPECIALTY:</b> ${{ secrets.MY_SPECIALTY }}
+            <b>FULL NAME:</b> {{MY_NAME}}<br>
+            <b>CURRENT ROLE:</b> {{MY_ROLE}}<br>
+            <b>SPECIALTY:</b> {{MY_SPECIALTY}}
         </div>
     </div>
 
     <div id="work-modal" class="info-modal">
         <div class="modal-header"><span>[CONTACT]</span> <span onclick="toggleModal('work-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
         <div style="color:#fff; font-size:12px; line-height:1.6;">
-            <b>EMAIL:</b> <span id="m-email">${{ secrets.MY_EMAIL }}</span><br>
-            <b>PHONE:</b> <span id="m-phone">${{ secrets.MY_PHONE }}</span><br>
-            <b>LOCATION:</b> ${{ secrets.MY_LOCATION }}
+            <b>EMAIL:</b> <span id="m-email">{{MY_EMAIL}}</span><br>
+            <b>PHONE:</b> <span id="m-phone">{{MY_PHONE}}</span><br>
+            <b>LOCATION:</b> {{MY_LOCATION}}
         </div>
     </div>
 
@@ -123,26 +123,26 @@
         <span onclick="closeDonate()" style="color:#f00; float:right; cursor:pointer; font-weight:bold; font-size: 20px;">&times;</span>
         <h3 style="color:#ff0; margin: 10px 0;">GIVE COFFEE ☕</h3>
         <p style="font-size: 11px; color: #aaa;">Scan QR or reveal banking details</p>
-        <img src="${{ secrets.QR_LINK }}" alt="QR Code">
+        <img src="{{QR_LINK}}" alt="QR Code">
         <button class="reveal-btn" id="reveal-bank-btn" onclick="revealBank()">
             <i class="fas fa-university"></i> REVEAL BANK INFO
         </button>
         <div class="bank-info-box" id="bank-reveal-area">
-            <span style="color:#ff0; font-size:10px; text-transform: uppercase; letter-spacing: 1px;">${{ secrets.BANK_INFO }}</span>
-            <span class="bank-stk" id="stk-value">${{ secrets.STK_NUMBER }}</span>
+            <span style="color:#ff0; font-size:10px; text-transform: uppercase; letter-spacing: 1px;">{{BANK_INFO}}</span>
+            <span class="bank-stk" id="stk-value">{{STK_NUMBER}}</span>
             <small style="color: #0f0; font-size: 9px; margin-top: 5px; display: block;">✅ Auto-copied!</small>
         </div>
     </div>
 
     <button id="audio-ctrl" onclick="toggleAudio()">SOUND: OFF</button>
     <audio id="type-sound" src="https://www.soundjay.com/communication/typewriter-key-1.mp3"></audio>
-    <audio id="bgm" loop src="${{ secrets.LINK_BGM }}"></audio>
+    <audio id="bgm" loop src="{{LINK_BGM}}"></audio>
 
     <script>
         const _0xHuy = {
-            s: "${{ secrets.STK_NUMBER }}",
-            p: "${{ secrets.MY_PHONE }}",
-            e: "${{ secrets.MY_EMAIL }}"
+            s: "{{STK_NUMBER}}",
+            p: "{{MY_PHONE}}",
+            e: "{{MY_EMAIL}}"
         };
 
         const decode = (str) => {
@@ -208,15 +208,15 @@
                 res.style.marginBottom = "10px";
 
                 if (cmd === 'help') res.innerHTML = `<span style="color: #0f0;">about, project(s), cv, clear, donate, contact</span>`;
-                else if (cmd === 'about') res.innerHTML = `Identity: ${{ secrets.MY_NAME }} | Role: ${{ secrets.MY_JOB }}`;
-                else if (cmd === 'contact') res.innerHTML = `Email: ${{ secrets.MY_EMAIL }} | Phone: ${{ secrets.MY_PHONE }}`;
+                else if (cmd === 'about') res.innerHTML = `Identity: {{MY_NAME}} | Role: {{MY_ROLE}}`;
+                else if (cmd === 'contact') res.innerHTML = `Email: {{MY_EMAIL}} | Phone: {{MY_PHONE}}`;
                 else if (cmd === 'project' || cmd === 'projects') {
                     res.innerHTML = `<span style="color: #00d2ff;">[SYSTEM PROJECTS]</span><br>` +
                                     `1. <span style="color: #fff;">Network:</span> HAProxy + Nginx Load Balancer<br>` +
                                     `2. <span style="color: #fff;">Security:</span> VPN Server & Firewall Config<br>` +
                                     `3. <span style="color: #fff;">Monitoring:</span> Zabbix & Grafana Dashboard`;
                 }
-                else if (cmd === 'cv') res.innerHTML = `<a href="${{ secrets.LINK_CV }}" target="_blank" style="color: #00d2ff; text-decoration: underline;">[Download_CV.pdf]</a>`;
+                else if (cmd === 'cv') res.innerHTML = `<a href="{{LINK_CV}}" target="_blank" style="color: #00d2ff; text-decoration: underline;">[Download_CV.pdf]</a>`;
                 else if (cmd === 'clear') history.innerHTML = '';
                 else if (cmd === 'donate') { openDonate(); res.innerHTML = "Opening portal..."; }
                 else res.innerHTML = `<span style="color: #f00;">Command not found.</span>`;
@@ -228,7 +228,7 @@
             }
         });
 
-        const words = ['_> ${{ secrets.MY_JOB }}', '_> ${{ secrets.MY_SPECIALTY }}', '_> Verified Identity'];
+        const words = ['_> {{MY_ROLE}}', '_> {{MY_SPECIALTY}}', '_> Verified Identity'];
         let wIdx = 0, cIdx = 0, isDel = false;
         function type() {
             const cur = words[wIdx];
