@@ -113,8 +113,8 @@
     <div id="work-modal" class="info-modal">
         <div class="modal-header"><span>[CONTACT]</span> <span onclick="toggleModal('work-modal')" style="cursor:pointer; color:#f00;">[X]</span></div>
         <div style="color:#fff; font-size:12px; line-height:1.6;">
-            <b>EMAIL:</b> <span id="m-email">{{MY_EMAIL}}</span><br>
-            <b>PHONE:</b> <span id="m-phone">{{MY_PHONE}}</span><br>
+            <b>EMAIL:</b> <span id="m-email">loading...</span><br>
+            <b>PHONE:</b> <span id="m-phone">loading...</span><br>
             <b>LOCATION:</b> {{MY_LOCATION}}
         </div>
     </div>
@@ -129,7 +129,7 @@
         </button>
         <div class="bank-info-box" id="bank-reveal-area">
             <span style="color:#ff0; font-size:10px; text-transform: uppercase; letter-spacing: 1px;">{{BANK_INFO}}</span>
-            <span class="bank-stk" id="stk-value">{{STK_NUMBER}}</span>
+            <span class="bank-stk" id="stk-value">loading...</span>
             <small style="color: #0f0; font-size: 9px; margin-top: 5px; display: block;">✅ Auto-copied!</small>
         </div>
     </div>
@@ -139,15 +139,24 @@
     <audio id="bgm" loop src="{{LINK_BGM}}"></audio>
 
     <script>
+        // Hàm giải mã Base64 an toàn
+        const b64Decode = (str) => {
+            try { return decodeURIComponent(atob(str).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join('')); } catch(e) { return str; }
+        };
+
+        // Data từ Secret (đã được mã hóa Base64)
         const _0xHuy = {
             s: "{{STK_NUMBER}}",
             p: "{{MY_PHONE}}",
             e: "{{MY_EMAIL}}"
         };
 
-        const decode = (str) => {
-            if (!str || str.includes("{{")) return "Not Set";
-            return str; 
+        // Giải mã và hiển thị thông tin ngay khi load
+        window.onload = () => {
+            document.getElementById('m-email').textContent = b64Decode(_0xHuy.e);
+            document.getElementById('m-phone').textContent = b64Decode(_0xHuy.p);
         };
 
         function toggleModal(id) {
@@ -163,7 +172,7 @@
         function closeDonate() { document.getElementById('donate-modal').style.display = 'none'; }
         
         function revealBank() {
-            const val = _0xHuy.s;
+            const val = b64Decode(_0xHuy.s);
             document.getElementById('stk-value').textContent = val;
             document.getElementById('bank-reveal-area').style.display = 'block';
             document.getElementById('reveal-bank-btn').style.display = 'none';
@@ -209,7 +218,7 @@
 
                 if (cmd === 'help') res.innerHTML = `<span style="color: #0f0;">about, project(s), cv, clear, donate, contact</span>`;
                 else if (cmd === 'about') res.innerHTML = `Identity: {{MY_NAME}} | Role: {{MY_ROLE}}`;
-                else if (cmd === 'contact') res.innerHTML = `Email: {{MY_EMAIL}} | Phone: {{MY_PHONE}}`;
+                else if (cmd === 'contact') res.innerHTML = `Email: ${b64Decode(_0xHuy.e)} | Phone: ${b64Decode(_0xHuy.p)}`;
                 else if (cmd === 'project' || cmd === 'projects') {
                     res.innerHTML = `<span style="color: #00d2ff;">[SYSTEM PROJECTS]</span><br>` +
                                     `1. <span style="color: #fff;">Network:</span> HAProxy + Nginx Load Balancer<br>` +
