@@ -10,9 +10,9 @@
     <meta property="og:title" content="{{MY_NAME}} | {{MY_ROLE}}">
     <meta property="og:image" content="{{MY_AVATAR}}">
     <meta property="og:description" content="Chuyên gia hạ tầng mạng và bảo mật hệ thống.">
-    <meta property="og:site_name" content=""NGUYỄN ĐỨC HUY"">
+    <meta property="og:site_name" content="{{MY_NAME}}">
     <meta name="apple-mobile-web-app-title" content="{{MY_NAME}}">
-    <meta name="application-name" content=""NGUYỄN ĐỨC HUY"">
+    <meta name="application-name" content="{{MY_NAME}}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://huypk10.ddns.net/">
     <meta name="google-site-verification" content="GIYrJACazgpqdnxznn_YmDQCzYZbL50GY-j4aNODc5k" />
@@ -141,21 +141,18 @@
     <audio id="bgm" loop src="{{LINK_BGM}}"></audio>
 
     <script>
-        // Hàm giải mã Base64 an toàn
         const b64Decode = (str) => {
             try { return decodeURIComponent(atob(str).split('').map(function(c) {
                 return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join('')); } catch(e) { return str; }
         };
 
-        // Data từ Secret (đã được mã hóa Base64)
         const _0xHuy = {
             s: "{{STK_NUMBER}}",
             p: "{{MY_PHONE}}",
             e: "{{MY_EMAIL}}"
         };
 
-        // Giải mã và hiển thị thông tin ngay khi load
         window.onload = () => {
             document.getElementById('m-email').textContent = b64Decode(_0xHuy.e);
             document.getElementById('m-phone').textContent = b64Decode(_0xHuy.p);
